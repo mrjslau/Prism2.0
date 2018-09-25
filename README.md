@@ -2,6 +2,7 @@
 Ruby/Ruby on Rails university project for Agile Development course 2018.
 
 ### Prerequisites
+Ruby 2.5.1
 
 ### Running
 ```
