@@ -2,12 +2,29 @@
 Ruby/Ruby on Rails university project for Agile Development course 2018.
 
 ### Prerequisites
-Ruby 2.5.1
+Ruby 2.x.x
+Bundler 1.x.x
 
 ### Running
+Install all gems:
 ```
+bundle install
+```
+Run rspec tests:
+```
+rspec
+```
+Style guide check:
+```
+rubocop
+```
+Run Mutant:
+```
+bundle exec mutant --include lib --require *class* --use rspec *Class*
+```
+Test coverage:
+/coverage/index.html
 
-```
 
 ### Užduoties tema:
 Miesto stebėjimo sistema
