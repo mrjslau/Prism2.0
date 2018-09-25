@@ -10,4 +10,14 @@ class Neighborhood
     @city = city
     @danger = danger
   end
+
+  def input_crimes(crimes)
+    if crimes > 10
+      @danger = 'Dangerous'
+    elsif crimes < 2
+      @danger = 'Safe'
+    else
+      @danger = 'Normal'
+    end
+  end
 end
