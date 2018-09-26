@@ -30,39 +30,39 @@ Test coverage:
 Miesto stebėjimo sistema
 
 ### Sistemos esybės:
-1)  Miestas 
-	2)  Vartotojas
-	3)  Žemėlapis
-	4)  Rajonas
-	5)  Teritorija
-	6)  Asmuo
-	7)  Automobilis
-	8)  Telefonas
-	9)  Gyvūnas
-	10) Pastatas
-	11) Lokacija
-	12) Tiltas
-	13) Bollard’as
-	14) Šviesoforas
-	15) Sankryža
-	16) Švieslentė
-	17) Užkarda
-	18) Greičio matuoklis
-	19) Sirena
-	20) Banko sąskaita
-	21) Bankomatas
-	22) Pagalbos tarnyba 
-	23) Vaizdo kamera 
-	24) Daviklis
-	25) Išmanusis prietaisas
-	26) Apsaugos sistema
+1.  Miestas 
+2.  Vartotojas
+3.  Žemėlapis
+4.  Rajonas
+5.  Teritorija
+6.  Asmuo
+7.  Automobilis
+8.  Telefonas
+9.  Gyvūnas
+10. Pastatas
+11. Lokacija
+12. Tiltas
+13. Bollard’as
+14. Šviesoforas
+15. Sankryža
+16. Švieslentė
+17. Užkarda
+18. Greičio matuoklis
+19. Sirena
+20. Banko sąskaita
+21. Bankomatas
+22. Pagalbos tarnyba 
+23. Vaizdo kamera 
+24. Daviklis
+25. Išmanusis prietaisas
+26. Apsaugos sistema
 
 ### Sistemos savybės:
-// Sistema naudosis dviejų tipų asmenys: administratoriai ir darbuotojai. 
-// Administratorius gali atlikti viską tą patį, ką ir darbuotojas gali.
-[User] - darbuotojas
-[Admin] - administratorius
-[System] - sistema
+// Sistema naudosis dviejų tipų asmenys: administratoriai ir darbuotojai.  
+// Administratorius gali atlikti viską tą patį, ką ir darbuotojas gali.  
+[User] - darbuotojas  
+[Admin] - administratorius  
+[System] - sistema  
 
 	1)   [User]   Prisijungti prie sistemos
 	2)   [Admin]  Prisijungti prie sistemos kaip administratorius
