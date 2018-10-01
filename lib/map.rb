@@ -11,9 +11,9 @@ class Map
     @notifications = []
   end
 
-  @@instance = Map.new
-  def self.instance
-    @@instance
+  @instance = Map.new
+  class << self
+    attr_reader :instance
   end
 
   def send_police(police_unit, neighborhood)

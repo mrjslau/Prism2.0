@@ -17,13 +17,13 @@ class Neighborhood
   end
 
   def input_crimes(crimes)
-    if crimes > 10
-      @danger = 'Dangerous'
-    elsif crimes < 2
-      @danger = 'Safe'
-    else
-      @danger = 'Normal'
-    end
+    @danger = if crimes > 10
+                'Dangerous'
+              elsif crimes < 2
+                'Safe'
+              else
+                'Normal'
+              end
   end
 
   def unit_entered(unit)
