@@ -5,6 +5,6 @@
 # It contains
 class PersonRepository
   def get
-    Person.new('Jane', 'Doe', Location.new(0, 0))
+    Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
   end
 end

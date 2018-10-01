@@ -4,7 +4,8 @@ require 'spec_helper.rb'
 
 describe Phone do
   before(:each) do
-    @phone = Phone.new(Person.new('John', 'Doe', Location.new(54.7, 25.3)),
+    @phone = Phone.new(Person.new('John', 'Doe', '39700000001',
+                                  Location.new(54.7, 25.3)),
                        Location.new(54.7, 25.3))
   end
   it 'has an owner' do
