@@ -27,16 +27,18 @@ describe Vehicle do
     end
   end
 
-  context 'when owner is driving' do
-    it 'should confirm that owner is in the car' do
-      expect(@vehicle.check_if_owner_is_driving).to be true
+  describe '#check_if_owner_is_driving' do
+    context 'when owner is driving' do
+      it 'should confirm that owner is in the car' do
+        expect(@vehicle.check_if_owner_is_driving).to be true
+      end
     end
-  end
 
-  context 'when owner is not driving' do
-    it 'should confirm that owner is not in the car' do
-      @vehicle.owner.location = Location.new(54.6, 25.1)
-      expect(@vehicle.check_if_owner_is_driving).to be false
+    context 'when owner is not driving' do
+      it 'should confirm that owner is not in the car' do
+        @vehicle.owner.location = Location.new(54.6, 25.1)
+        expect(@vehicle.check_if_owner_is_driving).to be false
+      end
     end
   end
 end
