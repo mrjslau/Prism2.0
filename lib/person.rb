@@ -3,7 +3,8 @@
 # Person class represents a trackable person in a city
 # It contains
 class Person
-  attr_accessor :name, :surname, :status, :location, :personal_code, :phones
+  attr_accessor :name, :surname, :status, :location, :personal_code, :phones,
+                :pets
 
   def initialize(name, surname, personal_code, location)
     @name = name
@@ -11,6 +12,8 @@ class Person
     @map = Map.instance
     @personal_code = personal_code
     @location = location
+    @phones = []
+    @pets = []
   end
 
   def change_status(status)
@@ -18,11 +21,31 @@ class Person
     @map.notify_abnormal_person(self) if status == 'Suspicious'
   end
 
-  def add_phone
-    @phones << Phone.new(self, Location.new(0, 0))
+  def add_phone(phone_location)
+    @phones << Phone.new(self, phone_location)
   end
 
-  def phone?
-    false
+  def remove_phones
+    @phones = []
+  end
+
+  def phones?
+    !@phones.empty?
+  end
+
+  def near_any_phone?
+    @phones.any?(&:detect_if_owner_is_near)
+  end
+
+  def add_pet(pet_location)
+    @pets << Pet.new(self, pet_location)
+  end
+
+  def remove_pets
+    @pets = []
+  end
+
+  def pets?
+    !@pets.empty?
   end
 end

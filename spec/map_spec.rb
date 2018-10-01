@@ -63,26 +63,26 @@ describe Map do
   end
 
   describe 'system' do
-    it "automatically notifies when the active neighborhood's temperature is abnormal" do
-      notifications_count = @map.notifications.length
-      @map.active_neighborhood = @neighborhood
-      @neighborhood.change_temperature 67
-      expect(@map.notifications.length).to eql(notifications_count + 1)
-    end
-
-    it "automatically notifies when a person's status was changed to suspicious" do
-      notifications_count = @map.notifications.length
-      @neighborhood.person_entered(@person)
-      @map.active_neighborhood = @neighborhood
-      @person.change_status('Suspicious')
-      expect(@map.notifications.length).to eql(notifications_count + 1)
-    end
-
-    it 'automatically sends a drone to a neighborhood which has an abnormal temperature' do
-      @map.active_neighborhood = @neighborhood
-      expect(@map.active_units.length).to eql 0
-      @neighborhood.change_temperature 67
-      expect(@map.active_units.length).to eql 1
+    context 'automatically' do
+      it "notifies when the active neighborhood's temperature is abnormal" do
+        notifications_count = @map.notifications.length
+        @map.active_neighborhood = @neighborhood
+        @neighborhood.change_temperature 67
+        expect(@map.notifications.length).to eql(notifications_count + 1)
+      end
+      it "notifies when a person's status was changed to suspicious" do
+        notifications_count = @map.notifications.length
+        @neighborhood.person_entered(@person)
+        @map.active_neighborhood = @neighborhood
+        @person.change_status('Suspicious')
+        expect(@map.notifications.length).to eql(notifications_count + 1)
+      end
+      it 'sends a drone to a neighborhood which has an abnormal temperature' do
+        @map.active_neighborhood = @neighborhood
+        expect(@map.active_units.length).to eql 0
+        @neighborhood.change_temperature 67
+        expect(@map.active_units.length).to eql 1
+      end
     end
   end
 end
