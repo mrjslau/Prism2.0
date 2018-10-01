@@ -7,6 +7,10 @@ class Location
     @longitude = longitude
   end
 
+  def to_s
+    '[' + @latitude.to_s + ', ' + @longitude.to_s + ']'
+  end
+
   # Calculates distance betwen object with location and given location.
   # Calculation is based on Haversine formula.
   def calculate_distance(location)
