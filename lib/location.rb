@@ -1,6 +1,6 @@
 # A location class for setting object location.
 class Location
-  attr_accessor :latitude, :longitude
+  attr_reader :latitude, :longitude
 
   def initialize(latitude, longitude)
     @latitude = latitude
