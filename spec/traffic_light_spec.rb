@@ -21,14 +21,16 @@ describe TrafficLight do
     end
   end
 
-  describe '#change_status' do
+  describe '#turn_off' do
     it 'turns off completely' do
-      traffic_light.change_status('off')
+      traffic_light.turn_off
       expect(traffic_light.signal).to be_nil
       expect(traffic_light.blinking?).to be(false)
     end
+  end
+  describe '#disable' do
     it 'leaves blinking light' do
-      traffic_light.change_status('disable')
+      traffic_light.disable
       expect(traffic_light.signal).to eq('yellow')
       expect(traffic_light.blinking?).to be(true)
     end
