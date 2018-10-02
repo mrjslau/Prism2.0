@@ -36,11 +36,26 @@ class Neighborhood
 
   def change_temperature(celsius)
     @average_temperature = celsius
-    bad = temp_abnormal?
-    @map.notify_abnormal_temperature(self, celsius) if bad
+    @map.notify_abnormal_temperature(self, celsius) if temp_abnormal?
   end
 
   def temp_abnormal?
     @average_temperature > 35 || @average_temperature < -18
+  end
+
+  def send_police(police_unit)
+    police_unit.travel_to(self)
+  end
+
+  def send_ambulance(ambulance_unit)
+    ambulance_unit.travel_to(self)
+  end
+
+  def send_brigade(fire_brigade)
+    fire_brigade.travel_to(self)
+  end
+
+  def send_drone(drone)
+    drone.travel_to(self)
   end
 end
