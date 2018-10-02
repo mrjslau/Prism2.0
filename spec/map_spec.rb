@@ -4,12 +4,12 @@ require 'spec_helper.rb'
 
 describe Map do
   before do
-    @ambulance = AmbulanceRepository.new.get
-    @brigade = BrigadeRepository.new.get
-    @drone = DroneRepository.new.get
-    @neighborhood = NeighborhoodRepository.new.get
-    @person = PersonRepository.new.get
-    @police = PoliceRepository.new.get
+    @ambulance = Ambulance.new
+    @brigade = Brigade.new
+    @drone = Drone.new
+    @neighborhood = Neighborhood.new('Baltupiai', 'Vilnius', 2)
+    @person = Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
+    @police = Police.new
     @map = Map.instance
   end
 

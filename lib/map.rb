@@ -45,7 +45,7 @@ class Map
     notification = Notification.new(message)
     @notifications.push(notification)
 
-    drone = DroneRepository.new.get
+    drone = Drone.new
     drone.travel_to(neighborhood)
   end
 
