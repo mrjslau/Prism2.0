@@ -20,7 +20,7 @@ describe TrafficLight do
       expect(traffic_light.signal).to eq('green')
     end
   end
-
+  
   describe '#change_status' do
     it 'turns off completely' do
       traffic_light.change_status('off')

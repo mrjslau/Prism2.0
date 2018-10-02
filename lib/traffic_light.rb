@@ -11,4 +11,22 @@ class TrafficLight
     @signal = 'yellow'
     @blinking = true
   end
+
+  def change_signal(signal)
+    @signal = signal
+  end
+
+  def change_status(status)
+    if status == 'off'
+      @signal = nil
+      @blinking = false
+    else
+      @signal = 'yellow'
+      @blinking = true
+    end
+  end
+  
+  def blinking?
+    @blinking
+  end
 end

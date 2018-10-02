@@ -8,7 +8,13 @@ describe GateBarrier do
   describe '#block_way' do
     it 'lets the barrier down' do
       gate_barrier.block_way
-      expect(gate_barrier.is_blocked?).to be(true)
+      expect(gate_barrier.blocked?).to be(true)
+    end
+  end
+  describe '#unblock_way' do
+    it 'puts the barrier up' do
+      gate_barrier.unblock_way
+      expect(gate_barrier.blocked?).to be(false)
     end
   end
 end
