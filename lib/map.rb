@@ -54,8 +54,7 @@ class Map
   end
 
   def notify_abnormal_person(person)
-    message = "#{person.name} #{person.surname}'s status has changed to:
-               #{person.status}!"
+    message = person.status_change_msg
     notification = Notification.new(message)
     @notifications.push(notification)
   end

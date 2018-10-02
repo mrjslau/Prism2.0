@@ -9,6 +9,7 @@ class Person
   def initialize(name, surname, personal_code, location)
     @name = name
     @surname = surname
+    @status = 'Normal'
     @map = Map.instance
     @personal_code = personal_code
     @location = location
@@ -51,5 +52,9 @@ class Person
 
   def pets?
     !@pets.empty?
+  end
+
+  def status_change_msg
+    "#{@name} #{@surname}'s status has changed to: #{@status}!"
   end
 end
