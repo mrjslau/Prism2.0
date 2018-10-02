@@ -4,16 +4,20 @@
 #  with which the user will interact.
 # It contains
 class Map
-  attr_reader :notifications
-  attr_accessor :active_neighborhood
+  attr_reader :notifications, :active_neighborhood
 
   def initialize
     @notifications = []
+    @active_neighborhood = nil
   end
 
   @instance = Map.new
   class << self
     attr_reader :instance
+  end
+
+  def select_neighborhood(neighborhood)
+    @active_neighborhood = neighborhood
   end
 
   def send_police(police_unit, neighborhood)
@@ -50,10 +54,8 @@ class Map
   end
 
   def notify_abnormal_person(person)
-    name = person.name
-    surname = person.surname
-    status = person.status
-    message = "#{name} #{surname}'s status has changed to: #{status}!"
+    message = "#{person.name} #{person.surname}'s status has changed to:
+               #{person.status}!"
     notification = Notification.new(message)
     @notifications.push(notification)
   end
