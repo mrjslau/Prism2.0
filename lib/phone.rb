@@ -16,11 +16,7 @@ class Phone
   end
 
   def connect
-    if @turned_on
-      @connected = true
-    else
-      @connected = false
-    end
+    @connected = @turned_on
   end
 
   def listen_call
