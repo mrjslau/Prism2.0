@@ -35,7 +35,7 @@ describe Phone do
   describe 'connection' do
     context 'when phone is turned on' do
       before(:each) do
-        @phone.turned_on = true
+        @phone.turn_on
       end
 
       it 'should be able to connect to it' do
@@ -45,7 +45,7 @@ describe Phone do
 
     context 'when phone is turned off' do
       before(:each) do
-        @phone.turned_on = false
+        @phone.turn_off
       end
 
       it 'should not be able to connect to it' do
@@ -57,7 +57,7 @@ describe Phone do
   describe 'turning on and off' do
     context 'when phone is turned on' do
       before(:each) do
-        @phone.turned_on = true
+        @phone.turn_on
       end
 
       it 'should be able to turn off' do
@@ -68,7 +68,7 @@ describe Phone do
 
     context 'when phone is turned off' do
       before(:each) do
-        @phone.turned_on = false
+        @phone.turn_off
       end
 
       it 'should be able to turn on' do
@@ -81,7 +81,8 @@ describe Phone do
   describe 'listen call' do
     context 'when connected' do
       before(:each) do
-        @phone.connected = true
+        @phone.turn_on
+        @phone.connect
       end
       it 'should be able to listen call' do
         expect(@phone.listen_call).to be true
@@ -98,7 +99,8 @@ describe Phone do
   describe 'read messages' do
     context 'when connected' do
       before(:each) do
-        @phone.connected = true
+        @phone.turn_on
+        @phone.connect
       end
 
       it 'should be able to read messages' do

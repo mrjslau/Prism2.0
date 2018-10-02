@@ -22,8 +22,8 @@ class Location
     lon1_rad = @longitude * radians_per_degree
     lon2_rad = location.longitude * radians_per_degree
 
-    a = Math.sin((lat2_rad - lat1_rad) / 2)**2 + Math.cos(lat1_rad) *
-        Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2)**2
+    a = Math.sin((lat2_rad - lat1_rad) / 2)**2 +
+        Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2)**2
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
     earth_radius * c # Delta in meters

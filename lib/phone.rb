@@ -1,6 +1,6 @@
 # Implementation of phone entity
 class Phone
-  attr_accessor :owner, :location, :turned_on, :connected
+  attr_reader :owner, :location, :turned_on, :connected
 
   def initialize(owner, location)
     @owner = owner
@@ -17,9 +17,9 @@ class Phone
 
   def connect
     if @turned_on
-      true
+      @connected = true
     else
-      false
+      @connected = false
     end
   end
 

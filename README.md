@@ -18,6 +18,10 @@ Style guide check:
 ```
 rubocop
 ```
+Run reek for code smells:
+```
+reek
+```
 Run Mutant:
 ```
 bundle exec mutant --include lib --require *class* --use rspec *Class*
