@@ -36,7 +36,7 @@ describe Vehicle do
 
     context 'when owner is not driving' do
       it 'should confirm that owner is not in the car' do
-        @vehicle.owner.location = Location.new(54.6, 25.1)
+        @vehicle.owner.change_location(Location.new(54.6, 25.1))
         expect(@vehicle.check_if_owner_is_driving).to be false
       end
     end

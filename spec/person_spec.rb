@@ -27,7 +27,7 @@ describe Person do
   describe '#remove_phones' do
     context 'when phones are removed a person' do
       it 'should not have a phone' do
-        @person.phones = Phone.new(self, Location.new(0, 0))
+        @person.add_phone(Location.new(0, 0))
         @person.remove_phones
         expect(@person.phones?).to be false
       end
@@ -62,7 +62,7 @@ describe Person do
       end
       context 'when pets are removed a person' do
         it 'should not have a pet' do
-          @person.pets = Pet.new(self, Location.new(0, 0))
+          @person.add_pet(Location.new(0, 0))
           @person.remove_pets
           expect(@person.pets?).to be false
         end

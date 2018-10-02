@@ -2,7 +2,7 @@
 
 # Pet class of any type pet (dog, cat etc.)
 class Pet
-  attr_accessor :owner, :location
+  attr_reader :owner, :location
 
   def initialize(owner, location)
     @owner = owner

@@ -26,7 +26,7 @@ describe Phone do
     end
     context 'when phone is 50 meters away from owner' do
       it 'should detect that owner do not have his phone' do
-        @phone.owner.location = Location.new(54.8, 25.6)
+        @phone.owner.change_location(Location.new(54.8, 25.6))
         expect(@phone.detect_if_owner_is_near).to be false
       end
     end
