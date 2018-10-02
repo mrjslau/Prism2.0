@@ -3,9 +3,9 @@
 require 'spec_helper.rb'
 
 describe User do
-  let(:user) { User.new('Mantas') }
+  let(:user) { described_class.new('Mantas') }
 
-  it 'should have a name' do
+  it 'has a name' do
     expect(user.name).to eq('Mantas')
   end
 end

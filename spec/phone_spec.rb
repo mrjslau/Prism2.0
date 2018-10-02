@@ -3,114 +3,116 @@
 require 'spec_helper.rb'
 
 describe Phone do
-  before(:each) do
-    @phone = Phone.new(Person.new('John', 'Doe', '39700000001',
-                                  Location.new(54.7, 25.3)),
-                       Location.new(54.7, 25.3))
-  end
+  let(:location1) { Location.new(54.7, 25.3)                            }
+  let(:location2) { Location.new(54.7, 25.3)                            }
+  let(:person)    { Person.new('John', 'Doe', '39700000001', location1) }
+  let(:phone)     { described_class.new(person, location2)              }
+
   it 'has an owner' do
-    expect(@phone.owner.name).to eq 'John'
+    expect(phone.owner.name).to eq 'John'
   end
   it 'has a latitude' do
-    expect(@phone.location.latitude).to eq 54.7
+    expect(phone.location.latitude).to eq 54.7
   end
   it 'has a longitude' do
-    expect(@phone.location.longitude).to eq 25.3
+    expect(phone.location.longitude).to eq 25.3
   end
 
-  describe 'phone is near owner' do
+  describe '#detect_if_owner_is_near' do
     context 'when phone is near owner' do
-      it 'should detect that owner has his phone' do
-        expect(@phone.detect_if_owner_is_near).to be true
+      it 'detects that owner has his phone' do
+        expect(phone.detect_if_owner_is_near).to be true
       end
     end
     context 'when phone is 50 meters away from owner' do
-      it 'should detect that owner do not have his phone' do
-        @phone.owner.change_location(Location.new(54.8, 25.6))
-        expect(@phone.detect_if_owner_is_near).to be false
+      it 'detects that owner does not have his phone' do
+        phone.owner.change_location(Location.new(54.8, 25.6))
+        expect(phone.detect_if_owner_is_near).to be false
       end
     end
   end
 
-  describe 'connection' do
+  describe '#connect' do
     context 'when phone is turned on' do
-      before(:each) do
-        @phone.turn_on
+      before do
+        phone.turn_on
       end
 
-      it 'should be able to connect to it' do
-        expect(@phone.connect).to be true
+      it 'is able to connect to it' do
+        expect(phone.connect).to be true
       end
     end
 
     context 'when phone is turned off' do
-      before(:each) do
-        @phone.turn_off
+      before do
+        phone.turn_off
       end
 
-      it 'should not be able to connect to it' do
-        expect(@phone.connect).to be false
+      it 'is not able to connect to it' do
+        expect(phone.connect).to be false
       end
     end
   end
 
-  describe 'turning on and off' do
+  describe '#turn_off' do
     context 'when phone is turned on' do
-      before(:each) do
-        @phone.turn_on
+      before do
+        phone.turn_on
       end
 
-      it 'should be able to turn off' do
-        @phone.turn_off
-        expect(@phone.turned_on).to be false
+      it 'is able to turn off' do
+        phone.turn_off
+        expect(phone.turned_on).to be false
       end
     end
+  end
 
+  describe '#turn_on' do
     context 'when phone is turned off' do
-      before(:each) do
-        @phone.turn_off
+      before do
+        phone.turn_off
       end
 
-      it 'should be able to turn on' do
-        @phone.turn_on
-        expect(@phone.turned_on).to be true
+      it 'is able to turn on' do
+        phone.turn_on
+        expect(phone.turned_on).to be true
       end
     end
   end
 
-  describe 'listen call' do
+  describe '#listen_call' do
     context 'when connected' do
-      before(:each) do
-        @phone.turn_on
-        @phone.connect
+      before do
+        phone.turn_on
+        phone.connect
       end
-      it 'should be able to listen call' do
-        expect(@phone.listen_call).to be true
+      it 'is able to listen to a call' do
+        expect(phone.listen_call).to be true
       end
     end
 
     context 'when not connected' do
-      it 'should not be able to listen to call' do
-        expect(@phone.listen_call).to be false
+      it 'is not able to listen to a call' do
+        expect(phone.listen_call).to be false
       end
     end
   end
 
-  describe 'read messages' do
+  describe '#read_messages' do
     context 'when connected' do
-      before(:each) do
-        @phone.turn_on
-        @phone.connect
+      before do
+        phone.turn_on
+        phone.connect
       end
 
-      it 'should be able to read messages' do
-        expect(@phone.read_messages).to be true
+      it 'is able to read messages' do
+        expect(phone.read_messages).to be true
       end
     end
 
     context 'when not connected' do
-      it 'should not be able to read messages' do
-        expect(@phone.read_messages).to be false
+      it 'is not able to read messages' do
+        expect(phone.read_messages).to be false
       end
     end
   end

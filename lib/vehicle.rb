@@ -9,8 +9,8 @@ class Vehicle
   end
 
   def drive_to(location)
-    puts 'A vehicle with licence numbers ' + @licence_number +
-         ' is driving to ' + location.to_s
+    # puts 'A vehicle with licence numbers ' + @licence_number +
+    #      ' is driving to ' + location.to_s
     @location = location
   end
 

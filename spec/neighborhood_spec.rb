@@ -3,8 +3,8 @@
 require 'spec_helper.rb'
 
 describe Neighborhood do
-  let(:city)          { City.new('Vilnius')                           }
-  let(:neighborhood)  { Neighborhood.new('Baltupiai', city, 'Normal') }
+  let(:city)          { City.new('Vilnius')                              }
+  let(:neighborhood)  { described_class.new('Baltupiai', city, 'Normal') }
 
   describe '#input_crimes' do
     it 'changes crime level to dangerous' do
