@@ -3,7 +3,7 @@
 # Drone class represents disposable drone with a camera and microphones
 # It contains
 class Drone
-  attr_accessor :active_neighborhood
+  attr_reader :active_neighborhood
 
   def travel_to(neighborhood)
     @active_neighborhood = neighborhood

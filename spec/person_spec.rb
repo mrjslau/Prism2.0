@@ -7,25 +7,34 @@ describe Person do
     @person = Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
   end
 
-  describe 'person with a phone' do
+  describe '#phones?' do
     context 'when person is created' do
       it 'should not have a phone' do
         expect(@person.phones?).to be false
       end
     end
+  end
+
+  describe '#add_phone' do
     context 'when a phone is added' do
       it 'should have a phone' do
         @person.add_phone(Location.new(0, 0))
         expect(@person.phones?).to be true
       end
-      context 'when phones are removed a person' do
-        it 'should not have a phone' do
-          @person.phones = Phone.new(self, Location.new(0, 0))
-          @person.remove_phones
-          expect(@person.phones?).to be false
-        end
+    end
+  end
+
+  describe '#remove_phones' do
+    context 'when phones are removed a person' do
+      it 'should not have a phone' do
+        @person.phones = Phone.new(self, Location.new(0, 0))
+        @person.remove_phones
+        expect(@person.phones?).to be false
       end
     end
+  end
+
+  describe '#near_any_phone?' do
     context 'when person is near phone' do
       it 'person has his phone' do
         @person.add_phone(Location.new(0, 0))
@@ -40,7 +49,7 @@ describe Person do
     end
   end
 
-  describe 'person with a pet' do
+  describe '#pets?' do
     context 'when person is created' do
       it 'should not have a pet' do
         expect(@person.pets?).to be false

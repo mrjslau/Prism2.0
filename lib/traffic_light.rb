@@ -25,7 +25,7 @@ class TrafficLight
       @blinking = true
     end
   end
-  
+
   def blinking?
     @blinking
   end

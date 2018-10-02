@@ -1,7 +1,6 @@
 # Vehicle class of any type vehicle (car, bus etc.)
 class Vehicle
-  attr_reader :licence_number
-  attr_accessor :owner, :driver, :location
+  attr_reader :licence_number, :owner, :driver, :location
 
   def initialize(licence_number, owner, location)
     @licence_number = licence_number
