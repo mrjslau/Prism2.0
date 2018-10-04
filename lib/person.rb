@@ -10,7 +10,6 @@ class Person
     @name = name
     @surname = surname
     @status = 'Normal'
-    @map = Map.instance
     @personal_code = personal_code
     @location = location
     @phones = []
@@ -19,7 +18,7 @@ class Person
 
   def change_status(status)
     @status = status
-    @map.notify_abnormal_person(self) if status == 'Suspicious'
+    Map.instance.notify_abnormal_person(self) if status == 'Suspicious'
   end
 
   def change_location(location)

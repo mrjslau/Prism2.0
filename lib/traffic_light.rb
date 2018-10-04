@@ -8,25 +8,28 @@ class TrafficLight
   def initialize(intersection, number)
     @intersection = intersection
     @number = number
-    @signal = 'yellow'
-    @blinking = true
+    @signal = [0, 'green', 'yellow', 'red']
+    @blinking = [false, true]
   end
 
   def change_signal(signal)
-    @signal = signal
+    index = @signal.index { |color| color.eql?(signal) }
+    @signal.fetch(index)
   end
 
   def turn_off
-    @signal = nil
-    @blinking = false
+    @signal.fetch(0)
   end
 
   def disable
-    @signal = 'yellow'
-    @blinking = true
+    change_signal('yellow')
   end
 
-  def blinking?
-    @blinking
+  def blinking?(signal)
+    if @signal.index { |color| color.equal?(signal) }.equal?(2)
+      blinking.fetch(1)
+    else
+      blinking.fetch(0)
+    end
   end
 end

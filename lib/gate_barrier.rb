@@ -5,8 +5,8 @@
 class GateBarrier
   attr_reader :location, :status
 
-  def initialize(location, status)
-    @location = Location.new(location[1], location[2])
+  def initialize(latitude, longitude, status)
+    @location = Location.new(latitude, longitude)
     @status = status
   end
 

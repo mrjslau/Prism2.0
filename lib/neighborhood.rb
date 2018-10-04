@@ -3,17 +3,16 @@
 # Neighborhood class is...
 # it contains...
 class Neighborhood
-  attr_reader :name, :city, :danger, :average_temperature,
-              :active_units, :active_people, :map
+  attr_reader :name, :city, :danger, :avg_temperature,
+              :cur_temperature, :active_units, :active_people
 
-  def initialize(name, city, danger, average_temperature = 19)
+  def initialize(name, city, danger, avg_temperature = 19)
     @name = name
     @city = city
     @danger = danger
-    @average_temperature = average_temperature
+    @avg_temperature = avg_temperature
     @active_units = []
     @active_people = []
-    @map = Map.instance
   end
 
   def input_crimes(crimes)
@@ -27,20 +26,21 @@ class Neighborhood
   end
 
   def unit_entered(unit)
-    @active_units.push(unit)
+    @active_units << unit
   end
 
   def person_entered(person)
-    @active_people.push(person)
+    @active_people << person
   end
 
   def change_temperature(celsius)
-    @average_temperature = celsius
-    bad = temp_abnormal?(celsius)
-    @map.notify_abnormal_temperature(self, celsius) if bad
+    cur_temperature = celsius
+    map = Map.instance
+    map.notify_temp_anomaly(self, cur_temperature, @avg_temperature) if
+        temp_abnormal?(cur_temperature)
   end
 
-  def temp_abnormal?(celsius)
-    celsius > 35 || celsius < -18
+  def temp_abnormal?(cur_temperature)
+    (cur_temperature - @avg_temperature).abs > 35
   end
 end

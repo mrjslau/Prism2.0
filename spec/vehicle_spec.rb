@@ -22,8 +22,13 @@ describe Vehicle do
 
   context 'when moving' do
     it 'should change location' do
-      @vehicle.drive_to(Location.new(54.005, 25.0005))
+      location = Location.new(54.005, 25.0005)
+      @vehicle.drive_to(location)
       expect(@vehicle.location.to_s).not_to eq '[54.7, 25.3]'
+      expect(@vehicle.location).to eq(location)
+      out = 'A vehicle with licence numbers ABC-123 is driving to [54.005, 25.0005]
+'
+      expect { @vehicle.drive_to(Location.new(54.005, 25.0005))}.to output(out).to_stdout
     end
   end
 

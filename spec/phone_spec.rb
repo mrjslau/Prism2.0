@@ -30,12 +30,22 @@ describe Phone do
         expect(@phone.detect_if_owner_is_near).to be false
       end
     end
+    context '' do
+      it 'should detect that owner is near his phone' do
+        @phone.owner.change_location(Location.new(54.7, 25.3000001))
+        expect(@phone.detect_if_owner_is_near).to be(true)
+      end
+    end
   end
 
   describe 'connection' do
     context 'when phone is turned on' do
       before(:each) do
         @phone.turn_on
+      end
+
+      it 'should be turned on' do
+        expect(@phone.turned_on).to be(true)
       end
 
       it 'should be able to connect to it' do
@@ -45,9 +55,11 @@ describe Phone do
 
     context 'when phone is turned off' do
       before(:each) do
-        @phone.turn_off
+        expect(@phone.turned_on).to be(false)
       end
+      it 'should ne turned of' do
 
+      end
       it 'should not be able to connect to it' do
         expect(@phone.connect).to be false
       end

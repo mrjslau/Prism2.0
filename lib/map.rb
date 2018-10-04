@@ -4,58 +4,63 @@
 #  with which the user will interact.
 # It contains
 class Map
-  attr_reader :notifications, :active_neighborhood
+  attr_reader :notifications, :active_neighborhood, :cities
 
   def initialize
     @notifications = []
     @active_neighborhood = nil
+    @cities = []
   end
 
-  @instance = Map.new
-  class << self
-    attr_reader :instance
+  def self.instance
+    @instance ||= new
   end
 
   def select_neighborhood(neighborhood)
-    @active_neighborhood = neighborhood
+    @active_neighborhood = neighborhood if
+        neighborhood.instance_of?(Neighborhood)
   end
 
   def send_police(police_unit, neighborhood)
-    police_unit.travel_to(neighborhood)
+    police_unit.travel_to(neighborhood) if
+        police_unit.instance_of?(Police) && neighborhood.instance_of?(Neighborhood)
   end
 
   def send_ambulance(ambulance_unit, neighborhood)
-    ambulance_unit.travel_to(neighborhood)
+    ambulance_unit.travel_to(neighborhood) if
+        ambulance_unit.instance_of?(Ambulance) && neighborhood.instance_of?(Neighborhood)
   end
 
   def send_brigade(fire_brigade, neighborhood)
-    fire_brigade.travel_to(neighborhood)
+    fire_brigade.travel_to(neighborhood) if
+        fire_brigade.instance_of?(Brigade) && neighborhood.instance_of?(Neighborhood)
   end
 
   def send_drone(drone, neighborhood)
-    drone.travel_to(neighborhood)
+    drone.travel_to(neighborhood) if
+        drone.instance_of?(Drone) && neighborhood.instance_of?(Neighborhood)
   end
 
   def neighborhood_temperature
-    @active_neighborhood.average_temperature
+    @active_neighborhood.cur_temperature || @active_neighborhood.avg_temperature if
+        @active_neighborhood.instance_of?(Neighborhood)
   end
 
   def active_units
-    @active_neighborhood.active_units
+    @active_neighborhood.active_units if
+        @active_neighborhood.instance_of?(Neighborhood)
   end
 
-  def notify_abnormal_temperature(neighborhood, celsius)
-    message = "Temperatures have reached: #{celsius} in #{neighborhood.name}!"
-    notification = Notification.new(message)
-    @notifications.push(notification)
-
-    drone = Drone.new
-    drone.travel_to(neighborhood)
+  def notify_temp_anomaly(neighborhood, cur_temperature, avg_temperature)
+    difference = (cur_temperature - avg_temperature).abs
+    message = "Temperatures have reached: #{cur_temperature} in " \
+              "#{neighborhood.name}! The difference from the average " \
+              "temperature is #{difference} degrees!"
+    @notifications << Notification.new(message)
+    send_drone(Drone.new(), neighborhood)
   end
 
   def notify_abnormal_person(person)
-    message = person.status_change_msg
-    notification = Notification.new(message)
-    @notifications.push(notification)
+    @notifications << Notification.new(person.status_change_msg)
   end
 end

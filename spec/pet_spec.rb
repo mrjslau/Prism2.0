@@ -11,4 +11,12 @@ describe Pet do
       expect(pet.detect_if_owner_is_near).to be(true)
     end
   end
+  describe '#detect_if_owner_is_near' do
+    context 'when per ran away' do
+      it 'should detect if owner is away' do
+        pet = Pet.new(owner, Location.new(1, 1))
+        expect(pet.detect_if_owner_is_near).to be(false)
+      end
+    end
+  end
 end

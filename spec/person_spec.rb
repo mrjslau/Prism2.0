@@ -6,7 +6,13 @@ describe Person do
   before(:each) do
     @person = Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
   end
-
+  context 'after initialization' do
+    it 's personal information should be' do
+      expect(@person.name).to eq('Jane')
+      expect(@person.surname).to eq('Doe')
+      expect(@person.personal_code).to eq('39700000001')
+    end
+  end
   describe '#phones?' do
     context 'when person is created' do
       it 'should not have a phone' do
@@ -63,10 +69,39 @@ describe Person do
       context 'when pets are removed a person' do
         it 'should not have a pet' do
           @person.add_pet(Location.new(0, 0))
+          expect(@person.pets.last.detect_if_owner_is_near).to be(true)
           @person.remove_pets
           expect(@person.pets?).to be false
         end
       end
+    end
+  end
+  describe '#change_status' do
+    context 'change person status to Suspicious' do
+      it 'should create a notification' do
+        notification_count = Map.instance.notifications.length
+        expect(@person.status).to eq('Normal')
+        @person.change_status('Suspicious')
+        expect(@person.status).to eq('Suspicious')
+        expect(Map.instance.notifications.length).to be(notification_count + 1)
+        expect(@person.status_change_msg).to eq("Jane Doe's status has changed to: Suspicious!")
+      end
+    end
+    context 'change status back to Normal' do
+      it 'should make new notifications' do
+        notification_count = Map.instance.notifications.length
+        expect(@person.status).to eq('Normal')
+        @person.change_status('Non-active')
+        expect(@person.status).to eq('Non-active')
+        expect(Map.instance.notifications.length).to be(notification_count)
+      end
+    end
+  end
+  describe '#change_location' do
+    it 'location expected' do
+      @person.change_location(Location.new(5,6))
+      expect(@person.location.latitude).to eq(5)
+      expect(@person.location.longitude).to eq(6)
     end
   end
 end
