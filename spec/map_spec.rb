@@ -30,7 +30,7 @@ describe Map do
       it 'sends a drone' do
         map.select_neighborhood(neighborhood)
         neighborhood.change_temperature 67
-        expect(map.active_neighborhood.active_units.length).to be(1)
+        expect(map.active_neighborhood.active_objects[:units].length).to be(1)
       end
     end
 
