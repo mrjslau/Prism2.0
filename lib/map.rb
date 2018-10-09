@@ -21,7 +21,8 @@ class Map
   end
 
   def notify_abnormal_temperature(neighborhood, celsius)
-    message = "Temperatures have reached: #{celsius} in #{neighborhood.name}!"
+    message = "Temperatures have reached: #{celsius}\s
+               in #{neighborhood.info[:name]}!"
     notification = Notification.new(message)
     @notifications.push(notification)
 

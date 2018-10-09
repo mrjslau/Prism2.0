@@ -9,7 +9,7 @@ describe Phone do
   let(:phone)     { described_class.new(person, location2)              }
 
   it 'has an owner' do
-    expect(phone.owner.name).to eq 'John'
+    expect(phone.owner.personal_information[:name]).to eq 'John'
   end
   it 'has a latitude' do
     expect(phone.location.latitude).to eq 54.7
