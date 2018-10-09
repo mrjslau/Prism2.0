@@ -22,14 +22,14 @@ class Phone
   end
 
   def listen_call
-    @connected
+    connected
   end
 
   def read_messages
-    @connected
+    connected
   end
 
   def detect_if_owner_is_near
-    @location.calculate_distance(@owner.location) <= 50
+    @location.calculate_distance(@owner.details[:location]) <= 50
   end
 end

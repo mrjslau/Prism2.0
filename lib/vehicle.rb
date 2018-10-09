@@ -15,6 +15,6 @@ class Vehicle
   end
 
   def check_if_owner_is_driving
-    @location.to_s == @owner.location.to_s
+    @location.to_s == @owner.details[:location].to_s
   end
 end

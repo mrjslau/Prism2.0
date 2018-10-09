@@ -3,58 +3,54 @@
 # Person class represents a trackable person in a city
 # It contains
 class Person
-  attr_reader :name, :surname, :status, :location, :personal_code, :phones,
-              :pets
-
+  attr_reader :personal_information, :details, :belongings
   def initialize(name, surname, personal_code, location)
-    @name = name
-    @surname = surname
-    @status = 'Normal'
+    @personal_information = { name: name, surname: surname,
+                              personal_code: personal_code }
+    @details = { status: 'Normal', location: location }
+    @belongings = { phones: [], pets: [] }
     @map = Map.instance
-    @personal_code = personal_code
-    @location = location
-    @phones = []
-    @pets = []
   end
 
   def change_status(status)
-    @status = status
+    @details[:status] = status
     @map.notify_abnormal_person(self) if status == 'Suspicious'
   end
 
   def change_location(location)
-    @location = location
+    @details[:location] = location
   end
 
   def add_phone(phone_location)
-    @phones << Phone.new(self, phone_location)
+    @belongings[:phones] << Phone.new(self, phone_location)
   end
 
   def remove_phones
-    @phones = []
+    @belongings[:phones] = []
   end
 
   def phones?
-    !@phones.empty?
+    !@belongings[:phones].empty?
   end
 
   def near_any_phone?
-    @phones.any?(&:detect_if_owner_is_near)
+    @belongings[:phones].any?(&:detect_if_owner_is_near)
   end
 
   def add_pet(pet_location)
-    @pets << Pet.new(self, pet_location)
+    @belongings[:pets] << Pet.new(self, pet_location)
   end
 
   def remove_pets
-    @pets = []
+    @belongings[:pets] = []
   end
 
   def pets?
-    !@pets.empty?
+    !@belongings[:pets].empty?
   end
 
   def status_change_msg
-    "#{@name} #{@surname}'s status has changed to: #{@status}!"
+    "#{@personal_information[:name]} #{@personal_information[:surname]}'s\s
+     status has changed to: #{@details[:status]}!"
   end
 end
