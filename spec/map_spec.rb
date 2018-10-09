@@ -8,7 +8,7 @@ describe Map do
     @brigade = Brigade.new
     @drone = Drone.new
     @neighbourhood = Neighborhood.new('Baltupiai', 'Vilnius', 2)
-    @person = Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
+    @person = Person.new('Jane', 'Doe', 'female', '1990-06-03', Location.new(0, 0))
     @police = Police.new
     @map = Map.instance
     @city = City.new('Vilnius')
@@ -43,13 +43,6 @@ describe Map do
       @map.send_drone(@drone, @neighbourhood)
       expect(@drone.active_neighborhood).to eql(@neighbourhood)
       expect(@neighbourhood.active_units.length).to eql 1
-    end
-
-    it "observes a neighbourhood's temperature" do
-      @map.select_neighborhood(@neighbourhood)
-      map_see_temp = @map.neighborhood_temperature
-      real_temp = @neighbourhood.cur_temperature || @neighbourhood.avg_temperature
-      expect(map_see_temp).to eql(real_temp)
     end
 
     it "observes a neighbourhood's active emergency response units" do

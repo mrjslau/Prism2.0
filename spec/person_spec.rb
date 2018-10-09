@@ -4,13 +4,13 @@ require 'spec_helper.rb'
 
 describe Person do
   before(:each) do
-    @person = Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0))
+    @person = Person.new('Jane', 'Doe', 'female', '1992-10-12', Location.new(0, 0))
   end
   context 'after initialization' do
     it 's personal information should be' do
-      expect(@person.name).to eq('Jane')
-      expect(@person.surname).to eq('Doe')
-      expect(@person.personal_code).to eq('39700000001')
+      expect(@person.identity.name).to eq('Jane')
+      expect(@person.identity.surname).to eq('Doe')
+     # expect(@person.personal_code).to eq('4...')
     end
   end
   describe '#phones?' do

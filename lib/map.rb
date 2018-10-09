@@ -4,12 +4,13 @@
 #  with which the user will interact.
 # It contains
 class Map
-  attr_reader :notifications, :active_neighborhood, :cities
+  attr_reader :notifications, :active_neighborhood, :cities, :residents
 
   def initialize
     @notifications = []
     @active_neighborhood = nil
     @cities = []
+    @residents = []
   end
 
   def self.instance
@@ -41,11 +42,6 @@ class Map
         drone.instance_of?(Drone) && neighborhood.instance_of?(Neighborhood)
   end
 
-  def neighborhood_temperature
-    @active_neighborhood.cur_temperature || @active_neighborhood.avg_temperature if
-        @active_neighborhood.instance_of?(Neighborhood)
-  end
-
   def active_units
     @active_neighborhood.active_units if
         @active_neighborhood.instance_of?(Neighborhood)
@@ -57,7 +53,7 @@ class Map
               "#{neighborhood.name}! The difference from the average " \
               "temperature is #{difference} degrees!"
     @notifications << Notification.new(message)
-    send_drone(Drone.new(), neighborhood)
+    send_drone(Drone.new, neighborhood)
   end
 
   def notify_abnormal_person(person)

@@ -3,17 +3,15 @@
 # Person class represents a trackable person in a city
 # It contains
 class Person
-  attr_reader :name, :surname, :status, :location, :personal_code, :phones,
-              :pets
+  attr_reader :identity, :status, :location, :phones, :pets
 
-  def initialize(name, surname, personal_code, location)
-    @name = name
-    @surname = surname
+  def initialize(name, surname, sex, date_of_birth, location)
+    @identity = Identity.new(name, surname, sex, date_of_birth)
     @status = 'Normal'
-    @personal_code = personal_code
     @location = location
     @phones = []
     @pets = []
+    Map.instance.residents << self
   end
 
   def change_status(status)
@@ -54,6 +52,6 @@ class Person
   end
 
   def status_change_msg
-    "#{@name} #{@surname}'s status has changed to: #{@status}!"
+    "#{@identity.name} #{@identity.surname}'s status has changed to: #{@status}!"
   end
 end

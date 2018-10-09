@@ -4,7 +4,7 @@ require 'spec_helper.rb'
 
 describe Vehicle do
   before(:each) do
-    @vehicle = Vehicle.new('ABC-123', Person.new('John', 'Doe', '39000',
+    @vehicle = Vehicle.new('ABC-123', Person.new('John', 'Doe', 'Male', '1984-07-08',
                                                  Location.new(54.7, 25.3)),
                            Location.new(54.7, 25.3))
   end

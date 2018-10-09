@@ -4,12 +4,12 @@ require 'spec_helper.rb'
 
 describe Phone do
   before(:each) do
-    @phone = Phone.new(Person.new('John', 'Doe', '39700000001',
+    @phone = Phone.new(Person.new('John', 'Doe', 'Male','1975-09-15',
                                   Location.new(54.7, 25.3)),
                        Location.new(54.7, 25.3))
   end
   it 'has an owner' do
-    expect(@phone.owner.name).to eq 'John'
+    expect(@phone.owner.identity.name).to eq 'John'
   end
   it 'has a latitude' do
     expect(@phone.location.latitude).to eq 54.7
