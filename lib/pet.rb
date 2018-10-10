@@ -15,8 +15,6 @@ class Pet
   end
 
   def detect_if_owner_is_near
-    puts "#{location.calculate_distance(@owner.details[:location])} \n \n"
-    puts "#{location.calculate_distance(@owner.details[:location]) <= 50} \n"
-    location.calculate_distance(@owner.details[:location]) <= 50
+    location.calculate_distance(owner.details.fetch(:location)) <= 50
   end
 end

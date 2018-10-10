@@ -8,12 +8,12 @@ describe Pet do
 
   describe '#change_location' do
     it 'changes pet`s latitude' do
-      pet.change_location(0, 50)
-      expect(pet.location.latitude).to be(0)
+      pet.change_location(0.05, 0)
+      expect(pet.location.latitude).to be(0.05)
     end
     it 'changes pet`s longitude' do
-      pet.change_location(0, 50)
-      expect(pet.location.longitude).to be(50)
+      pet.change_location(0, 0.05)
+      expect(pet.location.longitude).to be(0.05)
     end
   end
 
@@ -22,21 +22,21 @@ describe Pet do
       expect(pet.detect_if_owner_is_near).to be(true)
     end
 
-    context 'when owner is 49 meters away' do
-      it 'detects that that owner is not near' do
-        pet.change_location(49, 0)
+    context 'when owner is 50 meters away' do
+      it 'detects that that owner is near' do
+        pet.change_location(0.0004, 0.0002)
         expect(pet.detect_if_owner_is_near).to be(true)
       end
     end
-    context 'when owner is way further than 50 meters' do
+    context 'when owner is further than 50 meters' do
       it 'detects that that owner is not near' do
-        pet.change_location(10, 100)
+        pet.change_location(0.0005, 0)
         expect(pet.detect_if_owner_is_near).to be(false)
       end
     end
-    context 'when owner is 51 meters far' do
+    context 'when owner is exactly 51 meters far' do
       it 'detects that that owner is not near' do
-        pet.change_location(0, 51)
+        pet.change_location(0.00045, 0)
         expect(pet.detect_if_owner_is_near).to be(false)
       end
     end
