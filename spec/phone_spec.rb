@@ -8,16 +8,6 @@ describe Phone do
   let(:person)    { Person.new('John', 'Doe', '39700000001', location1) }
   let(:phone)     { described_class.new(person, location2)              }
 
-  it 'has an owner' do
-    expect(phone.owner.personal_information[:name]).to eq 'John'
-  end
-  it 'has a latitude' do
-    expect(phone.location.latitude).to eq 0
-  end
-  it 'has a longitude' do
-    expect(phone.location.longitude).to eq 0
-  end
-
   describe '#change_location' do
     it 'changes phone`s latitude' do
       phone.change_location(0.05, 0)
@@ -61,7 +51,8 @@ describe Phone do
       end
 
       it 'is able to connect to it' do
-        expect(phone.connect).to be true
+        phone.connect
+        expect(phone.connected).to be true
       end
     end
 
@@ -115,7 +106,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to listen to a call' do
-        expect(phone.listen_call).to be false
+        expect(phone.listen_call).to be nil
       end
     end
   end
@@ -134,7 +125,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to read messages' do
-        expect(phone.read_messages).to be false
+        expect(phone.read_messages).to be nil
       end
     end
   end

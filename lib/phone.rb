@@ -5,8 +5,6 @@ class Phone
   def initialize(owner, location)
     @owner = owner
     @location = location
-    @turned_on = false
-    @connected = false
   end
 
   def turn_on
