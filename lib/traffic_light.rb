@@ -17,7 +17,12 @@ class TrafficLight
   end
 
   def turn_off
-    @signal = nil
+    @signal = 'none'
+    @blinking = false
+  end
+
+  def turn_on
+    @signal = 'red'
     @blinking = false
   end
 
@@ -27,6 +32,14 @@ class TrafficLight
   end
 
   def blinking?
-    @blinking
+    blinking
+  end
+
+  def disabled?
+    signal.eql?('yellow') && blinking?
+  end
+
+  def off?
+    signal.eql?('none')
   end
 end
