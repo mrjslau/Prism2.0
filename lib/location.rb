@@ -12,6 +12,14 @@ class Location
     @longitude = longitude
   end
 
+  def change_latitude(latitude)
+    @latitude = latitude
+  end
+
+  def change_longitude(longitude)
+    @longitude = longitude
+  end
+
   def to_s
     '[' + @latitude.to_s + ', ' + @longitude.to_s + ']'
   end
