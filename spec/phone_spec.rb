@@ -3,31 +3,43 @@
 require 'spec_helper.rb'
 
 describe Phone do
-  let(:location1) { Location.new(54.7, 25.3)                            }
-  let(:location2) { Location.new(54.7, 25.3)                            }
+  let(:location1) { Location.new(0, 0)                                  }
+  let(:location2) { Location.new(0, 0)                                  }
   let(:person)    { Person.new('John', 'Doe', '39700000001', location1) }
   let(:phone)     { described_class.new(person, location2)              }
 
-  it 'has an owner' do
-    expect(phone.owner.personal_information[:name]).to eq 'John'
-  end
-  it 'has a latitude' do
-    expect(phone.location.latitude).to eq 54.7
-  end
-  it 'has a longitude' do
-    expect(phone.location.longitude).to eq 25.3
+  describe '#change_location' do
+    it 'changes phone`s latitude' do
+      phone.change_location(0.05, 0)
+      expect(phone.location.latitude).to be(0.05)
+    end
+    it 'changes phone`s longitude' do
+      phone.change_location(0, 0.05)
+      expect(phone.location.longitude).to be(0.05)
+    end
   end
 
   describe '#detect_if_owner_is_near' do
-    context 'when phone is near owner' do
-      it 'detects that owner has his phone' do
-        expect(phone.detect_if_owner_is_near).to be true
+    it 'detects if owner is near' do
+      expect(phone.detect_if_owner_is_near).to be(true)
+    end
+
+    context 'when owner is 50 meters away' do
+      it 'detects that that owner is near' do
+        phone.change_location(0.0004, 0.0002)
+        expect(phone.detect_if_owner_is_near).to be(true)
       end
     end
-    context 'when phone is 50 meters away from owner' do
-      it 'detects that owner does not have his phone' do
-        phone.owner.change_location(Location.new(54.8, 25.6))
-        expect(phone.detect_if_owner_is_near).to be false
+    context 'when owner is further than 50 meters' do
+      it 'detects that that owner is not near' do
+        phone.change_location(0.0005, 0)
+        expect(phone.detect_if_owner_is_near).to be(false)
+      end
+    end
+    context 'when owner is exactly 51 meters far' do
+      it 'detects that that owner is not near' do
+        phone.change_location(0.00045, 0)
+        expect(phone.detect_if_owner_is_near).to be(false)
       end
     end
   end
@@ -39,7 +51,8 @@ describe Phone do
       end
 
       it 'is able to connect to it' do
-        expect(phone.connect).to be true
+        phone.connect
+        expect(phone.connected).to be true
       end
     end
 
@@ -93,7 +106,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to listen to a call' do
-        expect(phone.listen_call).to be false
+        expect(phone.listen_call).to be nil
       end
     end
   end
@@ -112,7 +125,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to read messages' do
-        expect(phone.read_messages).to be false
+        expect(phone.read_messages).to be nil
       end
     end
   end

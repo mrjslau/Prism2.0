@@ -9,7 +9,6 @@ end
 require 'ambulance'
 require 'brigade'
 require 'city'
-require 'digital_billboard'
 require 'drone'
 require 'gate_barrier'
 require 'intersection'
