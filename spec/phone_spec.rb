@@ -5,8 +5,26 @@ require 'spec_helper.rb'
 describe Phone do
   let(:location1) { Location.new(0, 0)                                  }
   let(:location2) { Location.new(0, 0)                                  }
-  let(:person)    { Person.new('John', 'Doe', '39700000001', location1) }
-  let(:phone)     { described_class.new(person, location2)              }
+  let(:person) do
+    Person.new('John', 'Doe', 'female', '1980-12-02',
+               location1)
+  end
+  let(:phone) { described_class.new(person, location2) }
+
+  context 'when initialized' do
+    it 'has an owner' do
+      expect(phone.owner.identity.full_name[:name]).to eq 'John'
+    end
+    it 'has a latitude' do
+      expect(phone.location.latitude).to eq 0
+    end
+    it 'has a longitude' do
+      expect(phone.location.longitude).to eq 0
+    end
+    it '' do
+      expect(phone.turned_on).to be false
+    end
+  end
 
   describe '#change_location' do
     it 'changes phone`s latitude' do
@@ -106,7 +124,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to listen to a call' do
-        expect(phone.listen_call).to be nil
+        expect(phone.listen_call).to be false
       end
     end
   end
@@ -125,7 +143,7 @@ describe Phone do
 
     context 'when not connected' do
       it 'is not able to read messages' do
-        expect(phone.read_messages).to be nil
+        expect(phone.read_messages).to be false
       end
     end
   end

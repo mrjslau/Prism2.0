@@ -3,10 +3,12 @@
 require 'spec_helper.rb'
 
 describe Vehicle do
-  let(:location1) { Location.new(54.7, 25.3)                          }
-  let(:location2) { Location.new(54.7, 25.3)                          }
-  let(:person)    { Person.new('John', 'Doe', '39000', location1)     }
-  let(:vehicle)   { described_class.new('ABC-123', person, location2) }
+  let(:location1) { Location.new(55, 25.3) }
+  let(:location2) { Location.new(54.7, 25.3) }
+  let(:person)    do
+    Person.new('John', 'Doe', 'Male', '1984-07-08', Location.new(54.7, 25.3))
+  end
+  let(:vehicle) { described_class.new('ABC-123', person, location2) }
 
   it 'has a licence number' do
     expect(vehicle.licence_number).to eq 'ABC-123'
@@ -23,8 +25,12 @@ describe Vehicle do
   describe '#drive_to' do
     context 'when moving' do
       it 'changes location' do
-        vehicle.drive_to(Location.new(54.005, 25.0005))
+        vehicle.drive_to(location1)
         expect(vehicle.location.to_s).not_to eq '[54.7, 25.3]'
+      end
+      it '' do
+        vehicle.drive_to(location1)
+        expect(vehicle.location).to eq(location1)
       end
     end
   end

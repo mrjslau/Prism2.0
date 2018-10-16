@@ -3,45 +3,122 @@
 require 'spec_helper.rb'
 
 describe Map do
-  let(:ambulance)    { Ambulance.new                                      }
-  let(:brigade)      { Brigade.new                                        }
-  let(:drone)        { Drone.new                                          }
-  let(:neighborhood) { Neighborhood.new('Baltupiai', 'Vilnius', 2)        }
-  let(:location)     { Location.new(0, 0)                                 }
-  let(:person)       { Person.new('Jane', 'Doe', '39700000001', location) }
-  let(:police)       { Police.new                                         }
-  let(:map)          { described_class.instance                           }
+  described_class.instance.residents.clear
+  described_class.instance.notifications.clear
 
-  describe 'user' do
-    it 'selects an active neighborhood' do
+  let(:map) { described_class.instance }
+  let(:location) { Location.new(5, 4) }
+  let(:person) do
+    Person.new('Jane', 'Doe', 'female', '1990-06-03', location)
+  end
+  let(:city) { City.new('Vilnius') }
+  let(:neighborhood) { Neighborhood.new('Baltupiai', city, 2) }
+
+  context 'when class is initialised' do
+    let(:instance) { Class.new(described_class).instance }
+
+    it 'is expected that its notification array will be empty' do
+      expect(instance.notifications).to eql([])
+    end
+    it 'is expected that its active_neighbourhoods array will be empty' do
+      expect(instance.active_neighborhoods).to eq([])
+    end
+    it 'is expected that its cities array will be empty' do
+      expect(instance.cities).to eq([])
+    end
+    it 'is expected that its residents array will be empty' do
+      expect(instance.residents).to eq([])
+    end
+  end
+
+  describe 'Map user can' do
+    it 'select an active neighbourhood' do
       map.select_neighborhood(neighborhood)
-      expect(map.active_neighborhood).to eql(neighborhood)
+      expect(map.active_neighborhoods.last).to eql(neighborhood)
+    end
+    it 'can not select neighbourhood of different than Neighbourhood class' do
+      active_length = map.active_neighborhoods.length
+      map.select_neighborhood('hello')
+      expect(map.active_neighborhoods.length).to be(active_length)
+    end
+
+    it "observes a neighbourhood's active emergency response units" do
+      map.select_neighborhood(neighborhood)
+      neighborhood.send_police
+      neighborhood.send_ambulance
+      expect(neighborhood.active_objects.fetch(:units))
+        .to eql([neighborhood.city.police, neighborhood.city.ambulance])
     end
   end
 
   describe 'system' do
     context 'when the active neighborhood`s temperature is abnormal' do
-      it 'notifies' do
+      it "notifies when the active neighborhood's temperature is abnormal" do
         notifications_count = map.notifications.length
         map.select_neighborhood(neighborhood)
         neighborhood.change_temperature 67
         expect(map.notifications.length).to eql(notifications_count + 1)
       end
-      it 'sends a drone' do
-        map.select_neighborhood(neighborhood)
+      it 'does send a drone when temperature is not normal' do
         neighborhood.change_temperature 67
-        expect(map.active_neighborhood.active_objects[:units].length).to be(1)
+        expect(neighborhood.active_objects.fetch(:units).length).to be 1
       end
     end
+  end
+  context 'when method notify abnormal person is calls' do
+    it 'adds message of type Notification to the notification array' do
+      map.notify_abnormal_person(person)
+      expect(map.notifications.last).to be_a(Notification)
+    end
+    it 'sends particular personal message' do
+      map.notify_abnormal_person(person)
+      expect(map.notifications.last.message)
+        .to eq("Jane Doe's criminal status changed to: normal!")
+    end
+  end
 
-    context 'when a person`s status was changed to suspicious' do
-      it 'notifies' do
-        notifications_count = map.notifications.length
-        neighborhood.person_entered(person)
-        map.select_neighborhood(neighborhood)
-        person.change_status('Suspicious')
-        expect(map.notifications.length).to eql(notifications_count + 1)
-      end
+  context 'when method notify_abnormal_temperature is called' do
+    it 'pushes new message to notification array and sends the drone' do
+      map.notify_abnormal_temperature(neighborhood, 30)
+      expect(map.notifications.last.message)
+        .to eql('Temperature have reached: 30 in Baltupiai!')
+    end
+    it 'does not send notification when temperature is normal' do
+      notificaton_count = map.notifications.length
+      map.notify_abnormal_temperature(neighborhood, 10)
+      expect(map.notifications.length).to be(notificaton_count)
+    end
+  end
+
+  context 'when new person is created map generates unique personal code' do
+    let(:person1) do
+      Person.new('Janet', 'White', 'female', '1990-11-13',
+                 Location.new(0, 0))
+    end
+
+    it 'does take in to consideration persons sex and birth date' do
+      person1 = Person.new('Janet', 'White', 'female', '1990-11-14', location)
+      expect(person1.identity.personal_code).to eql('49011140000')
+    end
+    it 'adds 1 when same sex person born in the same day already exists' do
+      person1 = Person.new('Janet', 'White', 'female', '1990-11-13', location)
+      expect(map.old_combo(map.residents.index(person1)))
+        .to be(person1.identity.personal_code.to_i + 1)
+    end
+    it 's generated code for males starts with 3' do
+      expect(map.personal_code_gen('male', '1990-06-03')).to eq('39006030000')
+    end
+    it 's generated code for females starts with 4' do
+      expect(map.personal_code_gen('female', '1990-11-13'))
+        .to eq('49011130001')
+    end
+    it 'does not take symbols - / . from date' do
+      expect(map.personal_code_gen('male', '1990-06-03-'))
+        .to eq('39006030000')
+    end
+    it 'does takes only 6 last digits from the date' do
+      expect(map.personal_code_gen('male', '1990-06-033'))
+        .not_to eq('390060330000')
     end
   end
 end

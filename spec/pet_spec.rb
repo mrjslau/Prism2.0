@@ -3,8 +3,10 @@
 require 'spec_helper.rb'
 
 describe Pet do
-  let(:owner) { Person.new('Jane', 'Doe', '39700000001', Location.new(0, 0)) }
-  let(:pet)   { described_class.new(owner, Location.new(0, 0))               }
+  let(:owner) do
+    Person.new('Jane', 'Doe', 'female', '1980-12-02', Location.new(0, 0))
+  end
+  let(:pet) { described_class.new(owner, Location.new(0, 0)) }
 
   describe '#change_location' do
     it 'changes pet`s latitude' do

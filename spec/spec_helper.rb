@@ -8,9 +8,11 @@ end
 
 require 'ambulance'
 require 'brigade'
+require 'buildings'
 require 'city'
 require 'drone'
 require 'gate_barrier'
+require 'identity'
 require 'intersection'
 require 'location'
 require 'map'
