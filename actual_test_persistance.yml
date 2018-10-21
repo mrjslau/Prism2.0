@@ -1,0 +1,77 @@
+---
+:data: !ruby/object:Map
+  notifications:
+  - !ruby/object:Notification
+    message: Building is already full.
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Siva''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'Jane Doe''s criminal status changed to: normal!'
+  - !ruby/object:Notification
+    message: 'Jane Doe''s criminal status changed to: normal!'
+  - !ruby/object:Notification
+    message: 'Temperature have reached: 40 in Zaliakalnis!'
+  - !ruby/object:Notification
+    message: 'Temperature have reached: 50 in Sanciai!'
+  - !ruby/object:Notification
+    message: 'Temperature have reached: 46 in Zaliakalnis!'
+  - !ruby/object:Notification
+    message: 'Temperature have reached: 67 in Zaliakalnis!'
+  - !ruby/object:Notification
+    message: 'John Weil''s criminal status changed to: dangerous!'
+  - !ruby/object:Notification
+    message: 'John Weil''s criminal status changed to: dangerous!'
+  active_neighborhoods:
+  - !ruby/object:Neighborhood
+    name: Baltupiai
+    avg_temperature: 2
+    active_objects:
+      :people: []
+      :units: []
+  - &1 !ruby/object:Neighborhood
+    name: Baltupiai
+    avg_temperature: 2
+    active_objects:
+      :people: []
+      :units:
+      - !ruby/object:Police
+        registered_crimes: {}
+        registered_criminals: {}
+        active_neighborhoods:
+        - *1
+      - !ruby/object:Ambulance
+        active_neighborhood: *1
+  cities:
+  - !ruby/object:City
+    name: Kaunas
+    neighborhoods:
+    - &2 !ruby/object:Neighborhood
+      name: Zaliakalnis
+      avg_temperature: 19
+      active_objects:
+        :people: []
+        :units:
+        - &3 !ruby/object:Drone
+          active_neighborhood: *2
+    buildings: []
+    emergency_services:
+      :drone: *3
+      :ambulance: !ruby/object:Ambulance
+        active_neighborhood: 
+      :police: !ruby/object:Police
+        registered_crimes: {}
+        registered_criminals: {}
+        active_neighborhoods: []
+      :brigade: !ruby/object:Brigade
+        active_neighborhood: 
+  residents: []
