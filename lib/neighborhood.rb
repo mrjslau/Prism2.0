@@ -25,13 +25,21 @@ class Neighborhood
   end
 
   def change_temperature(cur_temperature)
-    Map.instance.notify_abnormal_temperature(self, cur_temperature)
+    notify_abnormal_temperature(cur_temperature)
   end
 
   def temp_abnormal?(cur_temperature)
     avg = avg_temperature
     ave = avg
     (cur_temperature - ave).abs > 20
+  end
+
+  def notify_abnormal_temperature(cur_temperature)
+    !temp_abnormal?(cur_temperature) ||
+      (message = "Temperature have reached: #{cur_temperature} in " \
+              "#{name}!"
+       Map.instance.notifications << Notification.new(message)
+       send_drone)
   end
 
   def send_police
@@ -60,27 +68,5 @@ class Neighborhood
 
   def idx_in_city
     city.neighborhoods.index { |found| found.equal?(self) }
-  end
-
-  def gen_building_id(type, floors)
-    # generates 9 digit id number, where 1st number defines type
-    # 2nd and 3rd numbers define number of floors in the building
-    # 4th and 5th numbers define neighborhood index in the city
-    id = (
-    ((type.eql?('residential') ? 3 : 2
-     ) * 100 + city_idx
-    ) * 100 + idx_in_city) * 100 + floors
-    idx_last = fetch_last_id_idx(id) || true
-    (idx_last.instance_of?(TrueClass) ? (id * 1000) : old_combo(idx_last)).to_s
-  end
-
-  def fetch_last_id_idx(id)
-    city.buildings.rindex do |building|
-      building.id.start_with?(id.to_s)
-    end
-  end
-
-  def old_combo(idx)
-    Integer(city.buildings.fetch(idx).id) + 1
   end
 end

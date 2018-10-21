@@ -24,15 +24,6 @@ class Map
       active_neighborhoods << neighborhood
   end
 
-  def notify_abnormal_temperature(neighborhood, cur_temperature)
-    if neighborhood.temp_abnormal?(cur_temperature)
-      message = "Temperature have reached: #{cur_temperature} in " \
-              "#{neighborhood.name}!"
-      notifications << Notification.new(message)
-      neighborhood.send_drone
-    end
-  end
-
   def notify_abnormal_person(person)
     notifications << Notification.new(person.identity.status_change_msg)
   end

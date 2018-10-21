@@ -7,24 +7,24 @@ describe Buildings do
   let(:city) { City.new('Vilnius') }
   let(:city2) { City.new('Alytus') }
   let(:location) { Location.new(5, 6) }
-  let(:neighbourhood) { Neighborhood.new('Baltupiai', city) }
-  let(:neighbourhood2) { Neighborhood.new('Seskine', city) }
-  let(:neighbourhood3) { Neighborhood.new('Dainava', city2) }
+  let(:neighborhood) { Neighborhood.new('Baltupiai', city) }
+  let(:neighborhood2) { Neighborhood.new('Seskine', city) }
+  let(:neighborhood3) { Neighborhood.new('Dainava', city2) }
   let(:building) do
     described_class.new(Location.new(5, 5.001), 'residential',
-                        2, 2, neighbourhood)
+                        2, 2, neighborhood)
   end
   let(:building2) do
     described_class.new(Location.new(5, 5.008), 'residential',
-                        2, 2, neighbourhood)
+                        2, 2, neighborhood)
   end
   let(:building3) do
     described_class.new(Location.new(5, 5), 'residential',
-                        2, 2, neighbourhood2)
+                        2, 2, neighborhood2)
   end
   let(:building4) do
     described_class.new(Location.new(5, 6), 'residential',
-                        2, 2, neighbourhood3)
+                        2, 2, neighborhood3)
   end
   let(:person) do
     Person.new('George', 'Smith', 'male', '1972-04-28',
@@ -53,7 +53,7 @@ describe Buildings do
       expect(building.residents).to be_empty
     end
     it 'is added to cities buildings array' do
-      expect(neighbourhood.city.buildings).to include(building)
+      expect(neighborhood.city.buildings).to include(building)
     end
   end
 
@@ -69,13 +69,14 @@ describe Buildings do
   end
   context 'when residents are added to a full building' do
     let(:small_building) do
-      described_class.new(location, 'residential', 2, 1, neighbourhood3)
+      described_class.new(location, 'residential', 2, 1, neighborhood3)
     end
 
     it 'is expected to get particular message' do
       small_building.add_resident(person)
-      expect(STDOUT).to receive(:puts).with('Building is already full.')
       small_building.add_resident(person2)
+      expect(Map.instance.notifications.last.message)
+        .to eq('Building is already full.')
     end
   end
 
@@ -119,17 +120,17 @@ describe Buildings do
       i += 'a'
       Neighborhood.new(i, cty)
     end
-    neighbourhood10 = Neighborhood.new('Visoriai', cty)
+    neighborhood10 = Neighborhood.new('Visoriai', cty)
     building5 = described_class.new(Location.new(5, 5), 'residential', 2, 2,
-                                    neighbourhood10)
-    it 'returns neighbourhood idx in city' do
-      expect(building5.idx_in_neighbourhood).to be(25)
+                                    neighborhood10)
+    it 'returns neighborhood idx in city' do
+      expect(building5.idx_in_neighborhood).to be(25)
     end
   end
 
-  describe '#in_neighbourhood' do
-    it 'returns buildings neighbourhood based on its id' do
-      expect(building.in_neighbourhood).to be(neighbourhood)
+  describe '#in_neighborhood' do
+    it 'returns buildings neighborhood based on its id' do
+      expect(building.in_neighborhood).to be(neighborhood)
     end
   end
 end

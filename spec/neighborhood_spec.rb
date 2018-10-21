@@ -62,6 +62,22 @@ describe Neighborhood do
     end
   end
 
+  context 'when method notify_abnormal_temperature is called' do
+    it 'pushes new message to notification array and sends the drone' do
+      neighborhood1.notify_abnormal_temperature(46)
+      expect(map.notifications.last.message)
+        .to eql('Temperature have reached: 46 in Zaliakalnis!')
+    end
+    it 'does not send notification when temperature is normal' do
+      notificaton_count = map.notifications.length
+      neighborhood1.notify_abnormal_temperature(10)
+      expect(map.notifications.length).to be(notificaton_count)
+    end
+    it 'does send a drone when temperature is not normal' do
+      neighborhood1.change_temperature 67
+      expect(neighborhood1.active_objects.fetch(:units).length).to be 1
+    end
+  end
   describe '#dangerous?' do
     it 'does not change crime level to dangerous yet' do
       3.times do
@@ -127,34 +143,6 @@ describe Neighborhood do
     end
   end
 
-  describe '#fetch-last_id(argument)' do
-    context 'when called returns id with same start of last buildings or nil' do
-      it 'returns nil if no building id starts with argument' do
-        expect(neighborhood1.fetch_last_id_idx(300)).to be_nil
-      end
-      it 'returns last id which starts with argument if it exists' do
-        Buildings.new(Location.new(4, 5), 'residential', 4, 4,
-                      neighborhood1)
-        Buildings.new(Location.new(4, 5), 'residential', 4, 4,
-                      neighborhood1)
-        expect(neighborhood1.fetch_last_id_idx(3_000_004)).to be(1)
-      end
-      it 'returns nil if no id in the array starts with argument' do
-        expect(neighborhood1.fetch_last_id_idx(2_000_004)).to be_nil
-      end
-    end
-  end
-
-  context 'when new building is added to the city' do
-    it 'neighbourhood should generate its id' do
-      type = 'residential'
-      Buildings.new(Location.new(5, 5), type, 2, 2, neighborhood1)
-      building2 = Buildings.new(Location.new(5, 5), type, 2, 2, neighborhood1)
-      expect(neighborhood1.gen_building_id(type, 2))
-        .to eq((building2.id.to_i + 1).to_s)
-    end
-  end
-
   context 'when ' do
     it 'sends police to a neighbourhood' do
       neighborhood1.send_police
@@ -178,45 +166,6 @@ describe Neighborhood do
       neighborhood1.send_drone
       expect(neighborhood1.active_objects.fetch(:units).length)
         .to be 1
-    end
-  end
-  describe '#gen_building_id' do
-    context 'when invoked it generate new building id' do
-      it 's generated id for commercial building starts with 2' do
-        city = City.new('Klaipeda')
-        described_class.new('Senamiestis', city)
-        Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                      neighborhood1)
-        expect(neighborhood1.city.buildings.last.id).to eq('2010002000')
-      end
-      it 'adds one to the similar id if it exists' do
-        building = Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                                 neighborhood1)
-        expect(neighborhood1.gen_building_id('commercial', 2))
-          .to eq((building.id.to_i + 1)
-                       .to_s)
-      end
-      it 'generates building id where different digits have meaning' do
-        expect(neighborhood1.gen_building_id('residential', 5))
-          .to eq('3000005000')
-      end
-      it 's generated ids 1-2 digits mean city index in Maps cities array' do
-        city = City.new('Klaipeda')
-        nbhd = described_class.new('Senamiestis', city)
-        expect(nbhd.gen_building_id('residential', 1)[1..2].to_i)
-          .to eq(nbhd.city_idx)
-      end
-      it 's generated ids 3-4 digits mean neighborhoods id in the city' do
-        Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                      neighborhood1)
-        expect(neighborhood2.gen_building_id('residential', 1)[3..4].to_i)
-          .to eq(neighborhood2.idx_in_city)
-      end
-      it 'adds 1 to the last similar buildings id' do
-        building = Buildings.new(Location.new(5, 4), 'residential', 20, 2,
-                                 neighborhood1)
-        expect(neighborhood1.old_combo(0)).to be(building.id.to_i + 1)
-      end
     end
   end
 end

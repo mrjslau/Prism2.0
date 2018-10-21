@@ -5,12 +5,13 @@
 class Buildings
   attr_reader :location, :living_places, :residents, :id
 
-  def initialize(location, type, floors, living_places, neighbourhood)
+  def initialize(location, type, floors, living_places, neighborhood)
+    city = neighborhood.city
     @location = location
-    @id = neighbourhood.gen_building_id(type, floors)
+    @id = city.gen_building_id(type, floors, neighborhood)
     @living_places = living_places
     @residents = []
-    neighbourhood.city.buildings << self
+    city.buildings << self
   end
 
   def add_resident(resident)
@@ -19,7 +20,8 @@ class Buildings
       resident.identity.add_residence(self)
       residents << resident
     else
-      puts 'Building is already full.'
+      Map.instance.notifications << Notification
+                                    .new('Building is already full.')
     end
   end
 
@@ -32,15 +34,15 @@ class Buildings
     Map.instance.cities.fetch(idx_in_city)
   end
 
-  def in_neighbourhood
-    in_city.neighborhoods.fetch(idx_in_neighbourhood)
+  def in_neighborhood
+    in_city.neighborhoods.fetch(idx_in_neighborhood)
   end
 
   def idx_in_city
     id[1..2].to_i
   end
 
-  def idx_in_neighbourhood
+  def idx_in_neighborhood
     id[3..4].to_i
   end
 end

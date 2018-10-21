@@ -4,14 +4,13 @@ require 'spec_helper.rb'
 
 describe Identity do
   Map.instance.cities.clear
-  before(:all) do
-    @person = Person.new('John', 'Siva', 'male', '1996-05-17',
-                         Location.new(25, 25))
-  end
   let(:city) { City.new('Panevezys') }
   let(:neighborhood) { Neighborhood.new('Klaipeda', city) }
-  let(:person) { @person }
-  let(:identity) { @person.identity }
+  let(:person) do
+    Person.new('John', 'Siva', 'male', '1996-05-17',
+               Location.new(25, 25))
+  end
+  let(:identity) { person.identity }
   let(:building) do
     Buildings.new(Location.new(13, 5), 'residential', 5, 5, neighborhood)
   end
@@ -25,7 +24,7 @@ describe Identity do
       expect(person.identity.full_name[:surname]).to eq('Siva')
     end
     it 'for man generated personal code starts with 3' do
-      expect(person.identity.personal_code).to eq('39605170000')
+      expect(person.identity.personal_code[0]).to eq('3')
     end
     it 'stars with 4 for females' do
       female = Person.new('John', 'Siva', 'female', '1996-05-17',
@@ -54,9 +53,10 @@ describe Identity do
 
   context 'when second identity is created with the same birth date ' do
     it 'adds 1 to the already existing personal_code' do
-      identityy = described_class.new('Tom', 'Sue', 'male', '1996-05-17')
-      expect(identityy.personal_code)
-        .to eq((person.identity.personal_code.to_i + 1).to_s)
+      last_person_alike = person.identity.personal_code
+      new_identity = described_class.new('Tom', 'Sue', 'male', '1996-05-17')
+      expect(new_identity.personal_code)
+        .to eq((last_person_alike.to_i + 1).to_s)
     end
   end
 
@@ -93,19 +93,21 @@ describe Identity do
         expect(identity.criminal_status).to eq('suspicious')
       end
       it 'is still suspicious when person participated in 5 crimes' do
-        4.times do
+        5.times do
           identity.add_criminal_record(2, neighborhood)
         end
         expect(identity.criminal_status).to eq('suspicious')
       end
       it 'is dangerous when person participated in 6 crimes' do
-        1.times do
+        6.times do
           identity.add_criminal_record(2, neighborhood)
         end
         expect(identity.criminal_status).to eq('dangerous')
       end
       it 'is dangerous when more than 5 crimes adds up' do
-        identity.add_criminal_record(2, neighborhood)
+        7.times do
+          identity.add_criminal_record(2, neighborhood)
+        end
         expect(identity.criminal_status).to eq('dangerous')
       end
     end
@@ -137,17 +139,19 @@ describe Identity do
       identity.add_criminal_record(2, neighborhood)
       expect(map.notifications.length).to be(notification_count)
     end
-    it 'does notify when person has 6 records' do
+    it 'does notify when person has criminal 6 records' do
       notification_count = map.notifications.length
-      4.times do
+      6.times do
         identity.add_criminal_record(2, neighborhood)
       end
       expect(map.notifications.length).to be(notification_count + 1)
     end
     it 'does notify when person has more than 5 records' do
       notification_count = map.notifications.length
-      identity.add_criminal_record(2, neighborhood)
-      expect(map.notifications.length).to be(notification_count + 1)
+      7.times do
+        identity.add_criminal_record(2, neighborhood)
+      end
+      expect(map.notifications.length).to be(notification_count + 2)
     end
   end
 end

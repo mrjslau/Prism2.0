@@ -51,20 +51,6 @@ describe Map do
     end
   end
 
-  describe 'system' do
-    context 'when the active neighborhood`s temperature is abnormal' do
-      it "notifies when the active neighborhood's temperature is abnormal" do
-        notifications_count = map.notifications.length
-        map.select_neighborhood(neighborhood)
-        neighborhood.change_temperature 67
-        expect(map.notifications.length).to eql(notifications_count + 1)
-      end
-      it 'does send a drone when temperature is not normal' do
-        neighborhood.change_temperature 67
-        expect(neighborhood.active_objects.fetch(:units).length).to be 1
-      end
-    end
-  end
   context 'when method notify abnormal person is calls' do
     it 'adds message of type Notification to the notification array' do
       map.notify_abnormal_person(person)
@@ -74,19 +60,6 @@ describe Map do
       map.notify_abnormal_person(person)
       expect(map.notifications.last.message)
         .to eq("Jane Doe's criminal status changed to: normal!")
-    end
-  end
-
-  context 'when method notify_abnormal_temperature is called' do
-    it 'pushes new message to notification array and sends the drone' do
-      map.notify_abnormal_temperature(neighborhood, 30)
-      expect(map.notifications.last.message)
-        .to eql('Temperature have reached: 30 in Baltupiai!')
-    end
-    it 'does not send notification when temperature is normal' do
-      notificaton_count = map.notifications.length
-      map.notify_abnormal_temperature(neighborhood, 10)
-      expect(map.notifications.length).to be(notificaton_count)
     end
   end
 

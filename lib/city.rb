@@ -33,4 +33,26 @@ class City
   def idx
     Map.instance.cities.index(self)
   end
+
+  def gen_building_id(type, floors, neighborhood)
+    # generates 9 digit id number, where 1st number defines type
+    # 2nd and 3rd numbers define number of floors in the building
+    # 4th and 5th numbers define neighborhood index in the city
+    id = (
+    ((type.eql?('residential') ? 3 : 2
+     ) * 100 + idx
+    ) * 100 + neighborhood.idx_in_city) * 100 + floors
+    idx_last = fetch_last_id_idx(id) || true
+    (idx_last.instance_of?(TrueClass) ? (id * 1000) : old_combo(idx_last)).to_s
+  end
+
+  def fetch_last_id_idx(id)
+    buildings.rindex do |building|
+      building.id.start_with?(id.to_s)
+    end
+  end
+
+  def old_combo(idx)
+    Integer(buildings.fetch(idx).id) + 1
+  end
 end
