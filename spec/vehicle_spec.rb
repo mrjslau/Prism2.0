@@ -28,7 +28,7 @@ describe Vehicle do
         vehicle.drive_to(location1)
         expect(vehicle.location.to_s).not_to eq '[54.7, 25.3]'
       end
-      it '' do
+      it 's new location is the location it drove to' do
         vehicle.drive_to(location1)
         expect(vehicle.location).to eq(location1)
       end
