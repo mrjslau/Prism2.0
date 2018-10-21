@@ -5,6 +5,8 @@ class Phone
   def initialize(owner, location)
     @owner = owner
     @location = location
+    @turned_on = false
+    @connected = false
   end
 
   def turn_on
@@ -33,6 +35,6 @@ class Phone
   end
 
   def detect_if_owner_is_near
-    location.calculate_distance(owner.details.fetch(:location)) <= 50
+    location.calculate_distance(owner.location) <= 50
   end
 end

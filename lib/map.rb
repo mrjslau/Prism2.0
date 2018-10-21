@@ -4,35 +4,51 @@
 #  with which the user will interact.
 # It contains
 class Map
-  attr_reader :notifications, :active_neighborhood
+  attr_reader :notifications, :active_neighborhoods, :cities, :residents
 
   def initialize
     @notifications = []
-    @active_neighborhood = nil
+    @active_neighborhoods = []
+    @cities = []
+    @residents = []
   end
 
-  @instance = Map.new
-  class << self
-    attr_reader :instance
+  def self.instance
+    @instance ||= new
   end
+
+  private_class_method :new
 
   def select_neighborhood(neighborhood)
-    @active_neighborhood = neighborhood
-  end
-
-  def notify_abnormal_temperature(neighborhood, celsius)
-    message = "Temperatures have reached: #{celsius}\s
-               in #{neighborhood.info[:name]}!"
-    notification = Notification.new(message)
-    @notifications.push(notification)
-
-    drone = Drone.new
-    drone.travel_to(neighborhood)
+    !neighborhood.instance_of?(Neighborhood) ||
+      active_neighborhoods << neighborhood
   end
 
   def notify_abnormal_person(person)
-    message = person.status_change_msg
-    notification = Notification.new(message)
-    @notifications.push(notification)
+    notifications << Notification.new(person.identity.status_change_msg)
+  end
+
+  def personal_code_gen(sex, date)
+    # generates 13 digit number which represents person id
+    # 1st number defines persons sex
+    # 2-7th numbers represents persons age
+    code = String(sex.eql?('female') ? 4 : 3) + (date.tr('-./', '')[2..7])
+    idx_last = fetch_last_code_idx(code) || true
+    (
+    if idx_last.instance_of?(TrueClass)
+      (Integer(code) * 10_000)
+    else
+      old_combo(idx_last)
+    end).to_s
+  end
+
+  def fetch_last_code_idx(code)
+    residents.rindex do |person|
+      person.identity.personal_code.start_with?(code)
+    end
+  end
+
+  def old_combo(idx)
+    Integer(residents.fetch(idx).identity.personal_code) + 1
   end
 end
