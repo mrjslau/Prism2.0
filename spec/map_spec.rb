@@ -64,11 +64,6 @@ describe Map do
   end
 
   context 'when new person is created map generates unique personal code' do
-    let(:person1) do
-      Person.new('Janet', 'White', 'female', '1990-11-13',
-                 Location.new(0, 0))
-    end
-
     it 'does take in to consideration persons sex and birth date' do
       person1 = Person.new('Janet', 'White', 'female', '1990-11-14', location)
       expect(person1.identity.personal_code).to eql('49011140000')

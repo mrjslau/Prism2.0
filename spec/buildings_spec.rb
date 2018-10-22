@@ -14,28 +14,12 @@ describe Buildings do
     described_class.new(Location.new(5, 5.001), 'residential',
                         2, 2, neighborhood)
   end
-  let(:building2) do
-    described_class.new(Location.new(5, 5.008), 'residential',
-                        2, 2, neighborhood)
-  end
-  let(:building3) do
-    described_class.new(Location.new(5, 5), 'residential',
-                        2, 2, neighborhood2)
-  end
-  let(:building4) do
-    described_class.new(Location.new(5, 6), 'residential',
-                        2, 2, neighborhood3)
-  end
   let(:person) do
     Person.new('George', 'Smith', 'male', '1972-04-28',
                Location.new(5.0005, 5.003))
   end
   let(:person2) do
     Person.new('Joshua', 'Smith', 'male', '1972-04-28',
-               Location.new(5.0005, 5.003))
-  end
-  let(:person3) do
-    Person.new('Mary', 'Cole', 'female', '1972-04-28',
                Location.new(5.0005, 5.003))
   end
 
