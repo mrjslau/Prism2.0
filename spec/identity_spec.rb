@@ -12,7 +12,7 @@ describe Identity do
   end
   let(:identity) { person.identity }
   let(:building) do
-    Buildings.new(Location.new(13, 5), 'residential', 5, 5, neighborhood)
+    Building.new(Location.new(13, 5), 'residential', 5, 5, neighborhood)
   end
   let(:map) { Map.instance }
 

@@ -2,7 +2,7 @@
 
 require 'spec_helper.rb'
 
-describe Buildings do
+describe Building do
   Map.instance.cities.clear
   let(:city) { City.new('Vilnius') }
   let(:city2) { City.new('Alytus') }

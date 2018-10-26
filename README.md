@@ -23,8 +23,13 @@ Run reek for code smells:
 reek
 ```
 Run Mutant:
+Main classes:
 ```
-bundle exec mutant --include lib --require *class* --use rspec *Class*
+bundle exec mutant --include lib --use rspec Building City Identity Location Map Neighborhood Person Pet Phone Police TrafficLight Vehicle
+```
+All classes:
+```
+bundle exec mutant --include lib --use rspec Ambulance Brigade Building City Drone GateBarrier Identity Intersection Location Map Neighborhood Notification Person Pet Phone Police TrafficLight User Vehicle
 ```
 Test coverage:
 /coverage/index.html

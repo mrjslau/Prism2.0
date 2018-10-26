@@ -8,7 +8,7 @@ end
 
 require 'ambulance'
 require 'brigade'
-require 'buildings'
+require 'building'
 require 'city'
 require 'drone'
 require 'gate_barrier'

@@ -2,7 +2,7 @@
 
 # Buildings class represents one building in the city
 # It contains
-class Buildings
+class Building
   attr_reader :location, :living_places, :residents, :id
 
   def initialize(location, type, floors, living_places, neighborhood)

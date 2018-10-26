@@ -52,10 +52,10 @@ describe City do
         expect(city.fetch_last_id_idx(300)).to be_nil
       end
       it 'returns last id which starts with argument if it exists' do
-        Buildings.new(Location.new(4, 5), 'residential', 4, 4,
-                      neighborhood1)
-        Buildings.new(Location.new(4, 5), 'residential', 4, 4,
-                      neighborhood1)
+        Building.new(Location.new(4, 5), 'residential', 4, 4,
+                     neighborhood1)
+        Building.new(Location.new(4, 5), 'residential', 4, 4,
+                     neighborhood1)
         expect(city.fetch_last_id_idx(3_000_004)).to be(1)
       end
       it 'returns nil if no id in the array starts with argument' do
@@ -67,8 +67,8 @@ describe City do
   context 'when new building is added to the city' do
     it 'neighbourhood should generate its id' do
       type = 'residential'
-      Buildings.new(Location.new(5, 5), type, 2, 2, neighborhood1)
-      building2 = Buildings.new(Location.new(5, 5), type, 2, 2, neighborhood1)
+      Building.new(Location.new(5, 5), type, 2, 2, neighborhood1)
+      building2 = Building.new(Location.new(5, 5), type, 2, 2, neighborhood1)
       expect(city.gen_building_id(type, 2, neighborhood1))
         .to eq((building2.id.to_i + 1).to_s)
     end
@@ -79,13 +79,13 @@ describe City do
       it 's generated id for commercial building starts with 2' do
         city = described_class.new('Klaipeda')
         nbhd = Neighborhood.new('Senamiestis', city)
-        Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                      nbhd)
+        Building.new(Location.new(5, 4), 'commercial', 2, 2,
+                     nbhd)
         expect(city.buildings.last.id).to eq('2000002000')
       end
       it 'adds one to the similar id if it exists' do
-        building = Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                                 neighborhood1)
+        building = Building.new(Location.new(5, 4), 'commercial', 2, 2,
+                                neighborhood1)
         expect(city.gen_building_id('commercial', 2, neighborhood1))
           .to eq((building.id.to_i + 1)
                        .to_s)
@@ -105,14 +105,14 @@ describe City do
           .to eq(city.idx)
       end
       it 's generated ids 3-4 digits mean neighborhoods id in the city' do
-        Buildings.new(Location.new(5, 4), 'commercial', 2, 2,
-                      neighborhood1)
+        Building.new(Location.new(5, 4), 'commercial', 2, 2,
+                     neighborhood1)
         expect(city.gen_building_id('residential', 1, neighborhood2)[3..4].to_i)
           .to eq(neighborhood2.idx_in_city)
       end
       it 'adds 1 to the last similar buildings id' do
-        building = Buildings.new(Location.new(5, 4), 'residential', 20, 2,
-                                 neighborhood1)
+        building = Building.new(Location.new(5, 4), 'residential', 20, 2,
+                                neighborhood1)
         expect(city.old_combo(0)).to be(building.id.to_i + 1)
       end
     end
