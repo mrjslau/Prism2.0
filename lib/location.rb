@@ -21,15 +21,15 @@ class Location
   end
 
   def to_s
-    '[' + @latitude.to_s + ', ' + @longitude.to_s + ']'
+    '[' + latitude.to_s + ', ' + longitude.to_s + ']'
   end
 
   # Calculates distance betwen object with location and given location.
   # Calculation is based on Haversine formula.
   def calculate_distance(location)
-    Haversine.distance(@latitude,
-                       @longitude,
+    Haversine.distance(latitude,
+                       longitude,
                        location.latitude,
-                       location.longitude).to_meters.ceil.to_i
+                       location.longitude).to_meters
   end
 end
