@@ -30,6 +30,6 @@ class Location
     Haversine.distance(latitude,
                        longitude,
                        location.latitude,
-                       location.longitude).to_meters
+                       location.longitude).to_meters.ceil
   end
 end

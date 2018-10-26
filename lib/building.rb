@@ -39,10 +39,10 @@ class Building
   end
 
   def idx_in_city
-    id[1..2].to_i
+    Integer(id[1..2])
   end
 
   def idx_in_neighborhood
-    id[3..4].to_i
+    Integer(id[3..4])
   end
 end
