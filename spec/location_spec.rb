@@ -34,9 +34,8 @@ describe Location do
   describe '#change_latitude' do
     context 'when changing latitude' do
       it 'its not the same as before' do
-        old_latitude = location.latitude
-        location.change_latitude(54.8)
-        expect(old_latitude).not_to eq(location.latitude)
+        expect { location.change_latitude(54.8) }
+          .to change(location, :latitude).from(54.7).to(54.8)
       end
     end
 
@@ -50,9 +49,8 @@ describe Location do
   describe '#change_longitude' do
     context 'when changing longitude' do
       it 'its not the same as before' do
-        old_longitude = location.longitude
-        location.change_longitude(54.8)
-        expect(old_longitude).not_to eq(location.longitude)
+        expect { location.change_longitude(25.4) }
+          .to change(location, :longitude).from(25.3).to(25.4)
       end
     end
 
