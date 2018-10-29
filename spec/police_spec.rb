@@ -97,7 +97,7 @@ describe Police do
     end
     it 'appears in neighborhoods active units' do
       police.travel_to(neighborhood)
-      expect(neighborhood.active_objects[:units].last).to be(police)
+      expect(neighborhood.active_objects[:units].last).to be_instance_of(Police)
     end
   end
 end
