@@ -18,16 +18,16 @@ describe Map do
     let(:instance) { Class.new(described_class).instance }
 
     it 'is expected that its notification array will be empty' do
-      expect(instance.notifications).to be_empty
+      expect(instance.notifications).to eql([])
     end
     it 'is expected that its active_neighbourhoods array will be empty' do
-      expect(instance.active_neighborhoods).to be_empty
+      expect(instance.active_neighborhoods).to eq([])
     end
     it 'is expected that its cities array will be empty' do
-      expect(instance.cities).to be_empty
+      expect(instance.cities).to eq([])
     end
     it 'is expected that its residents array will be empty' do
-      expect(instance.residents).to be_empty
+      expect(instance.residents).to eq([])
     end
   end
 

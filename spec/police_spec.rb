@@ -93,12 +93,11 @@ describe Police do
   context 'when police is called' do
     it 'travels to active neighborhood' do
       police.travel_to(neighborhood)
-      expect(police.active_neighborhoods.last).to be_instance_of(Neighborhood)
+      expect(police.active_neighborhoods.last).to be(neighborhood)
     end
     it 'appears in neighborhoods active units' do
       police.travel_to(neighborhood)
-      expect(neighborhood.active_objects[:units].last)
-        .to be_instance_of(described_class)
+      expect(neighborhood.active_objects[:units].last).to be(police)
     end
   end
 end
