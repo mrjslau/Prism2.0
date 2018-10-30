@@ -75,9 +75,9 @@ while action != 0
         puts "\n \t \t Enter person's first name"
         name = gets.chomp
         puts "\n \t \t Enter new latitude"
-        lat = gets.chomp
+        lat = gets.chomp.to_f
         puts "\n \t \t Enter new longitude"
-        lon = gets.chomp
+        lon = gets.chomp.to_f
         @map.residents.each do |n|
           if n.identity.name.casecmp?(name)
             n.change_location(Location.new(lat, lon))
@@ -88,9 +88,9 @@ while action != 0
         puts "\n \t \t Enter person's first name"
         name = gets.chomp
         puts "\n \t \t Enter latitude for a new phone"
-        lat = gets.chomp
+        lat = gets.chomp.to_f
         puts "\n \t \t Enter longitude for a new phone"
-        lon = gets.chomp
+        lon = gets.chomp.to_f
         @map.residents.each do |n|
           if n.identity.name.casecmp?(name)
             n.add_phone(Location.new(lat, lon))
@@ -142,9 +142,9 @@ while action != 0
         puts "\n \t \t Enter person's first name"
         name = gets.chomp
         puts "\n \t \t Enter latitude for a new pet"
-        lat = gets.chomp
+        lat = gets.chomp.to_f
         puts "\n \t \t Enter longitude for a new pet"
-        lon = gets.chomp
+        lon = gets.chomp.to_f
         @map.residents.each do |n|
           if n.identity.name.casecmp?(name)
             n.add_pet(Location.new(lat, lon))
