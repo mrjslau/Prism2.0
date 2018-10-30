@@ -71,7 +71,7 @@ describe Map do
     it 'adds 1 when same sex person born in the same day already exists' do
       person1 = Person.new('Janet', 'White', 'female', '1990-11-13', location)
       expect(map.old_combo(map.residents.index(person1)))
-        .to be(person1.identity.personal_code.to_i + 1)
+        .to eq(person1.identity.personal_code.to_i + 1)
     end
     it 's generated code for males starts with 3' do
       expect(map.personal_code_gen('male', '1990-06-03')).to eq('39006030000')

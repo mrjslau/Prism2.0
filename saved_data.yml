@@ -1,0 +1,169 @@
+---
+:data: !ruby/object:Map
+  notifications: []
+  active_neighborhoods: []
+  cities:
+  - !ruby/object:City
+    name: Vilnius
+    neighborhoods:
+    - !ruby/object:Neighborhood
+      name: Senamiestis
+      avg_temperature: 19
+      active_objects:
+        :people: []
+        :units: []
+    - !ruby/object:Neighborhood
+      name: Naujamiestis
+      avg_temperature: 19
+      active_objects:
+        :people: []
+        :units: []
+    - !ruby/object:Neighborhood
+      name: Baltupiai
+      avg_temperature: 19
+      active_objects:
+        :people: []
+        :units: []
+    buildings: []
+    emergency_services:
+      :drone: !ruby/object:Drone
+        active_neighborhood: 
+      :ambulance: !ruby/object:Ambulance
+        active_neighborhood: 
+      :police: !ruby/object:Police
+        registered_crimes: {}
+        registered_criminals: {}
+        active_neighborhoods: []
+      :brigade: !ruby/object:Brigade
+        active_neighborhood: 
+  residents:
+  - &1 !ruby/object:Person
+    identity: !ruby/object:Identity
+      full_name:
+        :name: Marijus
+        :surname: Laucevicius
+      personal_code: '39612240000'
+      criminal_records: []
+    location: &2 !ruby/object:Location
+      latitude: 0.004
+      longitude: 0.004
+    belongings:
+      :phones:
+      - !ruby/object:Phone
+        owner: *1
+        location: *2
+        turned_on: false
+        connected: false
+      :pets:
+      - !ruby/object:Pet
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 0
+          longitude: 0
+      - !ruby/object:Pet
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 0.002
+          longitude: 0.002
+  - &3 !ruby/object:Person
+    identity: !ruby/object:Identity
+      full_name:
+        :name: Benas
+        :surname: Bagdanovas
+      personal_code: '39601010000'
+      criminal_records: []
+    location: !ruby/object:Location
+      latitude: 0.006
+      longitude: 0
+    belongings:
+      :phones:
+      - !ruby/object:Phone
+        owner: *3
+        location: !ruby/object:Location
+          latitude: 0.0003
+          longitude: 0.001
+        turned_on: false
+        connected: false
+      - !ruby/object:Phone
+        owner: *3
+        location: !ruby/object:Location
+          latitude: '10'
+          longitude: '12'
+        turned_on: false
+        connected: false
+      :pets:
+      - !ruby/object:Pet
+        owner: *3
+        location: !ruby/object:Location
+          latitude: 5
+          longitude: 5
+  - &4 !ruby/object:Person
+    identity: !ruby/object:Identity
+      full_name:
+        :name: Justas
+        :surname: Lakstinis
+      personal_code: '39701010000'
+      criminal_records: []
+    location: !ruby/object:Location
+      latitude: 5.0002
+      longitude: 5
+    belongings:
+      :phones:
+      - !ruby/object:Phone
+        owner: *4
+        location: !ruby/object:Location
+          latitude: 5
+          longitude: 5
+        turned_on: false
+        connected: false
+      - !ruby/object:Phone
+        owner: *4
+        location: !ruby/object:Location
+          latitude: 5.0001
+          longitude: 5
+        turned_on: false
+        connected: false
+      :pets: []
+  - &5 !ruby/object:Person
+    identity: !ruby/object:Identity
+      full_name:
+        :name: Adriana
+        :surname: Leisyte
+      personal_code: '49701010000'
+      criminal_records: []
+    location: !ruby/object:Location
+      latitude: 10
+      longitude: 0
+    belongings:
+      :phones:
+      - !ruby/object:Phone
+        owner: *5
+        location: !ruby/object:Location
+          latitude: 11
+          longitude: 0
+        turned_on: false
+        connected: false
+      :pets:
+      - !ruby/object:Pet
+        owner: *5
+        location: !ruby/object:Location
+          latitude: 11
+          longitude: 0
+  - &6 !ruby/object:Person
+    identity: !ruby/object:Identity
+      full_name:
+        :name: Marius
+        :surname: Kurbakovas
+      personal_code: '39701010001'
+      criminal_records: []
+    location: &7 !ruby/object:Location
+      latitude: 10
+      longitude: 0
+    belongings:
+      :phones:
+      - !ruby/object:Phone
+        owner: *6
+        location: *7
+        turned_on: false
+        connected: false
+      :pets: []
