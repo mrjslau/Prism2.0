@@ -1,7 +1,6 @@
 # lib/city.rb
 
-# City class is the main program class...
-# it contains...
+# City class is the main program class
 class City
   attr_reader :name, :neighborhoods, :buildings, :emergency_services
 

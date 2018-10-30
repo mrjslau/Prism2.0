@@ -1,4 +1,4 @@
-# lib/buildings.rb
+# lib/building.rb
 
 # Buildings class represents one building in the city
 # It contains

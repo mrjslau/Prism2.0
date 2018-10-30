@@ -1,3 +1,5 @@
+# lib/location.rb
+
 require 'haversine'
 
 # A location class for setting object location.

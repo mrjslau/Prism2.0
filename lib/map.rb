@@ -1,8 +1,7 @@
 # lib/map.rb
 
 # Map class is a singleton and represents the main object
-#  with which the user will interact.
-# It contains
+# with which the user will interact.
 class Map
   attr_reader :notifications, :active_neighborhoods, :cities, :residents
 
