@@ -5,6 +5,11 @@ Ruby/Ruby on Rails university project for Agile Development course 2018.
 Ruby 2.x.x
 Bundler 1.x.x
 
+### Run UI
+```
+ruby lib/ui.rb
+```
+
 ### Running
 Install all gems:
 ```
