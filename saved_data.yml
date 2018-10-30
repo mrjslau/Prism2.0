@@ -54,6 +54,13 @@
         location: *2
         turned_on: false
         connected: false
+      - !ruby/object:Phone
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 10.0
+          longitude: 5.0
+        turned_on: false
+        connected: false
       :pets:
       - !ruby/object:Pet
         owner: *1
@@ -65,6 +72,11 @@
         location: !ruby/object:Location
           latitude: 0.002
           longitude: 0.002
+      - !ruby/object:Pet
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 10.0
+          longitude: 1.0
   - &3 !ruby/object:Person
     identity: !ruby/object:Identity
       full_name:
