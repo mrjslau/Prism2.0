@@ -9,9 +9,6 @@ describe Persistance do
   let(:persistance_expected) { described_class.new(expected_test_file) }
   let(:map) { Map.instance }
   let(:location) { Location.new(5, 4) }
-  let(:person) do
-    Person.new('Jane', 'Doe', 'female', '1990-06-03', location)
-  end
   let(:city) { City.new('Vilnius') }
   let(:neighborhood) { Neighborhood.new('Baltupiai', city, 2) }
 
