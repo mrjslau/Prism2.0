@@ -126,6 +126,18 @@ describe Person do
         expect(person.belongings).to eq(phones: [], pets: [])
       end
     end
+    context 'when adding phone and pet' do
+      it 'belongings should include pet' do
+        phone = person.add_phone(location)
+        pet = person.add_pet(location)
+        expect(person.belongings[:pets]).to include(pet[0])
+      end
+      it 'belongings should include phone' do
+        phone = person.add_phone(location)
+        pet = person.add_pet(location)
+        expect(person.belongings[:phones]).to include(phone[0])
+      end
+    end
   end
 
   context 'when person does not participate in any criminal activity' do
