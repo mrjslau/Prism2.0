@@ -1,3 +1,6 @@
 require: 'rubocop-rspec'
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context']
+AllCops:
+  Exclude:
+    - 'lib/ui.rb'
