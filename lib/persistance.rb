@@ -18,6 +18,6 @@ class Persistance
   end
 
   def fetch_data
-    store.transaction { store[:data] }
+    store.transaction { store.fetch(:data) }
   end
 end
