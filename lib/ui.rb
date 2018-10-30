@@ -19,30 +19,11 @@ require_relative 'pet'
 require_relative 'traffic_light'
 require_relative 'user'
 require_relative 'vehicle'
+require_relative 'persistance'
 
 # Command line UI file
-@map = Map.instance
-@city = City.new('Vilnius')
-@neighborhoods = [Neighborhood.new('Senamiestis', @city),
-                  Neighborhood.new('Naujamiestis', @city),
-                  Neighborhood.new('Baltupiai', @city)]
-@persons = [Person.new('Marijus', 'Laucevicius', 'male', '1996-12-24', Location.new(0.004, 0.004)),
-            Person.new('Benas', 'Bagdanovas', 'male', '1996-01-01', Location.new(0.006, 0)),
-            Person.new('Justas', 'Lakstinis', 'male', '1997-01-01', Location.new(5.0002, 5)),
-            Person.new('Adriana', 'Leisyte', 'female', '1997-01-01', Location.new(10, 0)),
-            Person.new('Marius', 'Kurbakovas', 'male', '1997-01-01', Location.new(10, 0))]
-
-@persons[0].add_pet(Location.new(0, 0))
-@persons[0].add_pet(Location.new(0.002, 0.002))
-@persons[1].add_pet(Location.new(5, 5))
-@persons[3].add_pet(Location.new(11, 0))
-
-@persons[0].add_phone(@persons[0].location)
-@persons[1].add_phone(Location.new(0.0003, 0.001))
-@persons[2].add_phone(Location.new(5, 5))
-@persons[2].add_phone(Location.new(5.0001, 5))
-@persons[3].add_phone(Location.new(11, 0))
-@persons[4].add_phone(@persons[4].location)
+@persistance = Persistance.new('saved_data.yml')
+@map = @persistance.fetch_data
 
 action = 1
 puts 'Welcome to Prism2.0'
@@ -55,7 +36,7 @@ while action != 0
 
   # NEIGHBORHOOD ACTIONS  
   when '1'
-    @city.neighborhoods.each do |n|
+    @map.cities[0].neighborhoods.each do |n|
       puts "\t" + n.name
     end
 
@@ -195,6 +176,7 @@ while action != 0
 
   # EXIT  
   when '0'
+    @persistance.store_data(@map)
     puts 'Goodbye!'
     return
   end

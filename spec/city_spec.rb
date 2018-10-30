@@ -113,7 +113,7 @@ describe City do
       it 'adds 1 to the last similar buildings id' do
         building = Building.new(Location.new(5, 4), 'residential', 20, 2,
                                 neighborhood1)
-        expect(city.old_combo(0)).to be(building.id.to_i + 1)
+        expect(city.old_combo(0)).to eq(building.id.to_i + 1)
       end
     end
   end
