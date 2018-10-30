@@ -25,7 +25,6 @@ describe Location do
         old_loc = described_class.new(location2.latitude, location2.longitude)
         location2.change_latitude(0.0004)
         location2.change_longitude(0.0002)
-        print location2.calculate_distance(old_loc)
         expect(location2.calculate_distance(old_loc)).to eq 50
       end
     end
