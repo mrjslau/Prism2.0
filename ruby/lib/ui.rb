@@ -21,12 +21,16 @@ require_relative 'user'
 require_relative 'vehicle'
 require_relative 'persistance'
 
+require 'colorize'
+
 # Command line UI file
 @persistance = Persistance.new('saved_data.yml')
 @map = @persistance.fetch_data
 
 class UI
     def show_intro
+        clear_console
+
         puts ""\
         " _______ _______________________ _______      _______   _______ \n"\
         "(  ____ (  ____ \\__   __(  ____ (       )    / ___   ) (  __   )\n"\
@@ -35,7 +39,7 @@ class UI
         "|  _____|     __)  | |  (_____  | |(_)| |      _/   /  | (/ /) |\n"\
         "| (     | (\\ (     | |        ) | |   | |     /   _/   |   / | |\n"\
         "| )     | ) \\ \\____) (__/\\____) | )   ( |    (   (__/\\_|  (__) |\n"\
-        "|/      |/   \\__\\_______\\_______|/     \\|    \\_______(_(_______)\n"
+        "|/      |/   \\__\\_______\\_______|/     \\|    \\_______(_(_______)\n".light_magenta
 
         puts "\n"\
         " ____  _       _       []  _ _                       _     _                       \n"\
@@ -43,7 +47,32 @@ class UI
         "\\___ \\| __/ _ \\ '_ \\ / _ \\| | | '_ ` _ \\ / _ \\  / __| / __| __/ _ \\ '_ ` _ \\ / _` |\n"\
         " ___) | ||  __/ |_) |  __/| | | | | | | | (_) | \\__ \\ \\__ \\ ||  __/ | | | | | (_| |\n"\
         "|____/ \\__\\___|_.__/ \\___|/ |_|_| |_| |_|\\___/  |___/_|___/\\__\\___|_| |_| |_|\\__,_|\n"\
-        "                        |__/                                                       \n"
+        "                        |__/                                                       \n".light_yellow
+    end
+
+    def show_colours
+        clear_console
+
+        puts "white".white
+        puts "light_white".light_white
+        puts "yello".yellow
+        puts "light_yellow".light_yellow
+        puts "blue".blue
+        puts "light_blue".light_blue
+        puts "red".red
+        puts "light_red".light_red
+        puts "green".green
+        puts "light_green".light_green
+        puts "black".black
+        puts "ligh_black".light_black
+        puts "magenta".magenta
+        puts "light_magenta".light_magenta
+        puts "cyan".cyan
+        puts "light_cyan".light_cyan
+    end
+
+    def clear_console
+        Gem.win_platform? ? (system "cls") : (system "clear")
     end
 end
 
@@ -51,7 +80,6 @@ ui = UI.new
 ui.show_intro
 
 action = 1
-puts 'Welcome to Prism2.0'
 while action != 0
   puts "\n Choose your next action:"
   puts '1 - neighborhoods, 2 - people, 3 - pets, 4 - phones, 0 - exit'
