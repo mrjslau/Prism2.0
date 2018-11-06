@@ -25,10 +25,16 @@ require 'colorize' # colored text
 require 'io/console' # get char from console
 
 # Command line UI file
-@persistance = Persistance.new('saved_data.yml')
-@map = @persistance.fetch_data
+# @persistance = Persistance.new('saved_data.yml')
+# map = @persistance.fetch_data
 
 class UI
+    attr_reader :map
+    def initialize
+        persistance = Persistance.new('saved_data.yml')
+        @map = persistance.fetch_data
+    end
+
     def show_intro
         clear_console
 
@@ -88,17 +94,17 @@ class UI
     end
 
     def show_options(heading, options, activeChoice)
-        clear_console
-        show_intro
-
         display_message(heading, :light_yellow)
-        options.each_with_index  do  |value, index|
+        options.each_with_index do |value, index|
             if index == activeChoice
                 display_message(value, :black, :light_white)
             else
                 display_message(value)
             end
         end
+        puts "\n"
+        puts "\n"
+        puts "\n"
     end
 
     def show_main_menu
@@ -112,6 +118,8 @@ class UI
         ]
         activeChoice = 0
         while (true)
+            clear_console
+            show_intro
             show_options(heading, choices, activeChoice)
             char = STDIN.getch
 
@@ -126,11 +134,54 @@ class UI
             end
 
             if char == KEYS[:OK]
-
+                show_neighborhood_actions() if activeChoice == 0
+                return if activeChoice == 4
             end
 
             if char == KEYS[:CANCEL]
-                return
+                return if activeChoice == 4
+            end
+        end
+    end
+
+    def show_static_list(heading, items)
+        display_message(heading, :cyan)
+        items.each_with_index do |value, index|
+            display_message("#{index + 1}. #{value}", :light_cyan, :black)
+        end
+        puts "\n"
+    end
+
+    def show_neighborhood_actions
+        item_heading = 'Currently observed neighborhoods:'
+        neighborhoods = map.observed_neighborhood_names
+
+        heading = ''
+        choices = ['Back']
+        activeChoice = 0
+        while (true)
+            clear_console
+            show_intro
+            show_static_list(item_heading, neighborhoods)
+            show_options(heading, choices, activeChoice)
+            char = STDIN.getch
+
+            if char == KEYS[:UP]
+                activeChoice = activeChoice - 1;
+                activeChoice = choices.count - 1 if activeChoice < 0
+            end
+
+            if char == KEYS[:DOWN]
+                activeChoice = activeChoice + 1;
+                activeChoice = 0 if activeChoice > choices.count - 1
+            end
+
+            if char == KEYS[:OK]
+                return if activeChoice == 0
+            end
+
+            if char == KEYS[:CANCEL]
+                return if activeChoice == 0
             end
         end
     end
