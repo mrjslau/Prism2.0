@@ -52,11 +52,21 @@ class Map
   end
 
   # TODO: Make sure it doesn't break tests
-  def observed_neighborhood_names
+  def observed_neighborhoods
     names = []
     cities[0].neighborhoods.each do |n|
       names << n.name
     end
     return names # removing this breaks UI
+  end
+
+  # TODO: Make sure it doesn't break tests
+  def observed_people
+    observed = []
+    residents.each do |n|
+      iden = n.identity
+      observed << [iden.name, iden.surname, n.location.to_s]
+    end
+    return observed
   end
 end

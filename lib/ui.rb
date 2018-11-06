@@ -135,6 +135,7 @@ class UI
 
             if char == KEYS[:OK]
                 show_neighborhood_actions() if activeChoice == 0
+                show_person_actions() if activeChoice == 1
                 return if activeChoice == 4
             end
 
@@ -153,17 +154,17 @@ class UI
     end
 
     def show_neighborhood_actions
-        item_heading = 'Currently observed neighborhoods:'
-        neighborhoods = map.observed_neighborhood_names
+        neighborhoods = map.observed_neighborhoods
 
-        heading = ''
+        item_heading = 'Currently observed neighborhoods:'
+        main_heading = ''
         choices = ['Back']
         activeChoice = 0
         while (true)
             clear_console
             show_intro
             show_static_list(item_heading, neighborhoods)
-            show_options(heading, choices, activeChoice)
+            show_options(main_heading, choices, activeChoice)
             char = STDIN.getch
 
             if char == KEYS[:UP]
@@ -184,6 +185,66 @@ class UI
                 return if activeChoice == 0
             end
         end
+    end
+
+    def show_person_actions
+        people = map.observed_people
+        longest = length_of_longest_person(people)
+        formatted = format_observed_people(people, longest)
+
+        item_heading = 'Currently observed people:'
+        main_heading = ''
+        choices = ['Back']
+        activeChoice = 0
+        while (true)
+            clear_console
+            show_intro
+            show_static_list(item_heading, formatted)
+            show_options(main_heading, choices, activeChoice)
+            char = STDIN.getch
+
+            if char == KEYS[:UP]
+                activeChoice = activeChoice - 1;
+                activeChoice = choices.count - 1 if activeChoice < 0
+            end
+
+            if char == KEYS[:DOWN]
+                activeChoice = activeChoice + 1;
+                activeChoice = 0 if activeChoice > choices.count - 1
+            end
+
+            if char == KEYS[:OK]
+                return if activeChoice == 0
+            end
+
+            if char == KEYS[:CANCEL]
+                return if activeChoice == 0
+            end
+        end
+    end
+
+    def length_of_longest_person(people)
+        longest = 0
+        people.each do |p|
+            contact = p[0] + " " + p[1] # ex.: "name surname"
+            longest = contact.length if contact.length > longest
+        end
+        return longest
+    end
+
+    def format_observed_people(people, longest)
+        formatted = []
+        people.map do |n|
+            contact = n[0] + " " + n[1] # ex.: "name surname"
+            if contact.length < longest
+                diff = longest - contact.length
+                diff.times do
+                    contact << " "
+                end
+                formatted << "#{contact}@  #{n[2]}"
+            end
+        end
+        return formatted
     end
 end
 
