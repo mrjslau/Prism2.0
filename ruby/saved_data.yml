@@ -99,8 +99,8 @@
       - !ruby/object:Phone
         owner: *3
         location: !ruby/object:Location
-          latitude: '10'
-          longitude: '12'
+          latitude: 10
+          longitude: 12
         turned_on: false
         connected: false
       :pets:
