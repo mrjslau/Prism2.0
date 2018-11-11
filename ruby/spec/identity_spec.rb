@@ -2,6 +2,18 @@
 
 require 'spec_helper.rb'
 
+RSpec::Matchers.define :have_valid_personal_code do |sex, date|
+  match do |person|
+    gender_part = (sex.eql?('male') ? 3 : 4).to_s
+    birth_date_part = date.tr('-./', '')[2..7]
+    if person.identity.personal_code.start_with?(gender_part)
+      person.identity.personal_code[1..6] == birth_date_part
+    else
+      false
+    end
+  end
+end
+
 describe Identity do
   Map.instance.cities.clear
   let(:city) { City.new('Panevezys') }
@@ -33,6 +45,12 @@ describe Identity do
     end
     it 'does not have residence when initialized' do
       expect(person.identity.criminal_records).to eq([])
+    end
+    it 'generates personal code including date' do
+      sex = 'male'
+      date = '1990-01-01'
+      new_person = Person.new('John', 'Doe', sex, date, Location.new(25, 25))
+      expect(new_person).to have_valid_personal_code(sex, date)
     end
   end
 
@@ -85,6 +103,7 @@ describe Identity do
         expect(identity.criminal_status).to eq('normal')
       end
     end
+    
     context 'when crimmes adds up criminal status changes' do
       it 'is suspicious when person participated in 1 crime' do
         1.times do
