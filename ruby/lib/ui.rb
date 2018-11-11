@@ -35,7 +35,11 @@ class UI
         @map = persistance.fetch_data
     end
 
-    def show_intro
+    # -------------------------------------------------
+    # -------------------- DISPLAY --------------------
+    # -------------------------------------------------
+
+    def display_team_logo
         clear_console
 
         puts '
@@ -58,7 +62,31 @@ class UI
         "                        |__/                                                       \n".light_yellow
     end
 
-    def show_colours
+    def display_message(text, textColor = nil, backgroundColor = nil)
+        if (textColor && backgroundColor)
+            puts text.colorize(:color => textColor, :background => backgroundColor)
+        elsif (textColor)
+            puts text.colorize(:color => textColor)
+        else
+            puts text
+        end
+    end
+
+    def display_options(heading, options, activeChoice)
+        display_message(heading, :light_yellow)
+        options.each_with_index do |value, index|
+            if index == activeChoice
+                display_message(value, :black, :light_white)
+            else
+                display_message(value)
+            end
+        end
+        puts "\n"
+        puts "\n"
+        puts "\n"
+    end
+
+    def display_colors
         clear_console
 
         puts "white".white
@@ -79,33 +107,21 @@ class UI
         puts "light_cyan".light_cyan
     end
 
+    def display_static_list(heading, items)
+        display_message(heading, :cyan)
+        items.each_with_index do |value, index|
+            display_message("#{index + 1}. #{value}", :light_cyan, :black)
+        end
+        puts "\n"
+    end
+
     def clear_console
         Gem.win_platform? ? (system "cls") : (system "clear")
     end
 
-    def display_message(text, textColor = nil, backgroundColor = nil)
-        if (textColor && backgroundColor)
-            puts text.colorize(:color => textColor, :background => backgroundColor)
-        elsif (textColor)
-            puts text.colorize(:color => textColor)
-        else
-            puts text
-        end
-    end
-
-    def show_options(heading, options, activeChoice)
-        display_message(heading, :light_yellow)
-        options.each_with_index do |value, index|
-            if index == activeChoice
-                display_message(value, :black, :light_white)
-            else
-                display_message(value)
-            end
-        end
-        puts "\n"
-        puts "\n"
-        puts "\n"
-    end
+    # -------------------------------------------------
+    # --------------------- MENUS ---------------------
+    # -------------------------------------------------
 
     def show_main_menu
         heading = 'Choose what to observe:'
@@ -119,8 +135,8 @@ class UI
         activeChoice = 0
         while (true)
             clear_console
-            show_intro
-            show_options(heading, choices, activeChoice)
+            display_team_logo
+            display_options(heading, choices, activeChoice)
             char = STDIN.getch
 
             if char == KEYS[:UP]
@@ -140,31 +156,22 @@ class UI
             end
 
             if char == KEYS[:CANCEL]
-                return if activeChoice == 4
+                return
             end
         end
     end
-
-    def show_static_list(heading, items)
-        display_message(heading, :cyan)
-        items.each_with_index do |value, index|
-            display_message("#{index + 1}. #{value}", :light_cyan, :black)
-        end
-        puts "\n"
-    end
-
+    
     def show_neighborhood_actions
-        neighborhoods = map.observed_neighborhoods
-
+        neighborhoods = format_neighborhoods()
         item_heading = 'Currently observed neighborhoods:'
         main_heading = ''
         choices = ['Back']
         activeChoice = 0
         while (true)
             clear_console
-            show_intro
-            show_static_list(item_heading, neighborhoods)
-            show_options(main_heading, choices, activeChoice)
+            display_team_logo
+            display_static_list(item_heading, neighborhoods)
+            display_options(main_heading, choices, activeChoice)
             char = STDIN.getch
 
             if char == KEYS[:UP]
@@ -188,9 +195,7 @@ class UI
     end
 
     def show_person_actions
-        people = map.observed_people
-        longest = length_of_longest_person(people)
-        formatted = format_observed_people(people, longest)
+        formatted = format_people()
 
         item_heading = 'Currently observed people:'
         main_heading = ''
@@ -198,9 +203,9 @@ class UI
         activeChoice = 0
         while (true)
             clear_console
-            show_intro
-            show_static_list(item_heading, formatted)
-            show_options(main_heading, choices, activeChoice)
+            display_team_logo
+            display_static_list(item_heading, formatted)
+            display_options(main_heading, choices, activeChoice)
             char = STDIN.getch
 
             if char == KEYS[:UP]
@@ -223,29 +228,46 @@ class UI
         end
     end
 
-    def length_of_longest_person(people)
+    # -------------------------------------------------
+    # -------------------- HELPERS --------------------
+    # -------------------------------------------------
+    
+    def format_people()
+        people = map.residents
+
+        # How many chars comprise the longest combo of name and surname
         longest = 0
         people.each do |p|
-            contact = p[0] + " " + p[1] # ex.: "name surname"
+            contact = "#{p.identity.name} #{p.identity.surname}"
             longest = contact.length if contact.length > longest
         end
-        return longest
-    end
 
-    def format_observed_people(people, longest)
+        # Make a list like: ["John Doe  @  [0.5, 1.5]"]
         formatted = []
-        people.map do |n|
-            contact = n[0] + " " + n[1] # ex.: "name surname"
+        people.each do |p|
+            contact = "#{p.identity.name} #{p.identity.surname}"
             if contact.length < longest
                 diff = longest - contact.length
                 diff.times do
                     contact << " "
                 end
-                formatted << "#{contact}@  #{n[2]}"
+                contact << "  @   #{p.location.to_s}"
+                formatted << contact
             end
+        end
+
+        return formatted
+    end
+
+    def format_neighborhoods()
+        hoods = map.cities[0].neighborhoods
+        formatted = []
+        hoods.each do |h|
+            formatted << h.name
         end
         return formatted
     end
+    
 end
 
 KEYS = {
@@ -256,7 +278,7 @@ KEYS = {
 }
 
 ui = UI.new
-ui.show_intro
+ui.display_team_logo
 ui.show_main_menu
 
 # action = 1
