@@ -162,7 +162,7 @@ class UI
     end
     
     def show_neighborhood_actions
-        neighborhoods = hoods
+        neighborhoods = format_neighborhoods
         item_heading = 'Currently observed neighborhoods:'
         main_heading = ''
         choices = ['Back']
@@ -198,6 +198,7 @@ class UI
         main_heading = ''
         choices = [
             "Change a person's location",
+            'Show nearby phones',
             'Back'
         ]
 
@@ -223,6 +224,8 @@ class UI
                 if activeChoice == 0
                     change_persons_location()
                     formatted = format_people()
+                elsif activeChoice == 1
+                    show_nearby_phones()
                 end
                 return if activeChoice == choices.count - 1
             end
@@ -293,6 +296,48 @@ class UI
 
     end
 
+    def show_nearby_phones()
+        formatted = format_people()
+        has_number = false
+
+        while (true)
+            clear_console
+            display_team_logo
+            display_static_list('Currently observed people:', formatted)
+
+            if !has_number
+                puts "Enter the number of the person:"
+                person_id = gets.chomp.to_i
+                next if (person_id.is_a? Numeric) == false
+                next if (person_id > formatted.count || person_id < 1)
+                has_number = true
+                next
+            else
+                puts 'Person:'.colorize(:color => :black, :background => :light_white)
+                puts "#{formatted[person_id - 1]}" + "\n\n"
+
+                person = people[person_id - 1]
+                if person.near_any_phone?
+                    puts "Phones nearby: ".colorize(:color => :black, :background => :light_white)
+                    person.belongings.fetch(:phones).each_with_index do |p, i|
+                        puts "Phone #{i + 1}".yellow
+                        puts "\t" + "Distance to owner: ".light_white + 
+                        "#{p.location.calculate_distance(person.location).to_s} meters \n"
+                        puts "\t" + "Turned on? ".light_white + 
+                        "#{p.turned_on.to_s} \n"
+                        puts "\t" + "Connected? ".light_white +
+                        "#{p.connected.to_s}" + "\n"
+                    end
+                else
+                    puts "There are no phones within 50 metres."
+                end
+
+                char = STDIN.getch
+                return
+            end
+        end
+    end
+
     # -------------------------------------------------
     # -------------------- HELPERS --------------------
     # -------------------------------------------------
@@ -323,7 +368,7 @@ class UI
 
     def format_neighborhoods()
         formatted = []
-        neighborhoods.each do |h|
+        hoods.each do |h|
             formatted << h.name
         end
         return formatted
