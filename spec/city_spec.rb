@@ -2,10 +2,27 @@
 
 require 'spec_helper.rb'
 
+RSpec::Matchers.define :have_meaningfull_id do |type, floors, neighborhood|
+  match do |building|
+    type_num = type.eql?('residential') ? 3 : 2
+    neighborhood_id = neighborhood1.idx_in_city
+    city_id = neighborhood.city_idx
+
+    if building.id.nil?
+      false
+    else
+      building.id == ((((type_num * 100 + city_id
+                        ) * 100 + neighborhood_id
+                       ) * 100 + floors) * 1000).to_s
+    end
+  end
+end
+
 describe City do
   before do
     Map.instance.cities.clear
   end
+
   let(:city) { described_class.new('Vilnius') }
   let(:neighborhood1) { Neighborhood.new('Liepkalnis', city) }
   let(:neighborhood2) { Neighborhood.new('Zirmunai', city, 25) }
@@ -39,6 +56,7 @@ describe City do
       expect(city.brigade).to be_a(Brigade)
     end
   end
+
   describe '#idx' do
     context 'when its called it returns idx of city in Map.instance.cities'
     it 'returns' do
@@ -92,10 +110,10 @@ describe City do
       end
       it 'generates building id where different digits have meaning' do
         expect(city.gen_building_id('residential', 5, neighborhood1)).to eq((
-                 (
-                 ((3 * 100 + city.idx) * 100 + neighborhood1.idx_in_city
-                 ) * 100 + 5
-                 ) * 1000).to_s)
+                (
+                ((3 * 100 + city.idx) * 100 + neighborhood1.idx_in_city
+                ) * 100 + 5
+              ) * 1000).to_s)
       end
       it 's generated ids 1-2 digits mean city index in Maps cities array' do
         city1 = described_class.new('Klaipeda')
@@ -114,6 +132,13 @@ describe City do
         building = Building.new(Location.new(5, 4), 'residential', 20, 2,
                                 neighborhood1)
         expect(city.old_combo(0)).to eq(building.id.to_i + 1)
+      end
+      it 'with type, floors and neighbourhood identification in it' do
+        type = 'residential'
+        floors = 23
+        building = Building.new(Location.new(5, 5),
+                                type, floors, 2, neighborhood1)
+        expect(building).to have_meaningfull_id(type, floors, neighborhood1)
       end
     end
   end
