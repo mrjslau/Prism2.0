@@ -50,23 +50,4 @@ class Map
   def old_combo(idx)
     Integer(residents.fetch(idx).identity.personal_code) + 1
   end
-
-  # TODO: Make sure it doesn't break tests
-  def observed_neighborhoods
-    names = []
-    cities[0].neighborhoods.each do |n|
-      names << n.name
-    end
-    return names # removing this breaks UI
-  end
-
-  # TODO: Make sure it doesn't break tests
-  def observed_people
-    observed = []
-    residents.each do |n|
-      iden = n.identity
-      observed << [iden.name, iden.surname, n.location.to_s]
-    end
-    return observed
-  end
 end
