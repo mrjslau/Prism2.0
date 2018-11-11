@@ -29,10 +29,12 @@ require 'io/console' # get char from console
 # map = @persistance.fetch_data
 
 class UI
-    attr_reader :map
+    attr_reader :persistance, :map, :people, :hoods
     def initialize
-        persistance = Persistance.new('saved_data.yml')
+        @persistance = Persistance.new('saved_data.yml')
         @map = persistance.fetch_data
+        @people = map.residents
+        @hoods = map.cities[0].neighborhoods
     end
 
     # -------------------------------------------------
@@ -155,14 +157,12 @@ class UI
                 return if activeChoice == 4
             end
 
-            if char == KEYS[:CANCEL]
-                return
-            end
+            return if char == KEYS[:CANCEL]
         end
     end
     
     def show_neighborhood_actions
-        neighborhoods = format_neighborhoods()
+        neighborhoods = hoods
         item_heading = 'Currently observed neighborhoods:'
         main_heading = ''
         choices = ['Back']
@@ -188,18 +188,19 @@ class UI
                 return if activeChoice == 0
             end
 
-            if char == KEYS[:CANCEL]
-                return if activeChoice == 0
-            end
+            return if char == KEYS[:CANCEL]
         end
     end
 
     def show_person_actions
         formatted = format_people()
-
         item_heading = 'Currently observed people:'
         main_heading = ''
-        choices = ['Back']
+        choices = [
+            "Change a person's location",
+            'Back'
+        ]
+
         activeChoice = 0
         while (true)
             clear_console
@@ -219,13 +220,77 @@ class UI
             end
 
             if char == KEYS[:OK]
-                return if activeChoice == 0
+                if activeChoice == 0
+                    change_persons_location()
+                    formatted = format_people()
+                end
+                return if activeChoice == choices.count - 1
             end
 
-            if char == KEYS[:CANCEL]
-                return if activeChoice == 0
-            end
+            return if char == KEYS[:CANCEL]
         end
+    end
+
+    # -------------------------------------------------
+    # ----------------- FUNCTIONALITY -----------------
+    # -------------------------------------------------
+
+    def change_persons_location()
+        people = format_people()
+        
+        has_number = false
+        has_latitude = false
+        has_longitude = false
+        person_id = nil
+        new_lat = nil
+        new_lon = nil
+
+        while (true)
+            clear_console
+            display_team_logo
+
+            display_static_list('Currently observed people:', people)
+
+            if !has_number
+                puts "Enter the number of the person:"
+                person_id = gets.chomp.to_i
+                next if (person_id.is_a? Numeric) == false
+                next if (person_id > people.count || person_id < 1)
+                has_number = true
+                next
+            else
+                puts 'Person:'.colorize(:color => :black, :background => :light_white)
+                puts "#{people[person_id - 1]}" + "\n\n"
+            end
+            
+            if !has_latitude
+                puts "Enter the latitude of the person:"
+                new_lat = gets.chomp.to_f
+                next if (new_lat.is_a? Numeric) == false
+                has_latitude = true
+                next
+            else
+                puts 'New latitude:'.colorize(:color => :black, :background => :light_white)
+                puts "#{new_lat}" + "\n\n"
+            end
+
+            if !has_longitude
+                puts "Enter the longitude of the person:"
+                new_lon = gets.chomp.to_f
+                next if (new_lon.is_a? Numeric) == false
+                has_longitude = true
+                next
+            else
+                puts 'New longitude:'.colorize(:color => :black, :background => :light_white)
+                puts "#{new_lon}" + "\n\n"
+            end
+
+            location = Location.new(new_lat, new_lon)
+            update_person(person_id - 1, location)
+            char = STDIN.getch
+            return
+        end
+
     end
 
     # -------------------------------------------------
@@ -233,15 +298,12 @@ class UI
     # -------------------------------------------------
     
     def format_people()
-        people = map.residents
-
         # How many chars comprise the longest combo of name and surname
         longest = 0
         people.each do |p|
             contact = "#{p.identity.name} #{p.identity.surname}"
             longest = contact.length if contact.length > longest
         end
-
         # Make a list like: ["John Doe  @  [0.5, 1.5]"]
         formatted = []
         people.each do |p|
@@ -251,23 +313,27 @@ class UI
                 diff.times do
                     contact << " "
                 end
-                contact << "  @   #{p.location.to_s}"
-                formatted << contact
             end
+            contact << "  @   #{p.location.to_s}"
+            formatted << contact
         end
 
         return formatted
     end
 
     def format_neighborhoods()
-        hoods = map.cities[0].neighborhoods
         formatted = []
-        hoods.each do |h|
+        neighborhoods.each do |h|
             formatted << h.name
         end
         return formatted
     end
-    
+
+    def update_person(index, location)
+        person = people[index]
+        person.change_location(location)
+        persistance.store_data(map)
+    end
 end
 
 KEYS = {
