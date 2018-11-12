@@ -211,6 +211,7 @@ class UI
         item_heading = 'Currently observed people:'
         main_heading = ''
         choices = [
+            'Add a new person',
             "Change a person's location",
             'Show nearby phones',
             'Back'
@@ -225,13 +226,11 @@ class UI
             key = STDIN.getch
 
             if key == KEYS[:OK]
-                if choice == 0
-                    change_persons_location()
-                    formatted = format_people()
-                elsif choice == 1
-                    show_nearby_phones()
-                end
+                add_new_person if choice == 0
+                change_persons_location if choice == 1
+                show_nearby_phones if choice == 2
                 return if choice == choices.count - 1
+                formatted = format_people
             end
 
             if key == KEYS[:UP] || key == KEYS[:DOWN]
@@ -272,57 +271,141 @@ class UI
     # ----------------- FUNCTIONALITY -----------------
     # -------------------------------------------------
 
-    def change_persons_location
-        people = format_people
-        
-        has_number = false
-        has_latitude = false
-        has_longitude = false
-        person_id = nil
-        new_lat = nil
-        new_lon = nil
+    def add_new_person
+        name = ""
+        surname = ""
+        gender = ""
+        gender_regex = /^male$|^female$/
+        date = ""
+        date_regex = /^\d\d\d\d\-\d\d\-\d\d$/
+        lat = 9999
+        lon = 9999
 
         while (true)
             clear_console
             display_team_logo(false)
+            display_static_list('Currently observed people:', format_people)
 
-            display_static_list('Currently observed people:', people)
+            if name.empty?
+                puts "Enter the name of the person:"
+                temp = gets.chomp
+                next if temp.empty?
+                name = temp
+                next
+            else
+                puts 'Name:'.colorize(:color => :black, :background => :light_white)
+                puts "#{name}" + "\n\n"
+            end
 
-            if !has_number
+            if surname.empty?
+                puts "Enter the surname of the person:"
+                temp = gets.chomp
+                next if temp.empty?
+                surname = temp
+                next
+            else
+                puts 'Surname:'.colorize(:color => :black, :background => :light_white)
+                puts "#{surname}" + "\n\n"
+            end
+
+            if gender.empty?
+                puts "Enter the gender of the person (male/female):"
+                temp = gets.chomp
+                next if gender_regex.match(temp) == nil
+                gender = temp
+                next
+            else
+                puts 'Gender:'.colorize(:color => :black, :background => :light_white)
+                puts "#{gender}" + "\n\n"
+            end
+
+            if date.empty?
+                puts "Enter the date of birth of the person (yyyy-mm-dd):"
+                temp = gets.chomp
+                next if date_regex.match(temp) == nil
+                date = temp
+                next
+            else
+                puts 'Date of birth:'.colorize(:color => :black, :background => :light_white)
+                puts "#{date}" + "\n\n"
+            end
+
+            if lat == 9999
+                puts "Enter the current latitude of the person:"
+                temp = gets.chomp.to_f
+                next if (temp.is_a? Numeric) == false
+                lat = temp
+                next
+            else
+                puts 'Current latitude:'.colorize(:color => :black, :background => :light_white)
+                puts "#{lat}" + "\n\n"
+            end
+
+            if lon == 9999
+                puts "Enter the current latitude of the person:"
+                temp = gets.chomp.to_f
+                next if (temp.is_a? Numeric) == false
+                lon = temp
+                next
+            else
+                puts 'Current longitude:'.colorize(:color => :black, :background => :light_white)
+                puts "#{lon}" + "\n\n"
+            end
+
+            person = Person.new(name, surname, gender, date,
+                                Location.new(lat, lon))
+            create_person(person)
+            char = STDIN.getch
+            return
+        end
+    end
+
+    def change_persons_location
+        formatted = format_people
+        person_id = -1
+        latitude = -1
+        longitude = -1
+
+        while (true)
+            clear_console
+            display_team_logo(false)
+            display_static_list('Currently observed people:', formatted)
+
+            if person_id == -1
                 puts "Enter the number of the person:"
-                person_id = gets.chomp.to_i
-                next if (person_id.is_a? Numeric) == false
-                next if (person_id > people.count || person_id < 1)
-                has_number = true
+                temp = gets.chomp.to_i
+                next if (temp.is_a? Numeric) == false
+                next if (temp > formatted.count || temp < 1)
+                person_id = temp
                 next
             else
                 puts 'Person:'.colorize(:color => :black, :background => :light_white)
-                puts "#{people[person_id - 1]}" + "\n\n"
+                puts "#{formatted[person_id - 1]}" + "\n\n"
             end
             
-            if !has_latitude
+            if latitude == -1
                 puts "Enter the latitude of the person:"
-                new_lat = gets.chomp.to_f
-                next if (new_lat.is_a? Numeric) == false
-                has_latitude = true
+                temp = gets.chomp.to_f
+                next if (temp.is_a? Numeric) == false
+                latitude = temp
                 next
             else
                 puts 'New latitude:'.colorize(:color => :black, :background => :light_white)
-                puts "#{new_lat}" + "\n\n"
+                puts "#{latitude}" + "\n\n"
             end
 
-            if !has_longitude
+            if longitude == -1
                 puts "Enter the longitude of the person:"
-                new_lon = gets.chomp.to_f
-                next if (new_lon.is_a? Numeric) == false
-                has_longitude = true
+                temp = gets.chomp.to_f
+                next if (temp.is_a? Numeric) == false
+                longitude = temp
                 next
             else
                 puts 'New longitude:'.colorize(:color => :black, :background => :light_white)
-                puts "#{new_lon}" + "\n\n"
+                puts "#{longitude}" + "\n\n"
             end
 
-            location = Location.new(new_lat, new_lon)
+            location = Location.new(latitude, longitude)
             update_person(person_id - 1, location)
             char = STDIN.getch
             return
@@ -332,19 +415,19 @@ class UI
 
     def show_nearby_phones
         formatted = format_people
-        has_number = false
+        person_id = -1
 
         while (true)
             clear_console
             display_team_logo(false)
             display_static_list('Currently observed people:', formatted)
 
-            if !has_number
+            if person_id == -1
                 puts "Enter the number of the person:"
-                person_id = gets.chomp.to_i
-                next if (person_id.is_a? Numeric) == false
-                next if (person_id > formatted.count || person_id < 1)
-                has_number = true
+                temp = gets.chomp.to_i
+                next if (temp.is_a? Numeric) == false
+                next if (temp > formatted.count || temp < 1)
+                person_id = temp
                 next
             else
                 puts 'Person:'.colorize(:color => :black, :background => :light_white)
@@ -373,23 +456,21 @@ class UI
     end
 
     def remove_pet
-        has_person = false
-        has_animal = false
-        person_id = nil
+        animal_id = -1
+        person_id = -1
         person = nil
-        animal_id = nil
 
         while (true)
             clear_console
             display_team_logo(false)
             show_owners_and_pets
 
-            if !has_person
+            if person_id == -1
                 puts "Enter the number of the person:"
-                person_id = gets.chomp.to_i
-                next if (person_id.is_a? Numeric) == false
-                next if (person_id > people.count || person_id < 1)
-                has_person = true
+                temp = gets.chomp.to_i
+                next if (temp.is_a? Numeric) == false
+                next if (temp > people.count || temp < 1)
+                person_id = temp
                 person = people[person_id - 1]
                 next
             else
@@ -398,13 +479,13 @@ class UI
                 puts "#{iden.name} #{iden.surname}" + "\n\n"
             end
 
-            if !has_animal
+            if animal_id == -1
                 puts "Enter the number of the pet:"
-                animal_id = gets.chomp.to_i
+                temp = gets.chomp.to_i
                 count = person.belongings.fetch(:pets).length
-                next if (animal_id.is_a? Numeric) == false
-                next if (animal_id > count || animal_id < 1)
-                has_animal = true
+                next if (temp.is_a? Numeric) == false
+                next if (temp > count || temp < 1)
+                animal_id = temp
                 next
             else
                 puts 'Pet:'.colorize(:color => :black, :background => :light_white)
@@ -478,6 +559,11 @@ class UI
             end
         end
         return formatted
+    end
+
+    def create_person(person)
+        people << person
+        persistance.store_data(map)
     end
 
     def update_person(index, location)
