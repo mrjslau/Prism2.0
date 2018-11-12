@@ -74,10 +74,10 @@ class UI
         end
     end
 
-    def display_options(heading, options, activeChoice)
+    def display_options(heading, options, active_choice)
         display_message(heading, :light_yellow)
         options.each_with_index do |value, index|
-            if index == activeChoice
+            if index == active_choice
                 display_message(value, :black, :light_white)
             else
                 display_message(value)
@@ -134,30 +134,25 @@ class UI
             'Phones',
             'Exit'
         ]
-        activeChoice = 0
+        choice = 0
+
         while (true)
             clear_console
             display_team_logo
-            display_options(heading, choices, activeChoice)
-            char = STDIN.getch
+            display_options(heading, choices, choice)
+            key = STDIN.getch
 
-            if char == KEYS[:UP]
-                activeChoice = activeChoice - 1;
-                activeChoice = choices.count - 1 if activeChoice < 0
+            if key == KEYS[:OK]
+                show_neighborhood_actions() if choice == 0
+                show_person_actions() if choice == 1
+                show_pet_actions() if choice == 2
+                return if choice == 4
             end
 
-            if char == KEYS[:DOWN]
-                activeChoice = activeChoice + 1;
-                activeChoice = 0 if activeChoice > choices.count - 1
+            if key == KEYS[:UP] || key == KEYS[:DOWN]
+                choice = change_choice(key, choice, choices.count) 
             end
-
-            if char == KEYS[:OK]
-                show_neighborhood_actions() if activeChoice == 0
-                show_person_actions() if activeChoice == 1
-                return if activeChoice == 4
-            end
-
-            return if char == KEYS[:CANCEL]
+            return if key == KEYS[:CANCEL]
         end
     end
     
@@ -166,29 +161,23 @@ class UI
         item_heading = 'Currently observed neighborhoods:'
         main_heading = ''
         choices = ['Back']
-        activeChoice = 0
+        choice = 0
+
         while (true)
             clear_console
             display_team_logo
             display_static_list(item_heading, neighborhoods)
-            display_options(main_heading, choices, activeChoice)
-            char = STDIN.getch
+            display_options(main_heading, choices, choice)
+            key = STDIN.getch
 
-            if char == KEYS[:UP]
-                activeChoice = activeChoice - 1;
-                activeChoice = choices.count - 1 if activeChoice < 0
+            if key == KEYS[:OK]
+                return if choice == 0
             end
 
-            if char == KEYS[:DOWN]
-                activeChoice = activeChoice + 1;
-                activeChoice = 0 if activeChoice > choices.count - 1
+            if key == KEYS[:UP] || key == KEYS[:DOWN]
+                choice = change_choice(key, choice, choices.count) 
             end
-
-            if char == KEYS[:OK]
-                return if activeChoice == 0
-            end
-
-            return if char == KEYS[:CANCEL]
+            return if key == KEYS[:CANCEL]
         end
     end
 
@@ -201,36 +190,72 @@ class UI
             'Show nearby phones',
             'Back'
         ]
+        choice = 0
 
-        activeChoice = 0
         while (true)
             clear_console
             display_team_logo
             display_static_list(item_heading, formatted)
-            display_options(main_heading, choices, activeChoice)
-            char = STDIN.getch
+            display_options(main_heading, choices, choice)
+            key = STDIN.getch
 
-            if char == KEYS[:UP]
-                activeChoice = activeChoice - 1;
-                activeChoice = choices.count - 1 if activeChoice < 0
-            end
-
-            if char == KEYS[:DOWN]
-                activeChoice = activeChoice + 1;
-                activeChoice = 0 if activeChoice > choices.count - 1
-            end
-
-            if char == KEYS[:OK]
-                if activeChoice == 0
+            if key == KEYS[:OK]
+                if choice == 0
                     change_persons_location()
                     formatted = format_people()
-                elsif activeChoice == 1
+                elsif choice == 1
                     show_nearby_phones()
                 end
-                return if activeChoice == choices.count - 1
+                return if choice == choices.count - 1
             end
 
-            return if char == KEYS[:CANCEL]
+            if key == KEYS[:UP] || key == KEYS[:DOWN]
+                choice = change_choice(key, choice, choices.count) 
+            end
+            return if key == KEYS[:CANCEL]
+        end
+    end
+
+    def show_pet_actions
+        formatted = format_pets
+        item_heading = 'Currently observed pets grouped by owners:'
+        main_heading = ''
+        choices = ['Back']
+        choice = 0
+
+        while (true)
+            clear_console
+            display_team_logo
+            display_message(item_heading, :cyan)
+            puts "\n"
+
+            formatted.keys.each do |n|
+                person = people[n]
+                puts "#{person.identity.name} #{person.identity.surname}".light_cyan
+
+                item = formatted[n]
+                names = item[:names]
+                locations = item[:locations]
+                distances = item[:distances]
+
+                locations.each_with_index do |p, i|
+                    puts "\t" + names[i].yellow
+                    puts "\t" + "Current location:".light_white + "  #{p}"
+                    puts "\t" + "Distance to owner:".light_white + " #{distances[i]}"
+                    puts "\n"
+                end
+            end
+
+            display_options(main_heading, choices, choice)
+            key = STDIN.getch
+            if key == KEYS[:OK]
+                return if choice == choices.count - 1
+            end
+
+            if key == KEYS[:UP] || key == KEYS[:DOWN]
+                choice = change_choice(key, choice, choices.count) 
+            end
+            return if key == KEYS[:CANCEL]
         end
     end
 
@@ -374,10 +399,51 @@ class UI
         return formatted
     end
 
+    def format_pets()
+        formatted = {} # key - person's index
+        index = 1
+
+        people.each_with_index do |p, i|
+            if p.pets?
+                names = [] #     ["Pet 1",   "Pet 2"]
+                locations = [] # ["[0, 0]",  "[1, 1]"],
+                distances = [] # [54 metres, 38 metres]
+
+                owned_pets = p.belongings.fetch(:pets)
+                owned_pets.each do |pet|
+                    names << "Pet #{index}"
+                    locations << pet.location.to_s
+                    distances << "#{p.location.calculate_distance(pet.location)} metres"
+                    index += 1
+                end
+                formatted[i] = {
+                    :names => names,
+                    :locations => locations, 
+                    :distances => distances
+                }
+            end
+        end
+        return formatted
+    end
+
     def update_person(index, location)
         person = people[index]
         person.change_location(location)
         persistance.store_data(map)
+    end
+
+    def change_choice(key_pressed, choice, choices_count)
+        if key_pressed == KEYS[:UP]
+            choice = choice - 1;
+            choice = choices_count - 1 if choice < 0
+        end
+
+        if key_pressed == KEYS[:DOWN]
+            choice = choice + 1;
+            choice = 0 if choice > choices_count - 1
+        end
+
+        return choice
     end
 end
 
@@ -389,7 +455,6 @@ KEYS = {
 }
 
 ui = UI.new
-ui.display_team_logo
 ui.show_main_menu
 
 # action = 1
