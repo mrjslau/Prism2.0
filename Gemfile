@@ -1,6 +1,7 @@
 # Gemfile
 source 'https://rubygems.org'
 
+gem 'colorize'
 gem 'haversine'
 gem 'mutant'
 gem 'mutant-rspec'
