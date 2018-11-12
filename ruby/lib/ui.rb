@@ -41,19 +41,21 @@ class UI
     # -------------------- DISPLAY --------------------
     # -------------------------------------------------
 
-    def display_team_logo
+    def display_team_logo(show_title)
         clear_console
 
-        puts '
-         _______ _______________________ _______      _______   _______ 
-        (  ____ (  ____ \\__   __(  ____ (       )    / ___   ) (  __   )
-        | (    )| (    )|  ) (  | (    \\| () () |    \\/   )  | | (  )  |
-        | (____)| (____)|  | |  | (_____| || || |        /   ) | | /   |
-        |  _____|     __)  | |  (_____  | |(_)| |      _/   /  | (/ /) |
-        | (     | (\\ (     | |        ) | |   | |     /   _/   |   / | |
-        | )     | ) \\ \\____) (__/\\____) | )   ( |    (   (__/\\_|  (__) |
-        |/      |/   \\__\\_______\\_______|/     \\|    \\_______(_(_______)
-        '.light_magenta
+        if show_title
+            puts '
+            _______ _______________________ _______      _______   _______ 
+            (  ____ (  ____ \\__   __(  ____ (       )    / ___   ) (  __   )
+            | (    )| (    )|  ) (  | (    \\| () () |    \\/   )  | | (  )  |
+            | (____)| (____)|  | |  | (_____| || || |        /   ) | | /   |
+            |  _____|     __)  | |  (_____  | |(_)| |      _/   /  | (/ /) |
+            | (     | (\\ (     | |        ) | |   | |     /   _/   |   / | |
+            | )     | ) \\ \\____) (__/\\____) | )   ( |    (   (__/\\_|  (__) |
+            |/      |/   \\__\\_______\\_______|/     \\|    \\_______(_(_______)
+            '.light_magenta
+        end
 
         puts "\n"\
         " ____  _       _       []  _ _                       _     _                       \n"\
@@ -121,6 +123,29 @@ class UI
         Gem.win_platform? ? (system "cls") : (system "clear")
     end
 
+    def show_owners_and_pets
+            display_message('Currently observed pets grouped by owners:', :cyan)
+            puts "\n"
+
+            formatted = format_pets
+            formatted.keys.each do |n|
+                person = people[n]
+                puts "#{n + 1}. #{person.identity.name} #{person.identity.surname}".light_cyan
+
+                item = formatted[n]
+                names = item[:names]
+                locations = item[:locations]
+                distances = item[:distances]
+
+                locations.each_with_index do |p, i|
+                    puts "\t" + names[i].yellow
+                    puts "\t" + "Current location:".light_white + "  #{p}"
+                    puts "\t" + "Distance to owner:".light_white + " #{distances[i]}"
+                    puts "\n"
+                end
+            end
+    end
+
     # -------------------------------------------------
     # --------------------- MENUS ---------------------
     # -------------------------------------------------
@@ -138,7 +163,7 @@ class UI
 
         while (true)
             clear_console
-            display_team_logo
+            display_team_logo(true)
             display_options(heading, choices, choice)
             key = STDIN.getch
 
@@ -165,7 +190,7 @@ class UI
 
         while (true)
             clear_console
-            display_team_logo
+            display_team_logo(false)
             display_static_list(item_heading, neighborhoods)
             display_options(main_heading, choices, choice)
             key = STDIN.getch
@@ -194,7 +219,7 @@ class UI
 
         while (true)
             clear_console
-            display_team_logo
+            display_team_logo(false)
             display_static_list(item_heading, formatted)
             display_options(main_heading, choices, choice)
             key = STDIN.getch
@@ -217,38 +242,22 @@ class UI
     end
 
     def show_pet_actions
-        formatted = format_pets
-        item_heading = 'Currently observed pets grouped by owners:'
         main_heading = ''
-        choices = ['Back']
+        choices = [
+            'Remove a pet',
+            'Back'
+        ]
         choice = 0
 
         while (true)
             clear_console
-            display_team_logo
-            display_message(item_heading, :cyan)
-            puts "\n"
-
-            formatted.keys.each do |n|
-                person = people[n]
-                puts "#{person.identity.name} #{person.identity.surname}".light_cyan
-
-                item = formatted[n]
-                names = item[:names]
-                locations = item[:locations]
-                distances = item[:distances]
-
-                locations.each_with_index do |p, i|
-                    puts "\t" + names[i].yellow
-                    puts "\t" + "Current location:".light_white + "  #{p}"
-                    puts "\t" + "Distance to owner:".light_white + " #{distances[i]}"
-                    puts "\n"
-                end
-            end
-
+            display_team_logo(false)
+            show_owners_and_pets
             display_options(main_heading, choices, choice)
+
             key = STDIN.getch
             if key == KEYS[:OK]
+                remove_pet if choice == 0
                 return if choice == choices.count - 1
             end
 
@@ -263,8 +272,8 @@ class UI
     # ----------------- FUNCTIONALITY -----------------
     # -------------------------------------------------
 
-    def change_persons_location()
-        people = format_people()
+    def change_persons_location
+        people = format_people
         
         has_number = false
         has_latitude = false
@@ -275,7 +284,7 @@ class UI
 
         while (true)
             clear_console
-            display_team_logo
+            display_team_logo(false)
 
             display_static_list('Currently observed people:', people)
 
@@ -321,13 +330,13 @@ class UI
 
     end
 
-    def show_nearby_phones()
-        formatted = format_people()
+    def show_nearby_phones
+        formatted = format_people
         has_number = false
 
         while (true)
             clear_console
-            display_team_logo
+            display_team_logo(false)
             display_static_list('Currently observed people:', formatted)
 
             if !has_number
@@ -363,11 +372,56 @@ class UI
         end
     end
 
+    def remove_pet
+        has_person = false
+        has_animal = false
+        person_id = nil
+        person = nil
+        animal_id = nil
+
+        while (true)
+            clear_console
+            display_team_logo(false)
+            show_owners_and_pets
+
+            if !has_person
+                puts "Enter the number of the person:"
+                person_id = gets.chomp.to_i
+                next if (person_id.is_a? Numeric) == false
+                next if (person_id > people.count || person_id < 1)
+                has_person = true
+                person = people[person_id - 1]
+                next
+            else
+                puts 'Person:'.colorize(:color => :black, :background => :light_white)
+                iden = person.identity
+                puts "#{iden.name} #{iden.surname}" + "\n\n"
+            end
+
+            if !has_animal
+                puts "Enter the number of the pet:"
+                animal_id = gets.chomp.to_i
+                count = person.belongings.fetch(:pets).length
+                next if (animal_id.is_a? Numeric) == false
+                next if (animal_id > count || animal_id < 1)
+                has_animal = true
+                next
+            else
+                puts 'Pet:'.colorize(:color => :black, :background => :light_white)
+                puts "Pet #{animal_id}" + "\n\n"
+            end
+
+            delete_pet(person_id - 1, animal_id - 1)
+            char = STDIN.getch
+            return
+        end
+    end
+    
     # -------------------------------------------------
     # -------------------- HELPERS --------------------
     # -------------------------------------------------
     
-    def format_people()
+    def format_people
         # How many chars comprise the longest combo of name and surname
         longest = 0
         people.each do |p|
@@ -391,7 +445,7 @@ class UI
         return formatted
     end
 
-    def format_neighborhoods()
+    def format_neighborhoods
         formatted = []
         hoods.each do |h|
             formatted << h.name
@@ -399,7 +453,7 @@ class UI
         return formatted
     end
 
-    def format_pets()
+    def format_pets
         formatted = {} # key - person's index
         index = 1
 
@@ -429,6 +483,14 @@ class UI
     def update_person(index, location)
         person = people[index]
         person.change_location(location)
+        persistance.store_data(map)
+    end
+
+    def delete_pet(person_id, pet_id)
+        person = people[person_id]
+        pets = person.belongings.fetch(:pets)
+        pet = pets[pet_id]
+        pets.delete(pet)
         persistance.store_data(map)
     end
 
