@@ -34,9 +34,10 @@ class City
   end
 
   def gen_building_id(type, floors, neighborhood)
-    # generates 9 digit id number, where 1st number defines type
-    # 2nd and 3rd numbers define number of floors in the building
+    # generates 10 digit id number, where 1st number defines type
+    # 2nd and 3rd numbers define city id
     # 4th and 5th numbers define neighborhood index in the city
+    # 6th and 7th numbers define floors
     id = (
     ((type.eql?('residential') ? 3 : 2
      ) * 100 + idx
