@@ -2,6 +2,18 @@
 
 require 'spec_helper.rb'
 
+RSpec::Matchers.define :be_male do
+  match do |person|
+    person.identity.personal_code[0] == '3'
+  end
+end
+
+RSpec::Matchers.define :be_female do
+  match do |person|
+    person.identity.personal_code[0] == '4'
+  end
+end
+
 describe Person do
   let(:location) { Location.new(5, 6) }
   let(:person) do
@@ -19,6 +31,12 @@ describe Person do
     end
     it 'is added to the Map.instance.residents array' do
       expect(map.residents.include?(person)).to be(true)
+    end
+    it '(in this case) should be female' do
+      expect(person).to be_female
+    end
+    it '(in this case) should not be male' do
+      expect(person).not_to be_male
     end
     it 's identity should be created based on arguments' do
       expect(person.identity.personal_code[0..6]).to eq('4921012')
