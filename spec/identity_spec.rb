@@ -14,6 +14,31 @@ RSpec::Matchers.define :have_valid_personal_code do |sex, date|
   end
 end
 
+RSpec::Matchers.define :be_born_on_the_same_day_as do |person2|
+  match do |person1|
+    same_birthday?(person1, person2)
+  end
+
+  def same_birthday?(a, b)
+    a.identity.personal_code[1..6] == b.identity.personal_code[1..6]
+  end
+end
+
+RSpec::Matchers
+  .define(:times_repeated_crime_results_in_status) do |times, status|
+  match do |identity|
+    criminal_status(identity, times) == status
+  end
+
+  def criminal_status(id, repeat)
+    neighborhood = Neighborhood.new('Senamiestis', City.new('Taurage'))
+    repeat.times do
+      id.add_criminal_record(2, neighborhood)
+    end
+    id.criminal_status
+  end
+end
+
 describe Identity do
   Map.instance.cities.clear
   let(:city) { City.new('Panevezys') }
@@ -42,6 +67,11 @@ describe Identity do
       female = Person.new('John', 'Siva', 'female', '1996-05-17',
                           Location.new(25, 25))
       expect(female.identity.personal_code).to eq('49605170000')
+    end
+    it 'holds persons birthday' do
+      female = Person.new('John', 'Siva', 'female', '1996-05-17',
+                          Location.new(25, 25))
+      expect(female).to be_born_on_the_same_day_as(person)
     end
     it 'does not have residence when initialized' do
       expect(person.identity.criminal_records).to eq([])
@@ -103,31 +133,23 @@ describe Identity do
         expect(identity.criminal_status).to eq('normal')
       end
     end
-    
-    context 'when crimmes adds up criminal status changes' do
+
+    context 'when crimes adds up criminal status changes' do
       it 'is suspicious when person participated in 1 crime' do
-        1.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('suspicious')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(1, 'suspicious')
       end
       it 'is still suspicious when person participated in 5 crimes' do
-        5.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('suspicious')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(5, 'suspicious')
       end
       it 'is dangerous when person participated in 6 crimes' do
-        6.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('dangerous')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(6, 'dangerous')
       end
       it 'is dangerous when more than 5 crimes adds up' do
-        7.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('dangerous')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(7, 'dangerous')
       end
     end
   end

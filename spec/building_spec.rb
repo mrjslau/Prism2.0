@@ -72,7 +72,7 @@ describe Building do
       building.remove_resident(person)
       expect(building.residents.length).to be(resident_count - 1)
     end
-    it '' do
+    it 'removes residence from persons identity' do
       building.add_resident(person)
       building.add_resident(person2)
       building.remove_resident(person)
