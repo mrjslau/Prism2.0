@@ -1,0 +1,14 @@
+require: 'rubocop-rspec'
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'config/environments/*.rb'
+    - 'config/initializers/*.rb'
+    - 'config/application.rb'
+    - 'config/spring.rb'
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'db/*.rb'
+    - 'test/test_helper.rb'
