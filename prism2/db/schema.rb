@@ -10,7 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181120130811) do
+ActiveRecord::Schema.define(version: 20181120144659) do
+
+  create_table "ambulances", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "neighborhood_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_ambulances_on_map_id"
+    t.index ["neighborhood_id"], name: "index_ambulances_on_neighborhood_id"
+  end
+
+  create_table "drones", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "neighborhood_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_drones_on_map_id"
+    t.index ["neighborhood_id"], name: "index_drones_on_neighborhood_id"
+  end
+
+  create_table "fire_brigades", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "neighborhood_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_fire_brigades_on_map_id"
+    t.index ["neighborhood_id"], name: "index_fire_brigades_on_neighborhood_id"
+  end
 
   create_table "identities", id: false, force: :cascade do |t|
     t.integer "personal_code"
@@ -29,14 +56,31 @@ ActiveRecord::Schema.define(version: 20181120130811) do
     t.integer "person_id"
     t.integer "phone_id"
     t.integer "pet_id"
+    t.integer "vehicle_id"
     t.index ["person_id"], name: "index_locations_on_person_id"
     t.index ["pet_id"], name: "index_locations_on_pet_id"
     t.index ["phone_id"], name: "index_locations_on_phone_id"
+    t.index ["vehicle_id"], name: "index_locations_on_vehicle_id"
   end
 
   create_table "maps", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "neighborhoods", force: :cascade do |t|
+    t.string "name"
+    t.float "temperature"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.text "message"
+    t.integer "map_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_notifications_on_map_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -60,6 +104,27 @@ ActiveRecord::Schema.define(version: 20181120130811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_phones_on_person_id"
+  end
+
+  create_table "police_units", force: :cascade do |t|
+    t.integer "map_id"
+    t.integer "neighborhood_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_police_units_on_map_id"
+    t.index ["neighborhood_id"], name: "index_police_units_on_neighborhood_id"
+  end
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string "licence_number"
+    t.integer "owner_id"
+    t.integer "driver_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "map_id"
+    t.index ["driver_id"], name: "index_vehicles_on_driver_id"
+    t.index ["map_id"], name: "index_vehicles_on_map_id"
+    t.index ["owner_id"], name: "index_vehicles_on_owner_id"
   end
 
 end

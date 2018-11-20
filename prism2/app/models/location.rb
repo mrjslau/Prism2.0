@@ -5,6 +5,7 @@ class Location < ApplicationRecord
   belongs_to :person
   belongs_to :phone
   belongs_to :pet
+  belongs_to :vehicle
 
   def change_latitude(latitude)
     self.latitude = latitude
