@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181120003842) do
+ActiveRecord::Schema.define(version: 20181120124628) do
 
   create_table "identities", id: false, force: :cascade do |t|
     t.integer "personal_code"
@@ -26,11 +26,33 @@ ActiveRecord::Schema.define(version: 20181120003842) do
     t.float "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "person_id"
+    t.integer "phone_id"
+    t.integer "pet_id"
+    t.index ["person_id"], name: "index_locations_on_person_id"
+    t.index ["pet_id"], name: "index_locations_on_pet_id"
+    t.index ["phone_id"], name: "index_locations_on_phone_id"
   end
 
   create_table "people", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "pets", force: :cascade do |t|
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_pets_on_person_id"
+  end
+
+  create_table "phones", force: :cascade do |t|
+    t.boolean "turned_on"
+    t.boolean "connected"
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_phones_on_person_id"
   end
 
 end

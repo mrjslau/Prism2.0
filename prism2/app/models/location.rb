@@ -2,6 +2,10 @@ require 'haversine'
 
 # Location model storing coordinates
 class Location < ApplicationRecord
+  belongs_to :person
+  belongs_to :phone
+  belongs_to :pet
+
   def change_latitude(latitude)
     self.latitude = latitude
   end
