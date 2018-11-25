@@ -7,7 +7,8 @@ RSpec::Matchers.define :have_valid_personal_code do |sex, date|
     gender_part = (sex.eql?('male') ? 3 : 4).to_s
     birth_date_part = date.tr('-./', '')[2..7]
     if person.identity.personal_code.start_with?(gender_part)
-      person.identity.personal_code[1..6] == birth_date_part
+      expect(person.identity.personal_code[1..6]).to eq(birth_date_part)
+      expect(person.identity.personal_code.length).to eq(11)
     else
       false
     end
@@ -28,6 +29,13 @@ RSpec::Matchers
       identity.add_criminal_record(2, neighborhood)
     end
     identity.criminal_status == status
+  end
+end
+
+RSpec::Matchers.define :be_incremented_by_one do |last_person_alike|
+  match do |personal_code|
+    expect(personal_code)
+      .to eq((last_person_alike.to_i + 1).to_s)
   end
 end
 
@@ -96,7 +104,7 @@ describe Identity do
       last_person_alike = person.identity.personal_code
       new_identity = described_class.new('Tom', 'Sue', 'male', '1996-05-17')
       expect(new_identity.personal_code)
-        .to eq((last_person_alike.to_i + 1).to_s)
+        .to be_incremented_by_one(last_person_alike)
     end
   end
 
