@@ -67,6 +67,13 @@ ActiveRecord::Schema.define(version: 20181125143555) do
     t.index ["person_id"], name: "index_identities_on_person_id"
   end
 
+  create_table "intersections", force: :cascade do |t|
+    t.string "name"
+    t.integer "street_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "locations", force: :cascade do |t|
     t.float "latitude"
     t.float "longitude"
@@ -143,6 +150,15 @@ ActiveRecord::Schema.define(version: 20181125143555) do
     t.datetime "updated_at", null: false
     t.index ["map_id"], name: "index_police_units_on_map_id"
     t.index ["neighborhood_id"], name: "index_police_units_on_neighborhood_id"
+  end
+
+  create_table "traffic_lights", force: :cascade do |t|
+    t.integer "intersection_id"
+    t.string "signal"
+    t.boolean "blinking"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["intersection_id"], name: "index_traffic_lights_on_intersection_id"
   end
 
   create_table "vehicles", force: :cascade do |t|
