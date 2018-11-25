@@ -1,19 +1,19 @@
 # Identity model, it has personal code as primary key
 class Identity < ApplicationRecord
+  self.primary_key = 'personal_code'
   has_many :criminal_records
   belongs_to :person
 
   def name
-    full_name.fetch(:name)
+    full_name.split[0]
   end
 
   def surname
-    full_name.fetch(:surname)
+    full_name.split[1]
   end
 
-  def add_criminal_record(offence, neighborhood)
-    criminal_records << { offence_level: offence,
-                          neighborhood: neighborhood }
+  def add_criminal_record(criminal_record)
+    criminal_records << criminal_record
   end
 
   def criminal_records_no
@@ -34,14 +34,6 @@ class Identity < ApplicationRecord
 
   def status_change_msg
     "#{name} #{surname}'s criminal status changed to: #{criminal_status}!"
-  end
-
-  def add_residence(building)
-    @residence = building
-  end
-
-  def remove_residence
-    remove_instance_variable(:@residence)
   end
 
 end
