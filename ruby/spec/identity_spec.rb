@@ -9,8 +9,6 @@ RSpec::Matchers.define :have_valid_personal_code do |sex, date|
     if person.identity.personal_code.start_with?(gender_part)
       expect(person.identity.personal_code[1..6]).to eq(birth_date_part)
       expect(person.identity.personal_code.length).to eq(11)
-    else
-      false
     end
   end
 end
