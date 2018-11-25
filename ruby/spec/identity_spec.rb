@@ -16,26 +16,18 @@ end
 
 RSpec::Matchers.define :be_born_on_the_same_day_as do |person2|
   match do |person1|
-    same_birthday?(person1, person2)
-  end
-
-  def same_birthday?(a, b)
-    a.identity.personal_code[1..6] == b.identity.personal_code[1..6]
+    person1.identity.personal_code[1..6] == person2.identity.personal_code[1..6]
   end
 end
 
 RSpec::Matchers
   .define(:times_repeated_crime_results_in_status) do |times, status|
   match do |identity|
-    criminal_status(identity, times) == status
-  end
-
-  def criminal_status(id, repeat)
     neighborhood = Neighborhood.new('Senamiestis', City.new('Taurage'))
-    repeat.times do
-      id.add_criminal_record(2, neighborhood)
+    times.times do
+      identity.add_criminal_record(2, neighborhood)
     end
-    id.criminal_status
+    identity.criminal_status == status
   end
 end
 

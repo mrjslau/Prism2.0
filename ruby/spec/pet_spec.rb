@@ -30,12 +30,14 @@ describe Pet do
         expect(pet.detect_if_owner_is_near).to be(true)
       end
     end
+
     context 'when owner is further than 50 meters' do
       it 'detects that that owner is not near' do
         pet.change_location(0.0005, 0)
         expect(pet.detect_if_owner_is_near).to be(false)
       end
     end
+
     context 'when owner is exactly 51 meters far' do
       it 'detects that that owner is not near' do
         pet.change_location(0.00045, 0)
