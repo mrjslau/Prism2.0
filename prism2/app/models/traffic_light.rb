@@ -1,3 +1,4 @@
+# TrafficLight model class
 class TrafficLight < ApplicationRecord
   belongs_to :intersection
 

@@ -1,0 +1,6 @@
+exclude_paths:
+  - db
+  - test
+  - app/channels
+  - app/jobs
+  - config
