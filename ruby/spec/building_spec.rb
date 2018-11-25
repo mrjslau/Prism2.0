@@ -51,6 +51,7 @@ describe Building do
       expect(person.identity.residence).to be(building)
     end
   end
+
   context 'when residents are added to a full building' do
     let(:small_building) do
       described_class.new(location, 'residential', 2, 1, neighborhood3)
