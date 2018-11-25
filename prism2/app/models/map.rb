@@ -8,6 +8,7 @@ class Map < ApplicationRecord
   has_many :notifications
   has_many :vehicles
   has_many :neighborhoods
+  has_many :police_stations
 
   def add_notification(notification)
     self.notifications << notification
