@@ -4,6 +4,7 @@ class Neighborhood < ApplicationRecord
   has_many :fire_brigades
   has_many :drones
   has_many :police_units
+  has_many :criminal_records
   belongs_to :map
 
   def change_temperature(temperature)
