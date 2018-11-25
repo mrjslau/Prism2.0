@@ -4,10 +4,11 @@ class Person < ApplicationRecord
   has_one :identity
   has_one :location
   has_many :phones
+  has_many :pets
   belongs_to :map
 
-  def change_location(location)
-    @location = location
+  def change_location(loc)
+    self.location = loc
   end
 
   def add_phone(phone)

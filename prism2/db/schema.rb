@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181125144347) do
+ActiveRecord::Schema.define(version: 20181125193743) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 20181125144347) do
     t.datetime "updated_at", null: false
     t.integer "person_id"
     t.integer "criminal_status"
+    t.string "gender"
+    t.date "birthday"
     t.index ["person_id"], name: "index_identities_on_person_id"
   end
 
