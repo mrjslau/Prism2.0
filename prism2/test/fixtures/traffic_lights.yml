@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  intersection: one
+  signal: MyString
+  blinking: false
+
+two:
+  intersection: two
+  signal: MyString
+  blinking: false
