@@ -61,7 +61,6 @@ describe Person do
       it 'does not have a phone' do
         person.add_phone(location)
         person.remove_phones
-        puts person.belongings[:phones]
         expect(person.phones?).to be false
       end
     end
