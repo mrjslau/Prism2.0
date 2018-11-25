@@ -2,6 +2,41 @@
 
 require 'spec_helper.rb'
 
+RSpec::Matchers.define :have_valid_personal_code do |sex, date|
+  match do |person|
+    gender_part = (sex.eql?('male') ? 3 : 4).to_s
+    birth_date_part = date.tr('-./', '')[2..7]
+    if person.identity.personal_code.start_with?(gender_part)
+      expect(person.identity.personal_code[1..6]).to eq(birth_date_part)
+      expect(person.identity.personal_code.length).to eq(11)
+    end
+  end
+end
+
+RSpec::Matchers.define :be_born_on_the_same_day_as do |person2|
+  match do |person1|
+    person1.identity.personal_code[1..6] == person2.identity.personal_code[1..6]
+  end
+end
+
+RSpec::Matchers
+  .define(:times_repeated_crime_results_in_status) do |times, status|
+  match do |identity|
+    neighborhood = Neighborhood.new('Senamiestis', City.new('Taurage'))
+    times.times do
+      identity.add_criminal_record(2, neighborhood)
+    end
+    identity.criminal_status == status
+  end
+end
+
+RSpec::Matchers.define :be_incremented_by_one do |last_person_alike|
+  match do |personal_code|
+    expect(personal_code)
+      .to eq((last_person_alike.to_i + 1).to_s)
+  end
+end
+
 describe Identity do
   Map.instance.cities.clear
   let(:city) { City.new('Panevezys') }
@@ -31,8 +66,19 @@ describe Identity do
                           Location.new(25, 25))
       expect(female.identity.personal_code).to eq('49605170000')
     end
+    it 'holds persons birthday' do
+      female = Person.new('John', 'Siva', 'female', '1996-05-17',
+                          Location.new(25, 25))
+      expect(female).to be_born_on_the_same_day_as(person)
+    end
     it 'does not have residence when initialized' do
       expect(person.identity.criminal_records).to eq([])
+    end
+    it 'generates personal code including date' do
+      sex = 'male'
+      date = '1990-01-01'
+      new_person = Person.new('John', 'Doe', sex, date, Location.new(25, 25))
+      expect(new_person).to have_valid_personal_code(sex, date)
     end
   end
 
@@ -56,7 +102,7 @@ describe Identity do
       last_person_alike = person.identity.personal_code
       new_identity = described_class.new('Tom', 'Sue', 'male', '1996-05-17')
       expect(new_identity.personal_code)
-        .to eq((last_person_alike.to_i + 1).to_s)
+        .to be_incremented_by_one(last_person_alike)
     end
   end
 
@@ -85,30 +131,23 @@ describe Identity do
         expect(identity.criminal_status).to eq('normal')
       end
     end
-    context 'when crimmes adds up criminal status changes' do
+
+    context 'when crimes adds up criminal status changes' do
       it 'is suspicious when person participated in 1 crime' do
-        1.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('suspicious')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(1, 'suspicious')
       end
       it 'is still suspicious when person participated in 5 crimes' do
-        5.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('suspicious')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(5, 'suspicious')
       end
       it 'is dangerous when person participated in 6 crimes' do
-        6.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('dangerous')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(6, 'dangerous')
       end
       it 'is dangerous when more than 5 crimes adds up' do
-        7.times do
-          identity.add_criminal_record(2, neighborhood)
-        end
-        expect(identity.criminal_status).to eq('dangerous')
+        expect(identity)
+          .to times_repeated_crime_results_in_status(7, 'dangerous')
       end
     end
   end

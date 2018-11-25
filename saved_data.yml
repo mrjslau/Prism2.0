@@ -54,17 +54,29 @@
         location: *2
         turned_on: false
         connected: false
+      - !ruby/object:Phone
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 10.0
+          longitude: 5.0
+        turned_on: false
+        connected: false
       :pets:
       - !ruby/object:Pet
         owner: *1
         location: !ruby/object:Location
-          latitude: 0
-          longitude: 0
+          latitude: 0.00029
+          longitude: 0.00018
       - !ruby/object:Pet
         owner: *1
         location: !ruby/object:Location
-          latitude: 0.002
-          longitude: 0.002
+          latitude: 0.00027
+          longitude: 0.00029
+      - !ruby/object:Pet
+        owner: *1
+        location: !ruby/object:Location
+          latitude: 0.00018
+          longitude: 0.00029
   - &3 !ruby/object:Person
     identity: !ruby/object:Identity
       full_name:
@@ -87,16 +99,16 @@
       - !ruby/object:Phone
         owner: *3
         location: !ruby/object:Location
-          latitude: '10'
-          longitude: '12'
+          latitude: 10
+          longitude: 12
         turned_on: false
         connected: false
       :pets:
       - !ruby/object:Pet
         owner: *3
         location: !ruby/object:Location
-          latitude: 5
-          longitude: 5
+          latitude: 0.0003
+          longitude: 0.006
   - &4 !ruby/object:Person
     identity: !ruby/object:Identity
       full_name:
@@ -105,8 +117,8 @@
       personal_code: '39701010000'
       criminal_records: []
     location: !ruby/object:Location
-      latitude: 5.0002
-      longitude: 5
+      latitude: 5.0
+      longitude: 5.0
     belongings:
       :phones:
       - !ruby/object:Phone
@@ -147,7 +159,7 @@
       - !ruby/object:Pet
         owner: *5
         location: !ruby/object:Location
-          latitude: 11
+          latitude: 10.5
           longitude: 0
   - &6 !ruby/object:Person
     identity: !ruby/object:Identity

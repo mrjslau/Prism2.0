@@ -51,6 +51,7 @@ describe Building do
       expect(person.identity.residence).to be(building)
     end
   end
+
   context 'when residents are added to a full building' do
     let(:small_building) do
       described_class.new(location, 'residential', 2, 1, neighborhood3)
@@ -72,7 +73,7 @@ describe Building do
       building.remove_resident(person)
       expect(building.residents.length).to be(resident_count - 1)
     end
-    it '' do
+    it 'removes residence from persons identity' do
       building.add_resident(person)
       building.add_resident(person2)
       building.remove_resident(person)
