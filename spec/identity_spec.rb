@@ -7,35 +7,33 @@ RSpec::Matchers.define :have_valid_personal_code do |sex, date|
     gender_part = (sex.eql?('male') ? 3 : 4).to_s
     birth_date_part = date.tr('-./', '')[2..7]
     if person.identity.personal_code.start_with?(gender_part)
-      person.identity.personal_code[1..6] == birth_date_part
-    else
-      false
+      expect(person.identity.personal_code[1..6]).to eq(birth_date_part)
+      expect(person.identity.personal_code.length).to eq(11)
     end
   end
 end
 
 RSpec::Matchers.define :be_born_on_the_same_day_as do |person2|
   match do |person1|
-    same_birthday?(person1, person2)
-  end
-
-  def same_birthday?(a, b)
-    a.identity.personal_code[1..6] == b.identity.personal_code[1..6]
+    person1.identity.personal_code[1..6] == person2.identity.personal_code[1..6]
   end
 end
 
 RSpec::Matchers
   .define(:times_repeated_crime_results_in_status) do |times, status|
   match do |identity|
-    criminal_status(identity, times) == status
-  end
-
-  def criminal_status(id, repeat)
     neighborhood = Neighborhood.new('Senamiestis', City.new('Taurage'))
-    repeat.times do
-      id.add_criminal_record(2, neighborhood)
+    times.times do
+      identity.add_criminal_record(2, neighborhood)
     end
-    id.criminal_status
+    identity.criminal_status == status
+  end
+end
+
+RSpec::Matchers.define :be_incremented_by_one do |last_person_alike|
+  match do |personal_code|
+    expect(personal_code)
+      .to eq((last_person_alike.to_i + 1).to_s)
   end
 end
 
@@ -104,7 +102,7 @@ describe Identity do
       last_person_alike = person.identity.personal_code
       new_identity = described_class.new('Tom', 'Sue', 'male', '1996-05-17')
       expect(new_identity.personal_code)
-        .to eq((last_person_alike.to_i + 1).to_s)
+        .to be_incremented_by_one(last_person_alike)
     end
   end
 

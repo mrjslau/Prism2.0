@@ -11,6 +11,7 @@ describe GateBarrier do
       expect(gate_barrier.blocked?).to be(true)
     end
   end
+
   describe '#unblock_way' do
     it 'puts the barrier up' do
       gate_barrier.unblock_way
