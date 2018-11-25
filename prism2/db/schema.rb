@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181120144659) do
+ActiveRecord::Schema.define(version: 20181120174341) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -39,6 +39,12 @@ ActiveRecord::Schema.define(version: 20181120144659) do
     t.index ["neighborhood_id"], name: "index_fire_brigades_on_neighborhood_id"
   end
 
+  create_table "gate_barriers", force: :cascade do |t|
+    t.boolean "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "identities", id: false, force: :cascade do |t|
     t.integer "personal_code"
     t.string "full_name"
@@ -57,6 +63,8 @@ ActiveRecord::Schema.define(version: 20181120144659) do
     t.integer "phone_id"
     t.integer "pet_id"
     t.integer "vehicle_id"
+    t.integer "gate_barrier_id"
+    t.index ["gate_barrier_id"], name: "index_locations_on_gate_barrier_id"
     t.index ["person_id"], name: "index_locations_on_person_id"
     t.index ["pet_id"], name: "index_locations_on_pet_id"
     t.index ["phone_id"], name: "index_locations_on_phone_id"
@@ -73,6 +81,8 @@ ActiveRecord::Schema.define(version: 20181120144659) do
     t.float "temperature"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "map_id"
+    t.index ["map_id"], name: "index_neighborhoods_on_map_id"
   end
 
   create_table "notifications", force: :cascade do |t|
