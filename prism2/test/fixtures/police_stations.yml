@@ -2,8 +2,6 @@
 
 one:
   map: one
-  neighborhood: one
 
 two:
   map: two
-  neighborhood: two

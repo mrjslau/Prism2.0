@@ -2,11 +2,11 @@ require 'haversine'
 
 # Location model storing coordinates
 class Location < ApplicationRecord
-  belongs_to :person
-  belongs_to :phone
-  belongs_to :pet
-  belongs_to :vehicle
-  belongs_to :gate_barrier
+  belongs_to :person, optional: true
+  belongs_to :phone, optional: true
+  belongs_to :pet, optional: true
+  belongs_to :vehicle, optional: true
+  belongs_to :gate_barrier, optional: true
 
   def change_latitude(latitude)
     self.latitude = latitude
