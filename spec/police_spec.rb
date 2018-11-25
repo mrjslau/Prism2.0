@@ -24,6 +24,7 @@ describe Police do
         expect(police.registered_crimes.key?(neighborhood)).to be(false)
       end
     end
+
     context 'when person performed a crime' do
       it 's _ appears as key in criminal records hash' do
         police.register_crime(neighborhood, 2, person)

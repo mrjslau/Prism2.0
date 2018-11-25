@@ -49,12 +49,14 @@ describe Person do
         expect(person.phones?).to be false
       end
     end
+
     context 'when a phone is added' do
       it 'is present in persons belongings' do
         person.add_phone(location)
         expect(person.phones?).to be true
       end
     end
+
     context 'when phone are removed a person' do
       it 'does not have a phone' do
         person.add_phone(location)
@@ -108,6 +110,7 @@ describe Person do
         expect(person.near_any_phone?).to be true
       end
     end
+
     context 'when person is not near phone' do
       it 'person does not have his phone' do
         person.add_phone(Location.new(2, 2))
@@ -122,12 +125,14 @@ describe Person do
         expect(person.pets?).to be false
       end
     end
+
     context 'when a pet is added to a person' do
       it 'has a pet' do
         person.add_pet(location)
         expect(person.pets?).to be true
       end
     end
+
     context 'when pet is neat its owner' do
       it 's owner is near to the pet' do
         person.add_pet(Location.new(0, 0))
@@ -135,6 +140,7 @@ describe Person do
           .to be(true)
       end
     end
+
     context 'when pets and phones are removed from a person' do
       it 'initializes belongings to: phones: [], pets: [])' do
         person.add_phone(location)
@@ -144,6 +150,7 @@ describe Person do
         expect(person.belongings).to eq(phones: [], pets: [])
       end
     end
+
     context 'when adding phone and pet' do
       it 'belongings should include pet' do
         pet = person.add_pet(location)
