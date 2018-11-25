@@ -8,13 +8,9 @@ RSpec::Matchers.define :have_meaningfull_id do |type, floors, neighborhood|
     neighborhood_id = neighborhood1.idx_in_city
     city_id = neighborhood.city_idx
 
-    if building.id.nil?
-      false
-    else
-      building.id == ((((type_num * 100 + city_id
-                        ) * 100 + neighborhood_id
-                       ) * 100 + floors) * 1000).to_s
-    end
+    building.id == ((((type_num * 100 + city_id
+                      ) * 100 + neighborhood_id
+                     ) * 100 + floors) * 1000).to_s
   end
 end
 
