@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181125143555) do
+ActiveRecord::Schema.define(version: 20181125144347) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20181125143555) do
   end
 
   create_table "identities", id: false, force: :cascade do |t|
-    t.integer "personal_code"
+    t.bigint "personal_code"
     t.string "full_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
