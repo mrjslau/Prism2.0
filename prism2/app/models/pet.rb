@@ -9,6 +9,6 @@ class Pet < ApplicationRecord
   end
 
   def detect_if_owner_is_near
-    location.calculate_distance(owner.location) <= 50
+    location.calculate_distance(person.location) <= 50
   end
 end
