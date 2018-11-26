@@ -2,6 +2,16 @@
 
 require 'spec_helper.rb'
 
+RSpec::Matchers.define :have_same_location do |expected_object|
+  match do |actual_object|
+    if actual_object.location.latitude == expected_object.location.latitude
+      actual_object.location.longitude == expected_object.location.longitude
+    else
+      false
+    end
+  end
+end
+
 describe Location do
   let(:location)  { described_class.new(54.7, 25.3) }
   let(:location2) { described_class.new(0, 0)       }
@@ -65,6 +75,26 @@ describe Location do
       it 'will print [54.7, 25.3]' do
         expect(location.to_s).to eq('[54.7, 25.3]')
       end
+    end
+  end
+
+  context 'when creating two objects in the same location' do
+    it 'their location should be equal' do
+      person1 = Person.new('Jane', 'Doe', 'female', '1992-10-12',
+                           described_class.new(54, 23))
+      person2 = Person.new('John', 'Doe', 'male', '1990-10-12',
+                           described_class.new(54, 23))
+      expect(person1).to have_same_location(person2)
+    end
+  end
+
+  context 'when creating two objects in different locations' do
+    it 'their location should not be equal' do
+      person1 = Person.new('Jane', 'Doe', 'female', '1992-10-12',
+                           described_class.new(54, 23))
+      person2 = Person.new('John', 'Doe', 'male', '1990-10-12',
+                           described_class.new(23, 54))
+      expect(person1).not_to have_same_location(person2)
     end
   end
 end

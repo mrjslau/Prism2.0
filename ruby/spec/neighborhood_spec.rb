@@ -7,6 +7,7 @@ describe Neighborhood do
     Map.instance.cities.clear
     Map.instance.residents.clear
   end
+
   let(:city) { City.new('Kaunas') }
   let(:neighborhood1) { described_class.new('Zaliakalnis', city) }
   let(:neighborhood2) { described_class.new('Sanciai', city, 25) }
@@ -78,6 +79,7 @@ describe Neighborhood do
       expect(neighborhood1.active_objects.fetch(:units).length).to be 1
     end
   end
+
   describe '#dangerous?' do
     it 'does not change crime level to dangerous yet' do
       3.times do

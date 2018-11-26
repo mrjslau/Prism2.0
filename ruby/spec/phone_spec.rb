@@ -21,7 +21,7 @@ describe Phone do
     it 'has a longitude' do
       expect(phone.location.longitude).to eq 0
     end
-    it '' do
+    it 'is turned off' do
       expect(phone.turned_on).to be false
     end
   end
@@ -48,12 +48,14 @@ describe Phone do
         expect(phone.detect_if_owner_is_near).to be(true)
       end
     end
+
     context 'when owner is further than 50 meters' do
       it 'detects that that owner is not near' do
         phone.change_location(0.0005, 0)
         expect(phone.detect_if_owner_is_near).to be(false)
       end
     end
+
     context 'when owner is exactly 51 meters far' do
       it 'detects that that owner is not near' do
         phone.change_location(0.00045, 0)
@@ -117,6 +119,7 @@ describe Phone do
         phone.turn_on
         phone.connect
       end
+
       it 'is able to listen to a call' do
         expect(phone.listen_call).to be true
       end
