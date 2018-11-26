@@ -71,3 +71,5 @@ prism2/node_modules
 prism2/yarn-error.log
 
 prism2/.byebug_history
+
+prism2/coverage/*
