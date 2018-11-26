@@ -14,6 +14,10 @@ class Building < ApplicationRecord
   validates :neighborhood, presence: true
   before_create :init_building_id
 
+  def livable_and_not_full?
+    building_type == 'residential' && living_places > 0
+  end
+
   private
 
   def init_building_id
@@ -40,6 +44,6 @@ class Building < ApplicationRecord
 
   def last_as_id(from, to)
     i = Building.where(building_id: from..to).last
-    i || false
+    !i.nil? ? i.building_id : false
   end
 end
