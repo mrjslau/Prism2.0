@@ -11,9 +11,36 @@
 Ruby/Ruby on Rails university project for Agile Development course 2018.
 
 ### Prerequisites
-Ruby 2.x.x
-Bundler 1.x.x
+Ruby 2.5.x ---- Rails 5.1.6 ---- Bundler 1.16.x
 
+## Rails :
+### Getting started
+
+To get started with the app, clone the repo and then install the needed gems:
+
+```
+$ bundle install --without production
+```
+
+Next, migrate the database:
+
+```
+$ rails db:migrate
+```
+
+Finally, run the test suite to verify that everything is working correctly:
+
+```
+$ rails test
+```
+
+If the test suite passes, you'll be ready to run the app in a local server:
+
+```
+$ rails server
+```
+
+## Ruby :
 ### Run UI
 ```
 ruby lib/ui.rb

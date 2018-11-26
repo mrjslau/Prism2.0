@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  personal_code: 
+  full_name: MyString
+
+two:
+  personal_code: 
+  full_name: MyString

@@ -1,0 +1,7 @@
+--- !map:HashWithIndifferentAccess
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+didlaukis:
+  id: 1
+  name: Didlaukis
+  active_objects: { units: [], people: [] }
