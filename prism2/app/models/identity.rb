@@ -4,6 +4,11 @@ class Identity < ApplicationRecord
   has_one :residence
   has_many :criminal_records
   belongs_to :person
+  validates :full_name, presence: true
+  validates :gender, presence: true, inclusion: %w[male female]
+  validates :person, presence: true
+  validates :birthday, presence: true
+  before_create :init_personal_code
 
   def name
     full_name.split[0]
@@ -37,4 +42,30 @@ class Identity < ApplicationRecord
     "#{name} #{surname}'s criminal status changed to: #{criminal_status}!"
   end
 
+  private
+
+  def init_personal_code
+    self.personal_code = generate_personal_code
+  end
+
+  def generate_personal_code
+    from = (gen_no * 1_000_000 + birth_code) * 10_000
+    to = from + 10_000
+    i = last_as_personal_code(from, to)
+    i ||= from
+    i + 1
+  end
+
+  def birth_code
+    birthday.strftime('%Y%m%d')[2..7].to_i
+  end
+
+  def gen_no
+    gender == 'male' ? 3 : 4
+  end
+
+  def last_as_personal_code(from, to)
+    i = Identity.where(personal_code: from..to).last
+    !i.nil? ? i.personal_code : false
+  end
 end
