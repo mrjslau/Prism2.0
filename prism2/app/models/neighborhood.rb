@@ -20,7 +20,7 @@ class Neighborhood < ApplicationRecord
   def notify_abnormal_temperature
     message = "Temperature have reached: #{temperature} in " \
               "#{name} neighborhood!"
-    map.add_notification(Notification.create(message: message, map_id: self.map.id))
+    map.add_notification(Notification.create(message: message, map_id: map.id))
   end
 
   def unit_entered(unit)

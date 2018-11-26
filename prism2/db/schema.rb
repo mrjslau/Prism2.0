@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 20181126173441) do
     t.datetime "updated_at", null: false
     t.integer "person_id"
     t.integer "criminal_status"
+    t.string "gender"
+    t.date "birthday"
     t.index ["person_id"], name: "index_identities_on_person_id"
   end
 
