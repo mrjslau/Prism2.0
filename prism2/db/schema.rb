@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181125193743) do
+ActiveRecord::Schema.define(version: 20181125144347) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(version: 20181125193743) do
     t.datetime "updated_at", null: false
     t.index ["map_id"], name: "index_ambulances_on_map_id"
     t.index ["neighborhood_id"], name: "index_ambulances_on_neighborhood_id"
+  end
+
+  create_table "buildings", id: false, force: :cascade do |t|
+    t.bigint "building_id"
+    t.string "building_type"
+    t.integer "floors"
+    t.integer "living_places"
+    t.integer "neighborhood_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["neighborhood_id"], name: "index_buildings_on_neighborhood_id"
   end
 
   create_table "criminal_records", force: :cascade do |t|
@@ -86,6 +97,8 @@ ActiveRecord::Schema.define(version: 20181125193743) do
     t.integer "pet_id"
     t.integer "vehicle_id"
     t.integer "gate_barrier_id"
+    t.integer "building_id"
+    t.index ["building_id"], name: "index_locations_on_building_id"
     t.index ["gate_barrier_id"], name: "index_locations_on_gate_barrier_id"
     t.index ["person_id"], name: "index_locations_on_person_id"
     t.index ["pet_id"], name: "index_locations_on_pet_id"
@@ -96,6 +109,7 @@ ActiveRecord::Schema.define(version: 20181125193743) do
   create_table "maps", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "city_name"
   end
 
   create_table "neighborhoods", force: :cascade do |t|
@@ -152,6 +166,15 @@ ActiveRecord::Schema.define(version: 20181125193743) do
     t.datetime "updated_at", null: false
     t.index ["map_id"], name: "index_police_units_on_map_id"
     t.index ["neighborhood_id"], name: "index_police_units_on_neighborhood_id"
+  end
+
+  create_table "residences", force: :cascade do |t|
+    t.integer "identity_id"
+    t.integer "building_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["building_id"], name: "index_residences_on_building_id"
+    t.index ["identity_id"], name: "index_residences_on_identity_id"
   end
 
   create_table "traffic_lights", force: :cascade do |t|

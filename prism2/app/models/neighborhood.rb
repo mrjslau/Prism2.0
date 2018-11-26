@@ -6,6 +6,8 @@ class Neighborhood < ApplicationRecord
   has_many :police_units
   has_many :criminal_records
   belongs_to :map
+  validates :name, presence: true, uniqueness: { scope: :map }
+  validates :map, presence: true
 
   def change_temperature(temperature)
     self.temperature = temperature
