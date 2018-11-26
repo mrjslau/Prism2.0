@@ -40,6 +40,8 @@ group :development, :test do
   gem 'selenium-webdriver'
 
   gem 'rspec-rails'
+  # Adds support for testing with 'mock_model' (check if a method was called)
+  gem 'rspec-activemodel-mocks'
 end
 
 group :development do
