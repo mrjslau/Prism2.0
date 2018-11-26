@@ -1,5 +1,6 @@
 # Neighborhood model class
 class Neighborhood < ApplicationRecord
+  serialize :active_objects
   has_many :ambulances
   has_many :fire_brigades
   has_many :drones
@@ -20,5 +21,13 @@ class Neighborhood < ApplicationRecord
     message = "Temperature have reached: #{temperature} in " \
               "#{name} neighborhood!"
     map.add_notification(Notification.create(message: message, map_id: self.map.id))
+  end
+
+  def unit_entered(unit)
+    self.active_objects.fetch(:units) << unit
+  end
+
+  def unit_exited(unit)
+    self.active_objects.fetch(:units).delete(unit)
   end
 end
