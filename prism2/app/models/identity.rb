@@ -35,5 +35,4 @@ class Identity < ApplicationRecord
   def status_change_msg
     "#{name} #{surname}'s criminal status changed to: #{criminal_status}!"
   end
-
 end

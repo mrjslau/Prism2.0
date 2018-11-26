@@ -11,7 +11,7 @@ class Map < ApplicationRecord
   has_many :police_stations
 
   def add_notification(notification)
-    self.notifications << notification
+    notifications << notification
   end
 
   def delete_all_notifications
