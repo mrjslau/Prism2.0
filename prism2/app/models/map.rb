@@ -9,6 +9,7 @@ class Map < ApplicationRecord
   has_many :vehicles
   has_many :neighborhoods
   has_many :police_stations
+  validates :city_name, presence: true, uniqueness: true
 
   def add_notification(notification)
     notifications << notification
