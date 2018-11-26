@@ -7,6 +7,7 @@ class Location < ApplicationRecord
   belongs_to :pet, optional: true
   belongs_to :vehicle, optional: true
   belongs_to :gate_barrier, optional: true
+  belongs_to :building, optional: true
 
   def change_latitude(latitude)
     self.latitude = latitude
