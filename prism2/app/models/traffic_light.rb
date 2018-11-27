@@ -3,22 +3,22 @@ class TrafficLight < ApplicationRecord
   belongs_to :intersection
 
   def change_signal(signal)
-    @signal = signal
+    self.signal = signal
   end
 
   def turn_off
-    @signal = 'none'
-    @blinking = false
+    self.signal = 'none'
+    self.blinking = false
   end
 
   def turn_on
-    @signal = 'red'
-    @blinking = false
+    self.signal = 'red'
+    self.blinking = false
   end
 
   def disable
-    @signal = 'yellow'
-    @blinking = true
+    self.signal = 'yellow'
+    self.blinking = true
   end
 
   def blinking?

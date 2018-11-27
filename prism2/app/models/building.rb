@@ -7,11 +7,10 @@ class Building < ApplicationRecord
   validates :building_type, presence: true,
                             inclusion: %w[commercial residential public]
   validates :floors, presence: true, numericality: { greater_than: 0 }
-  validates :living_places, presence: true,
-                            if: -> { building_type == 'residential' },
-                            numericality: { greater_than: 0 }, on: :create,
-                            allow_blank: true
+  validates :living_places, presence: true
+  validate :valid_living_places
   validates :neighborhood, presence: true
+  before_validation :init_living_places_if_nil
   before_create :init_building_id
 
   def livable_and_not_full?
@@ -19,6 +18,16 @@ class Building < ApplicationRecord
   end
 
   private
+
+  def init_living_places_if_nil
+    self.living_places = 0 if living_places.nil?
+  end
+
+  def valid_living_places
+    (building_type == 'residential' || living_places.zero?) ||
+      errors
+        .add(:living_places, 'non residential building cannot have living place')
+  end
 
   def init_building_id
     self.building_id = generate_building_id

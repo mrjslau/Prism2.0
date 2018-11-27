@@ -1,16 +1,14 @@
-# spec/person_spec.rb
+require 'rails_helper.rb'
 
-require 'spec_helper.rb'
-
-describe Person do
+RSpec.describe Person, type: :model do
   fixtures :locations, :identities, :maps, :phones, :pets
-  let(:location) { locations(:one) }
-  let(:location2) { locations(:two) }
-  let(:identity) { identities(:one) }
-  let(:pet) { pets(:one) }
-  let(:phone) { phones(:one) }
-  let(:person) { Person.new }
-  let(:map) { maps(:one) }
+  let(:location)  { locations(:one)     }
+  let(:location2) { locations(:two)     }
+  let(:identity)  { identities(:one)    }
+  let(:pet)       { pets(:laika)        }
+  let(:phone)     { phones(:nokia)      }
+  let(:person)    { described_class.new }
+  let(:map)       { maps(:one)          }
 
   before do
     person.location = location
@@ -35,7 +33,7 @@ describe Person do
         expect(person.phones?).to be false
       end
     end
-    
+
     context 'when a phone is added' do
       it 'is present in persons belongings' do
         person.add_phone(phone)
@@ -54,7 +52,6 @@ describe Person do
 
   describe '#add_phone' do
     context 'when a phone is added' do
-
       it 's owner does not have phone before adding one' do
         expect(person.phones?).to be false
       end
@@ -130,13 +127,31 @@ describe Person do
     end
   end
 
+  describe '#near_any_pet?' do
+    context 'when pets are nearby' do
+      it 'returns true' do
+        pet.location = location
+        person.add_pet(pet)
+        expect(person.near_any_pet?).to be(true)
+      end
+    end
+
+    context 'when there are no pets nearby' do
+      it 'returns false' do
+        pet.location = location2
+        person.add_pet(pet)
+        expect(person.near_any_pet?).to be(false)
+      end
+    end
+  end
+
   describe '#change_location' do
     it 'changes persons latitude ' do
-      person.change_location(location2)
+      person.change_location(Location.new(latitude: 3))
       expect(person.location.latitude).to eq(3)
     end
     it 'changes persons longitude' do
-      person.change_location(location2)
+      person.change_location(Location.new(longitude: 3))
       expect(person.location.longitude).to eq(3)
     end
   end

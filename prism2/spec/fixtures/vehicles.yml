@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  licence_number: MyString
-  owner: one
-  driver: one
+bmw:
+  licence_number: FHD325
+  owner_id: 1
+  driver_id: 2
 
-two:
-  licence_number: MyString
-  owner: two
-  driver: two
+porsche:
+  licence_number: GTK911
+  owner: 2
+  driver: 2

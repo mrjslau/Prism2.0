@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe FireBrigade, type: :model do
   fixtures :fire_brigades, :neighborhoods
   let(:brigade) { fire_brigades(:brigade) }
-  
+
   describe '#travel_to' do
-    context "enters a neighborhood" do
-      it "and notifies the neighborhood it entered" do
+    context 'when enters a neighborhood' do
+      it 'and notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-			  expect(neighborhood).to receive(:unit_entered).with(brigade)
-			  brigade.travel_to(neighborhood)
+        expect(neighborhood).to receive(:unit_entered).with(brigade)
+        brigade.travel_to(neighborhood)
       end
 
-      it "and notifies the neighborhood it left" do
+      it 'and notifies the neighborhood it left' do
         old_hood = brigade.neighborhood
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { brigade }
@@ -20,7 +20,7 @@ RSpec.describe FireBrigade, type: :model do
         expect(old_hood.active_objects.fetch(:units)).not_to include(brigade)
       end
 
-      it "and doesn't notify a neighborhood if wasnt in one" do
+      it 'and doesn`t notify a neighborhood if wasnt in one' do
         brigade.neighborhood = nil
         hood = mock_model(Neighborhood)
         allow(hood).to receive(:unit_entered) { brigade }
@@ -28,7 +28,7 @@ RSpec.describe FireBrigade, type: :model do
         expect(brigade.neighborhood).not_to receive(:unit_exited)
       end
 
-      it "and changes the current active neighborhood" do
+      it 'and changes the current active neighborhood' do
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { brigade }
         brigade.travel_to(new_hood)

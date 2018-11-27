@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+nokia:
   turned_on: false
   connected: false
-  person: one
+  person_id: 1
 
-two:
+iphone:
   turned_on: false
   connected: false
-  person: two
+  person_id: 2

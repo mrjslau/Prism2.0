@@ -1,11 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  intersection: one
-  signal: MyString
-  blinking: false
+  intersection_id: 1
+  signal: 'yellow'
+  blinking: true
 
-two:
-  intersection: two
-  signal: MyString
-  blinking: false

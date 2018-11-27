@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+b_one:
+  building_id: 5001001001
+  building_type: 'commercial'
+  floors: 1
+  living_places: 0
+  neighborhood_id: 1
+
+b_two:
+  building_id: 6001001001
+  building_type: 'residential'
+  floors: 4
+  living_places: 2
+  neighborhood_id: 1
+
+b_three:
+  building_id: 7001001001
+  floors: 3
+  building_type: 'public'
+  living_places: 0
+  neighborhood_id: 1

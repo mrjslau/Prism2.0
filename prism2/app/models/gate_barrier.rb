@@ -3,11 +3,11 @@ class GateBarrier < ApplicationRecord
   has_one :location
 
   def block_way
-    @status = true
+    self.status = true
   end
 
   def unblock_way
-    @status = false
+    self.status = false
   end
 
   def blocked?

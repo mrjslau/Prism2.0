@@ -5,3 +5,9 @@ didlaukis:
   id: 1
   name: Didlaukis
   active_objects: { units: [], people: [] }
+  map_id: 1
+
+naugardukas:
+  id: 2
+  name: Naugardukas
+  active_objects: { units: [], people: [] }

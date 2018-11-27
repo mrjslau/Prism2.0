@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe PoliceUnit, type: :model do
   fixtures :police_units, :neighborhoods
   let(:unit) { police_units(:unit) }
-  
+
   describe '#travel_to' do
-    context "enters a neighborhood" do
-      it "and notifies the neighborhood it entered" do
+    context 'when police unit enters a neighborhood' do
+      it 'and notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-			  expect(neighborhood).to receive(:unit_entered).with(unit)
-			  unit.travel_to(neighborhood)
+        expect(neighborhood).to receive(:unit_entered).with(unit)
+        unit.travel_to(neighborhood)
       end
 
-      it "and notifies the neighborhood it left" do
+      it 'and notifies the neighborhood it left' do
         old_hood = unit.neighborhood
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { unit }
@@ -28,7 +28,7 @@ RSpec.describe PoliceUnit, type: :model do
         expect(unit.neighborhood).not_to receive(:unit_exited)
       end
 
-      it "and changes the current active neighborhood" do
+      it 'and changes the current active neighborhood' do
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { unit }
         unit.travel_to(new_hood)

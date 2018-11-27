@@ -1,17 +1,16 @@
-# spec/identity_spec.rb
-
 require 'rails_helper'
 
 RSpec.describe Identity, type: :model do
-  fixtures :neighborhoods, :people, :identities, :maps, :locations, :criminal_records
-  let(:neighborhood) { neighborhoods(:one) }
+  fixtures :neighborhoods, :people, :identities, :maps, 
+           :locations, :criminal_records
+  let(:neighborhood)    { neighborhoods(:one) }
   let(:criminal_record) { criminal_records(:one) }
-  let(:location) { locations(:one) }
-  let(:identity) { identities(:one) }
-  let(:identity2) { identities(:two) }
-  let(:map) { maps(:one) }
-  let(:person) { Person.new }
-  let(:person2) { Person.new }
+  let(:location)        { locations(:one) }
+  let(:identity)        { identities(:one) }
+  let(:identity2)       { identities(:two) }
+  let(:map)             { maps(:one) }
+  let(:person)          { Person.new }
+  let(:person2)         { Person.new }
 
   before do
     person.identity = identity
