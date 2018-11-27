@@ -1,9 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  message: MyText
-  map: one
-
-two:
-  message: MyText
-  map: two
+  message: 'Pasilaiciai is on fire'
+  map_id: 1

@@ -1,9 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  street_count: 1
-
-two:
-  name: MyString
-  street_count: 1
+zalg_kalv:
+  name: 'Zalgirio-Kalvariju'
+  street_count: 4
