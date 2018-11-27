@@ -6,6 +6,7 @@ class Neighborhood < ApplicationRecord
   has_many :drones
   has_many :police_units
   has_many :criminal_records
+  has_many :buildings
   belongs_to :map
   validates :name, presence: true, uniqueness: { scope: :map }
   validates :map, presence: true
@@ -26,10 +27,10 @@ class Neighborhood < ApplicationRecord
   end
 
   def unit_entered(unit)
-    self.active_objects.fetch(:units) << unit
+    active_objects.fetch(:units) << unit
   end
 
   def unit_exited(unit)
-    self.active_objects.fetch(:units).delete(unit)
+    active_objects.fetch(:units).delete(unit)
   end
 end
