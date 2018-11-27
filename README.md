@@ -1,5 +1,5 @@
 # Prism2.0
-Ruby/Ruby on Rails university project for Agile Development course 2018.
+Ruby/Ruby on Rails university project for Agile Development course 2018 .
 
 ### Prerequisites
 Ruby 2.5.x ---- Rails 5.1.6 ---- Bundler 1.16.x
