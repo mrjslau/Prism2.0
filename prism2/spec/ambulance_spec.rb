@@ -19,6 +19,21 @@ RSpec.describe Ambulance, type: :model do
         ambulance.travel_to(new_hood)
         expect(old_hood.active_objects.fetch(:units)).not_to include(ambulance)
       end
+
+      it "and doesn't notify a neighborhood if wasnt in one" do
+        ambulance.neighborhood = nil
+        hood = mock_model(Neighborhood)
+        allow(hood).to receive(:unit_entered) { ambulance }
+        ambulance.travel_to(hood)
+        expect(ambulance.neighborhood).not_to receive(:unit_exited)
+      end
+
+      it "and changes the current active neighborhood" do
+        new_hood = mock_model(Neighborhood)
+        allow(new_hood).to receive(:unit_entered) { ambulance }
+        ambulance.travel_to(new_hood)
+        expect(ambulance.neighborhood).to equal(new_hood)
+      end
     end
   end
 end
