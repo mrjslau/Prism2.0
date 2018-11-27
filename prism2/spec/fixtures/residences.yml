@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+r_one:
+  building_id: 6001001001
+  identity_id: 1
+
+r_two:
+  building_id: 6001001001
+  identity_id: 1
