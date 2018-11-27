@@ -5,14 +5,14 @@ RSpec.describe Ambulance, type: :model do
   let(:ambulance) { ambulances(:ambulance) }
 
   describe '#travel_to' do
-    context "enters a neighborhood" do
-      it "and notifies the neighborhood it entered" do
+    context 'when enters a neighborhood' do
+      it 'notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-			  expect(neighborhood).to receive(:unit_entered).with(ambulance)
-			  ambulance.travel_to(neighborhood)
+        expect(neighborhood).to receive(:unit_entered).with(ambulance)
+        ambulance.travel_to(neighborhood)
       end
 
-      it "and notifies the neighborhood it left" do
+      it 'and notifies the neighborhood it left' do
         old_hood = ambulance.neighborhood
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { ambulance }
@@ -28,7 +28,7 @@ RSpec.describe Ambulance, type: :model do
         expect(ambulance.neighborhood).not_to receive(:unit_exited)
       end
 
-      it "and changes the current active neighborhood" do
+      it 'and changes the current active neighborhood' do
         new_hood = mock_model(Neighborhood)
         allow(new_hood).to receive(:unit_entered) { ambulance }
         ambulance.travel_to(new_hood)
