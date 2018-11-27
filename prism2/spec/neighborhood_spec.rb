@@ -41,8 +41,11 @@ RSpec.describe Neighborhood, type: :model do
     it 'calls notify method if temperature is abnormal' do
       neighborhood.temperature = nil
       neighborhood.change_temperature(45.0)
-      expect(neighborhood.map.notifications.first.message)
-        .to eq('Temperature has reached: 45.0 in Fabai neighborhood!')
+      message = nil
+      neighborhood.map.notifications.each do |n| 
+        message = n.message if n.message == "Temperature have reached: 45.0 in Fabai neighborhood!"
+      end
+      expect(message).not_to be_nil
     end
   end
 
