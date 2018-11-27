@@ -51,9 +51,9 @@ class Identity < ApplicationRecord
   def generate_personal_code
     from = (gen_no * 1_000_000 + birth_code) * 10_000
     to = from + 10_000
-    i = last_as_personal_code(from, to)
-    i ||= from
-    i + 1
+    new_code = Identity.where(personal_code: from..to).last.personal_code
+    new_code ||= from
+    new_code + 1
   end
 
   def birth_code
@@ -62,10 +62,5 @@ class Identity < ApplicationRecord
 
   def gen_no
     gender == 'male' ? 3 : 4
-  end
-
-  def last_as_personal_code(from, to)
-    i = Identity.where(personal_code: from..to).last
-    !i.nil? ? i.personal_code : false
   end
 end
