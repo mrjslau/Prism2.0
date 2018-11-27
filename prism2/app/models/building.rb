@@ -26,7 +26,8 @@ class Building < ApplicationRecord
   def valid_living_places
     (building_type == 'residential' || living_places.zero?) ||
       errors
-        .add(:living_places, 'non residential building cannot have living place')
+        .add(:living_places,
+             'non residential building cannot have living place')
   end
 
   def init_building_id

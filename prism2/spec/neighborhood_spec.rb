@@ -5,7 +5,8 @@ RSpec.describe Neighborhood, type: :model do
 
   subject(:neighborhood) do
     described_class.new(name: 'Fabai',
-                        active_objects: neighborhoods(:didlaukis).active_objects,
+                        active_objects:
+                          neighborhoods(:didlaukis).active_objects,
                         map: map)
   end
 
@@ -14,6 +15,7 @@ RSpec.describe Neighborhood, type: :model do
 
   before do
     neighborhood.save
+    neighborhood.temperature = nil
   end
 
   describe 'Validations' do
@@ -34,18 +36,18 @@ RSpec.describe Neighborhood, type: :model do
 
   describe '#change_temperature' do
     it 'changes temperature' do
-      neighborhood.temperature = nil
       neighborhood.change_temperature(25.0)
       expect(neighborhood.temperature).to be(25.0)
     end
-    it 'calls notify method if temperature is abnormal' do
-      neighborhood.temperature = nil
-      neighborhood.change_temperature(45.0)
-      message = nil
-      neighborhood.map.notifications.each do |n| 
-        message = n.message if n.message == "Temperature have reached: 45.0 in Fabai neighborhood!"
+    context 'when temperature is abnormal' do
+      it 'calls notify method' do
+        neighborhood.change_temperature(45.0)
+        message = nil
+        neighborhood.map.notifications.each do |n|
+          message = n.message if n.message == 'Temperature have reached: 45.0 in Fabai neighborhood!'
+        end
+        expect(message).not_to be_nil
       end
-      expect(message).not_to be_nil
     end
   end
 
