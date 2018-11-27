@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181126173441) do
+ActiveRecord::Schema.define(version: 20181127173109) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -22,13 +22,15 @@ ActiveRecord::Schema.define(version: 20181126173441) do
   end
 
   create_table "buildings", id: false, force: :cascade do |t|
-    t.bigint "building_id"
+    t.integer "building_id", limit: 10
     t.string "building_type"
     t.integer "floors"
     t.integer "living_places"
     t.integer "neighborhood_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "building_id_id"
+    t.index ["building_id_id"], name: "index_buildings_on_building_id_id"
     t.index ["neighborhood_id"], name: "index_buildings_on_neighborhood_id"
   end
 
@@ -171,7 +173,7 @@ ActiveRecord::Schema.define(version: 20181126173441) do
 
   create_table "residences", force: :cascade do |t|
     t.integer "identity_id"
-    t.integer "building_id"
+    t.integer "building_id", limit: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["building_id"], name: "index_residences_on_building_id"

@@ -1,6 +1,6 @@
 class Residence < ApplicationRecord
-  belongs_to :identity, class_name: 'Identity', foreign_key: 'personal_code', optional: true
-  belongs_to :building, optional: true
+  belongs_to :identity, optional: true
+  belongs_to :building, optional: true, foreign_key: 'building_id'
   validates :identity, presence: true, uniqueness: true
   validates :building, presence: true
   validate :enough_living_place
@@ -14,7 +14,6 @@ class Residence < ApplicationRecord
   end
 
   def enough_living_place
-    errors.add(:building, 'building is full!') unless building
-                                                      .livable_and_not_full?
+    errors.add(:building, 'building is full!') unless building.livable_and_not_full?
   end
 end
