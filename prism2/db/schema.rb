@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(version: 20181126173441) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "identities", id: false, force: :cascade do |t|
-    t.bigint "personal_code"
+  create_table "identities", force: :cascade do |t|
+    t.integer "personal_code", limit: 8
     t.string "full_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
