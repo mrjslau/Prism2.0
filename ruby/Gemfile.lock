@@ -18,6 +18,7 @@ GEM
       virtus (~> 1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
+    colorize (0.8.1)
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
@@ -123,6 +124,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   haversine
   mutant
   mutant-rspec
