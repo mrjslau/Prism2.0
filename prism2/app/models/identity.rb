@@ -1,6 +1,6 @@
 # Identity model, it has personal code as primary key
 class Identity < ApplicationRecord
-  self.primary_key = 'personal_code'
+  # self.primary_key = :personal_code
   has_one :residence
   has_many :criminal_records
   belongs_to :person

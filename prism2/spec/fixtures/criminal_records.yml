@@ -1,7 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  police_station: one
+  id: 10
+  police_station_id: 1
 
 two:
-  police_station: two
+  id: 15
+  police_station_id: 1
