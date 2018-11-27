@@ -2,3 +2,7 @@
 
 ambulance:
   neighborhood_id: 1
+
+ambulance2:
+  id: 101
+  neighborhood_id: nil
