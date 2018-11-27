@@ -1,12 +1,3 @@
-# TODO
-1. More persistance tests
-2. UI fix
-3. Move logic outside of UI
-4. 10 Custom matchers
-5. 25 Standard matchers
-6. All above pass reek rubocop and mutant
-
-
 # Prism2.0
 Ruby/Ruby on Rails university project for Agile Development course 2018.
 
