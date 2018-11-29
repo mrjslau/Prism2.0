@@ -18,18 +18,6 @@ RSpec.describe Vehicle, type: :model do
     vehicle2.location = location2
   end
 
-  it 'has a licence number' do
-    expect(vehicle.licence_number).to eq 'FHD325'
-  end
-
-  it 'has an owner' do
-    expect(vehicle.owner).not_to be nil
-  end
-
-  it 'has a location' do
-    expect(vehicle.location).not_to be nil
-  end
-
   describe '#drive_to' do
     context 'when moving' do
       it 'changes location' do

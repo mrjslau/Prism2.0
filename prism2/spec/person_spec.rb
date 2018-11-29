@@ -16,12 +16,6 @@ RSpec.describe Person, type: :model do
   end
 
   context 'when person is initialized' do
-    it 's name should be' do
-      expect(person.identity.name).to eq('Jane')
-    end
-    it 's surname' do
-      expect(person.identity.surname).to eq('Doe')
-    end
     it 's identity should be created based on arguments' do
       expect(person.identity.personal_code.to_s[0..6]).to eq('4900101')
     end

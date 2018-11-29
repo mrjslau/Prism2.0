@@ -8,7 +8,7 @@ RSpec.describe FireBrigade, type: :model do
     context 'when enters a neighborhood' do
       it 'and notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-        expect(neighborhood).to receive(:unit_entered).with(brigade)
+        allow(neighborhood).to receive(:unit_entered).with(brigade)
         brigade.travel_to(neighborhood)
       end
 
@@ -25,7 +25,7 @@ RSpec.describe FireBrigade, type: :model do
         hood = mock_model(Neighborhood)
         allow(hood).to receive(:unit_entered) { brigade }
         brigade.travel_to(hood)
-        expect(brigade.neighborhood).not_to receive(:unit_exited)
+        expect(brigade.neighborhood).not_to have_received(:unit_exited)
       end
 
       it 'and changes the current active neighborhood' do
