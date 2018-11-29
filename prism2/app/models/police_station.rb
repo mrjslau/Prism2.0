@@ -16,10 +16,6 @@ class PoliceStation < ApplicationRecord
                                          identity_id: person.identity.id,
                                          police_station_id: id)
     criminal_records << criminal_record
-    register_criminal(person, criminal_record)
-  end
-
-  def register_criminal(person, criminal_record)
-    person.identity.criminal_records << criminal_record
+    person.add_crime(criminal_record)
   end
 end

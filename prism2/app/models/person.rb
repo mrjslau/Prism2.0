@@ -46,4 +46,8 @@ class Person < ApplicationRecord
   def near_any_pet?
     pets.any?(&:detect_if_owner_is_near)
   end
+
+  def add_crime(criminal_record)
+    identity.criminal_records << criminal_record
+  end
 end
