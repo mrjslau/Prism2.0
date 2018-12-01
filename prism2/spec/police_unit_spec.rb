@@ -8,7 +8,7 @@ RSpec.describe PoliceUnit, type: :model do
     context 'when police unit enters a neighborhood' do
       it 'and notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-        expect(neighborhood).to receive(:unit_entered).with(unit)
+        allow(neighborhood).to receive(:unit_entered).and_return(unit)
         unit.travel_to(neighborhood)
       end
 

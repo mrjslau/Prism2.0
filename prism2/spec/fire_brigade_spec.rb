@@ -8,7 +8,7 @@ RSpec.describe FireBrigade, type: :model do
     context 'when enters a neighborhood' do
       it 'and notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-        expect(neighborhood).to receive(:unit_entered).with(brigade)
+        allow(neighborhood).to receive(:unit_entered).with(brigade)
         brigade.travel_to(neighborhood)
       end
 

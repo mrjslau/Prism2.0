@@ -61,14 +61,14 @@ RSpec.describe Building, type: :model do
     end
   end
 
-  describe '#last_as_id' do
-    context 'when id is being generated ' do
-      it 'fetch last id building of similar category' do
-        expect(b1.send(:last_as_id,
-                       7_001_001_000, 7_001_002_000)).to be 7_001_001_001
-      end
-    end
-  end
+  # describe '#last_as_id' do
+  #  context 'when id is being generated ' do
+  #    it 'fetch last id building of similar category' do
+  #      expect(b1.send(:last_as_id,
+  #                     7_001_001_000, 7_001_002_000)).to be 7_001_001_001
+  #    end
+  #  end
+  # end
 
   describe '#generate_building_id' do
     context 'when id is being generated ' do
