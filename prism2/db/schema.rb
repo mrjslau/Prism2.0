@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181127173109) do
+ActiveRecord::Schema.define(version: 20181201173952) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20181127173109) do
   end
 
   create_table "buildings", id: false, force: :cascade do |t|
-    t.integer "building_id", limit: 10
+    t.integer "building_id", limit: 8
     t.string "building_type"
     t.integer "floors"
     t.integer "living_places"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20181127173109) do
     t.integer "police_station_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "identity_id"
+    t.integer "identity_id", limit: 8
     t.integer "neighborhood_id"
     t.integer "offence_level"
     t.index ["identity_id"], name: "index_criminal_records_on_identity_id"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20181127173109) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "identities", force: :cascade do |t|
+  create_table "identities", id: false, force: :cascade do |t|
     t.integer "personal_code", limit: 8
     t.string "full_name"
     t.datetime "created_at", null: false
@@ -172,8 +172,8 @@ ActiveRecord::Schema.define(version: 20181127173109) do
   end
 
   create_table "residences", force: :cascade do |t|
-    t.integer "identity_id"
-    t.integer "building_id", limit: 10
+    t.integer "identity_id", limit: 8
+    t.integer "building_id", limit: 8
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["building_id"], name: "index_residences_on_building_id"

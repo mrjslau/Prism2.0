@@ -1,6 +1,6 @@
 # Residence model class
 class Residence < ApplicationRecord
-  belongs_to :identity, optional: true
+  belongs_to :identity, optional: true, foreign_key: 'identity_id'
   belongs_to :building, optional: true, foreign_key: 'building_id'
   validates :identity, presence: true, uniqueness: true
   validates :building, presence: true

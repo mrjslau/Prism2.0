@@ -38,8 +38,9 @@ class Building < ApplicationRecord
     from = (
     (type_no * 1000 + map_id) * 1000 + neighborhood_id) * 1000
     to = from + 1000
-    new_id = Building.where(building_id: from..to).last.id
-    new_id ||= from
+    last_similar_building_id = Building.where(building_id: from..to)
+                                       .last.building_id || false
+    new_id = last_similar_building_id || from
     new_id + 1
   end
 
@@ -51,8 +52,9 @@ class Building < ApplicationRecord
     end
   end
 
-  # def last_as_id(from, to)
-  #   Building.where(building_id: from..to).last.id || false
+  # def last_id(from, to)
+  #  last_similar_id = Building.where(building_id: from..to).last
+  #  last_similar_id ? last_similar_id.building_id : false
   # end
 
   def map_id

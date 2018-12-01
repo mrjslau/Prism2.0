@@ -5,13 +5,14 @@ RSpec.describe Residence, type: :model do
   let(:b2) { buildings(:b_two) }
   let(:b4) { buildings(:b_four) }
   let(:id1) { identities(:one) }
-  let(:id2) { identities(:one) }
+  let(:id2) { identities(:two) }
   let(:r1) { residences(:r_one) }
 
   describe '#update_building' do
     context 'when new resident is added' do
       it 'makes building living places decrease' do
-        r = described_class.new(building_id: b2.id, identity_id: id2.id)
+        r = described_class
+            .new(building_id: b2.building_id, identity_id: id2.personal_code)
         expect { r.save }.to change { r.building.living_places }.from(2).to(1)
       end
     end
@@ -19,7 +20,8 @@ RSpec.describe Residence, type: :model do
 
   describe '#enough_living_place' do
     it 'adds error if new residence in the building is not possible' do
-      r = described_class.new(building_id: b4.building_id, identity_id: id2.id)
+      r = described_class
+          .new(building_id: b4.building_id, identity_id: id2.personal_code)
       r.valid? # run validations
       expect(r.errors.messages[:building]).to eq ['building is full!']
     end

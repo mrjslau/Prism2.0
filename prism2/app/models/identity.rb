@@ -1,12 +1,12 @@
 # Identity model, it has personal code as primary key
 class Identity < ApplicationRecord
-  # self.primary_key = :personal_code
+  self.primary_key = :personal_code
   has_one :residence
   has_many :criminal_records
   belongs_to :person
   validates :full_name, presence: true
   validates :gender, presence: true, inclusion: %w[male female]
-  validates :person, presence: true
+  validates :person, presence: true, uniqueness: true
   validates :birthday, presence: true
   before_create :init_personal_code
 
@@ -51,8 +51,9 @@ class Identity < ApplicationRecord
   def generate_personal_code
     from = (gen_no * 1_000_000 + birth_code) * 10_000
     to = from + 10_000
-    new_code = Identity.where(personal_code: from..to).last.personal_code
-    new_code ||= from
+    last_similar_id = Identity.where(personal_code: from..to)
+                              .last.personal_code || false
+    new_code = last_similar_id || from
     new_code + 1
   end
 
@@ -63,4 +64,10 @@ class Identity < ApplicationRecord
   def gen_no
     gender == 'male' ? 3 : 4
   end
+
+  # def last_id(from, to)
+  #  last_similar_id = Identity.where(personal_code: from..to)
+  #                            .last.personal_code
+  #  last_similar_id ? last_similar_id.personal_code : false
+  # end
 end
