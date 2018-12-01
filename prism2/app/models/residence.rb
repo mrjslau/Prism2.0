@@ -11,7 +11,7 @@ class Residence < ApplicationRecord
 
   def update_building
     less_living_places = building.living_places - 1
-    Building.update(building_id, living_places: less_living_places)
+    building.update(living_places: less_living_places)
   end
 
   def enough_living_place
