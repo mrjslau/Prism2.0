@@ -5,8 +5,8 @@ RSpec.describe Identity, type: :model do
            :locations, :criminal_records
 
   subject(:identity) do
-    described_class.new(full_name: 'Jane Doe',
-                        gender: 'female',
+    described_class.new(full_name: identities(:one).full_name,
+                        gender: identities(:one).gender,
                         birthday: Date.parse('Jan 01 1990'),
                         person: person)
   end

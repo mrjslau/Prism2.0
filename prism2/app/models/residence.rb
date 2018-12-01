@@ -1,4 +1,4 @@
-#
+# Residence model class
 class Residence < ApplicationRecord
   belongs_to :identity, optional: true
   belongs_to :building, optional: true, foreign_key: 'building_id'
@@ -10,8 +10,8 @@ class Residence < ApplicationRecord
   private
 
   def update_building
-    i = building.living_places - 1
-    building.update(living_places: i)
+    less_living_places = building.living_places - 1
+    Building.update(building_id, living_places: less_living_places)
   end
 
   def enough_living_place

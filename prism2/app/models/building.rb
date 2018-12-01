@@ -20,13 +20,14 @@ class Building < ApplicationRecord
   private
 
   def init_living_places_if_nil
-    self.living_places = 0 if living_places.nil?
+    self.living_places = 0 unless living_places
   end
 
   def valid_living_places
     (building_type == 'residential' || living_places.zero?) ||
       errors
-        .add(:living_places, 'non residential building cannot have living place')
+        .add(:living_places,
+             'non residential building cannot have living places')
   end
 
   def init_building_id
@@ -34,13 +35,11 @@ class Building < ApplicationRecord
   end
 
   def generate_building_id
-    f = (
-    (type_no * 1000 + neighborhood.map.id) * 1000 + neighborhood.id
-  ) * 1000
-    t = f + 1000
-    i = last_as_id(f, t)
-    i ||= f
-    i + 1
+    from = (
+    (type_no * 1000 + neighborhood.map.id) * 1000 + neighborhood.id) * 1000
+    new_id = last_as_id(from, from + 1000)
+    new_id ||= from
+    new_id + 1
   end
 
   def type_no
@@ -52,7 +51,6 @@ class Building < ApplicationRecord
   end
 
   def last_as_id(from, to)
-    i = Building.where(building_id: from..to).last
-    !i.nil? ? i.building_id : false
+    Building.where(building_id: from..to).last.id || false
   end
 end

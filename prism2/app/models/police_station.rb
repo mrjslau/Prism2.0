@@ -11,17 +11,11 @@ class PoliceStation < ApplicationRecord
     #   2 - Misdemeanor
     #   3 - Gross Misdemeanor
     #   4 - Felony
-    criminal_records << CriminalRecord.new(neighborhood_id: neighborhood.id,
-                                           offence_level: offence_level,
-                                           identity_id: person.identity.id,
-                                           police_station_id: id)
-
-    register_criminal(person, offence_level) if person
-                                                .identity
-                                                .criminal_status < offence_level
-  end
-
-  def register_criminal(person, offence_level)
-    person.identity.criminal_status = offence_level
+    criminal_record = CriminalRecord.new(neighborhood_id: neighborhood.id,
+                                         offence_level: offence_level,
+                                         identity_id: person.identity.id,
+                                         police_station_id: id)
+    criminal_records << criminal_record
+    person.add_crime(criminal_record)
   end
 end

@@ -1,35 +1,32 @@
 # Prism2.0
 Ruby/Ruby on Rails university project for Agile Development course 2018 .
 
-### Prerequisites
-Ruby 2.5.x ---- Rails 5.1.6 ---- Bundler 1.16.x
-
 ## Rails :
 ### Getting started
 
-To get started with the app, clone the repo and then install the needed gems:
-
+To get started with the app, clone the repo, cd into 'prism2' and then install the needed gems:
 ```
+$ cd prism2
 $ bundle install --without production
 ```
-
 Next, migrate the database:
-
 ```
 $ rails db:migrate
 ```
-
 Finally, run the test suite to verify that everything is working correctly:
-
 ```
-$ rails test
+$ rspec
 ```
-
 If the test suite passes, you'll be ready to run the app in a local server:
-
 ```
 $ rails server
 ```
+Run mutation tests:
+```
+$ RAILS_ENV=test bundle exec mutant -r ./config/environment --use rspec Ambulance Building CriminalRecord Drone FireBrigade GateBarrier Identity Intersection Location Map Neighborhood Notification Person Pet Phone PoliceStation PoliceUnit Residence TrafficLight Vehicle
+```
+### Using
+Ruby 2.5.0, Rails 5.1.6, Bundler 1.16.0
 
 ## Ruby :
 ### Run UI
