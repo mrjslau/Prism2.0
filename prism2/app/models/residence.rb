@@ -1,3 +1,4 @@
+#
 class Residence < ApplicationRecord
   belongs_to :identity, optional: true
   belongs_to :building, optional: true, foreign_key: 'building_id'
@@ -10,10 +11,11 @@ class Residence < ApplicationRecord
 
   def update_building
     i = building.living_places - 1
-    Building.update(building_id, living_places: i)
+    building.update(living_places: i)
   end
 
   def enough_living_place
-    errors.add(:building, 'building is full!') unless building.livable_and_not_full?
+    errors.add(:building, 'building is full!') unless building
+                                                      .livable_and_not_full?
   end
 end
