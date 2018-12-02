@@ -17,5 +17,6 @@ class Residence < ApplicationRecord
   def enough_living_place
     errors.add(:building, 'building is full!') unless building
                                                       .livable_and_not_full?
+
   end
 end

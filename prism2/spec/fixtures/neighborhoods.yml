@@ -11,3 +11,16 @@ naugardukas:
   id: 2
   name: Naugardukas
   active_objects: { units: [], people: [] }
+  map_id: 1
+
+zverynas:
+  id: 3
+  name: Zverynas
+  active_objects: { units: [], people: [] }
+  map_id: 1
+
+_99:
+  id: 99
+  name: _99
+  active_objects: { units: [], people: [] }
+  map_id: 1

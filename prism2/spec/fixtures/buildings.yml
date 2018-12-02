@@ -19,10 +19,17 @@ b_three:
   floors: 3
   building_type: 'public'
   living_places: 0
-  neighborhood_id: 1
+  neighborhood_id: 2
 
 b_four:
   building_id: 6001001002
+  building_type: 'residential'
+  floors: 4
+  living_places: 0
+  neighborhood_id: 1
+
+b_998:
+  building_id: 6001099998
   building_type: 'residential'
   floors: 4
   living_places: 0

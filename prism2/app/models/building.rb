@@ -14,7 +14,11 @@ class Building < ApplicationRecord
   before_create :init_building_id
 
   def livable_and_not_full?
-    building_type == 'residential' && living_places > 0
+    living_places > 0
+  end
+
+  def map_id
+    neighborhood.map.id
   end
 
   private
@@ -24,7 +28,7 @@ class Building < ApplicationRecord
   end
 
   def valid_living_places
-    (building_type == 'residential' || living_places.zero?) ||
+    (building_type.eql?('residential') || living_places.zero?) ||
       errors
         .add(:living_places,
              'non residential building cannot have living places')
@@ -37,18 +41,18 @@ class Building < ApplicationRecord
   def generate_building_id
     from = (
     (type_no * 1000 + map_id) * 1000 + neighborhood_id) * 1000
-    to = from + 1000
-    last_similar_building_id = Building.where(building_id: from..to)
-                                       .last.building_id || false
-    new_id = last_similar_building_id || from
+    to = from + 999
+    last_similar_building = Building.where(building_id: from...to).last
+    new_id = last_similar_building.building_id if last_similar_building
+    new_id ||= from
     new_id + 1
   end
 
   def type_no
-    if building_type == 'commercial'
+    if building_type.eql?('commercial')
       5
     else
-      building_type == 'residential' ? 6 : 7
+      building_type.eql?('residential') ? 6 : 7
     end
   end
 
@@ -56,8 +60,4 @@ class Building < ApplicationRecord
   #  last_similar_id = Building.where(building_id: from..to).last
   #  last_similar_id ? last_similar_id.building_id : false
   # end
-
-  def map_id
-    neighborhood.map.id
-  end
 end
