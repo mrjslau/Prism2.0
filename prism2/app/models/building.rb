@@ -9,19 +9,24 @@ class Building < ApplicationRecord
   validates :floors, presence: true, numericality: { greater_than: 0 }
   validates :living_places, presence: true
   validate :valid_living_places
-  validates :neighborhood, presence: true
+  validate :enough_space_in_neighborhood, on: :create
   before_validation :init_living_places_if_nil
   before_create :init_building_id
 
   def livable_and_not_full?
-    living_places > 0
+    !living_places.blank? && !living_places.zero?
   end
 
   def map_id
-    neighborhood.map.id
+    neighborhood.map_id
   end
 
   private
+
+  def enough_space_in_neighborhood
+    (last_similar_id % 1000).equal?(999) && errors
+      .add(:neighborhood, 'neighborhood is full!')
+  end
 
   def init_living_places_if_nil
     self.living_places = 0 unless living_places
@@ -39,20 +44,24 @@ class Building < ApplicationRecord
   end
 
   def generate_building_id
+    last_similar_id + 1
+  end
+
+  def last_similar_id
     from = (
     (type_no * 1000 + map_id) * 1000 + neighborhood_id) * 1000
     to = from + 999
-    last_similar_building = Building.where(building_id: from...to).last
-    new_id = last_similar_building.building_id if last_similar_building
-    new_id ||= from
-    new_id + 1
+    last_similar_building = Building.where(building_id: from..to).last
+    last_similar_building ? last_similar_building.building_id : from
   end
 
   def type_no
     if building_type.eql?('commercial')
       5
+    elsif building_type.eql?('residential')
+      6
     else
-      building_type.eql?('residential') ? 6 : 7
+      7
     end
   end
 
