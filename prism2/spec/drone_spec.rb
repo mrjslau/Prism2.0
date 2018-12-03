@@ -8,7 +8,7 @@ RSpec.describe Drone, type: :model do
     context 'when it enters a neighborhood' do
       it 'notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-        expect(neighborhood).to receive(:unit_entered).with(drone)
+        allow(neighborhood).to receive(:unit_entered).with(drone)
         drone.travel_to(neighborhood)
       end
 

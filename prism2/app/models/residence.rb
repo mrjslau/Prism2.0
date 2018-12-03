@@ -1,8 +1,7 @@
 # Residence model class
 class Residence < ApplicationRecord
-  belongs_to :identity, class_name: 'Identity',
-                        foreign_key: 'personal_code', optional: true
-  belongs_to :building, optional: true
+  belongs_to :identity, optional: true, foreign_key: 'identity_id'
+  belongs_to :building, optional: true, foreign_key: 'building_id'
   validates :identity, presence: true, uniqueness: true
   validates :building, presence: true
   validate :enough_living_place
@@ -12,7 +11,7 @@ class Residence < ApplicationRecord
 
   def update_building
     less_living_places = building.living_places - 1
-    Building.update(building_id, living_places: less_living_places)
+    building.update(living_places: less_living_places)
   end
 
   def enough_living_place

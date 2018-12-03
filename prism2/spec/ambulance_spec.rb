@@ -8,7 +8,7 @@ RSpec.describe Ambulance, type: :model do
     context 'when enters a neighborhood' do
       it 'notifies the neighborhood it entered' do
         neighborhood = mock_model(Neighborhood)
-        expect(neighborhood).to receive(:unit_entered).with(ambulance)
+        allow(neighborhood).to receive(:unit_entered).with(ambulance)
         ambulance.travel_to(neighborhood)
       end
 

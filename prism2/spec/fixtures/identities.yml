@@ -5,9 +5,11 @@ one:
   full_name: Jane Doe
   gender: female
   birthday: 1990-01-01
+  person_id: 1
 
 two:
   personal_code: 39101011231
   full_name: John Doe
   gender: male
   birthday: 1991-01-01
+  person_id: 2
