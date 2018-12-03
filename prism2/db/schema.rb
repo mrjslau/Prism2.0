@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181126173441) do
+ActiveRecord::Schema.define(version: 20181201134309) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -185,6 +185,13 @@ ActiveRecord::Schema.define(version: 20181126173441) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["intersection_id"], name: "index_traffic_lights_on_intersection_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "vehicles", force: :cascade do |t|
