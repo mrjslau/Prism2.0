@@ -49,12 +49,14 @@ class Identity < ApplicationRecord
   end
 
   def generate_personal_code
+    last_similar_code + 1
+  end
+
+  def last_similar_code
     from = (gen_no * 1_000_000 + birth_code) * 10_000
     to = from + 10_000
-    last_similar_id = Identity.where(personal_code: from..to)
-                              .last.personal_code || false
-    new_code = last_similar_id || from
-    new_code + 1
+    last_similar_identity = Identity.where(personal_code: from..to).last
+    last_similar_identity ? last_similar_identity.personal_code : from
   end
 
   def birth_code
