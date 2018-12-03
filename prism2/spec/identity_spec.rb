@@ -17,16 +17,11 @@ RSpec.describe Identity, type: :model do
   # let(:identity)        { identities(:one)       }
   let(:identity2)       { identities(:two)       }
   let(:map)             { maps(:one)             }
-  let(:person)          { Person.new             }
-  let(:person2)         { Person.new             }
+  let(:person)          { people(:three)         }
+  let(:person2)         { people(:two)           }
 
   before do
     identity.save
-
-    person.identity = identity
-    person.location = location
-    person2.identity = identity2
-    person2.location = location
   end
 
   describe 'Validations' do
