@@ -15,9 +15,22 @@ RSpec.describe Pet, type: :model do
       pet.change_location(0.05, 0)
       expect(pet.location.latitude).to be(0.05)
     end
+
     it 'changes pet`s longitude' do
       pet.change_location(0, 0.05)
       expect(pet.location.longitude).to be(0.05)
+    end
+
+    it 'recalculates the location without creating a new location object' do
+      mock_loc = mock_model(Location);
+      pet.location = mock_loc
+      allow(mock_loc).to receive(:[]) { pet }
+
+      expect(mock_loc).to receive(:change_latitude).with(10)
+      expect(mock_loc).to receive(:change_longitude).with(10)
+      allow(pet).to receive(:change_location).with(10, 10)
+
+      pet.change_location(10, 10)
     end
   end
 
