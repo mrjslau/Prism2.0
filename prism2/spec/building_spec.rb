@@ -65,7 +65,7 @@ RSpec.describe Building, type: :model do
     context 'when id is being generated ' do
       it 'fetch last id building of similar category' do
         expect(b1.send(:last_as_id,
-                       7_001_001_000, 7_001_002_000)).to be 7_001_001_001
+                       7_001_001_000, 7_001_002_000)).to eq(7_001_001_001)
       end
     end
   end
@@ -75,7 +75,7 @@ RSpec.describe Building, type: :model do
       it 'produces new unique id' do
         b = described_class.new(living_places: 0, floors: 1,
                                 building_type: 'commercial', neighborhood_id: 1)
-        expect(b.send(:generate_building_id)). to be 5_001_001_002
+        expect(b.send(:generate_building_id)).to eq(5_001_001_002)
       end
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe Building, type: :model do
         b = described_class.new(living_places: 0, floors: 1,
                                 building_type: 'commercial', neighborhood_id: 1)
         b.save
-        expect(b.building_id).to be 5_001_001_002
+        expect(b.building_id).to  eq(5_001_001_002)
       end
     end
   end
