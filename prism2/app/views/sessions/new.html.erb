@@ -1,0 +1,12 @@
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3">
+    <%= simple_form_for(:session, url: login_path) do |f| %>
+      <%= f.input :email, label: "Email" %>
+      <%= f.input :password, label: "Password" %>
+      <div class="d-flex justify-content-center">
+        <%= f.button :submit, "Log in"%>
+      </div>
+    <% end %>
+    <p>New User? <%= link_to "Sign up!", signup_path %></p>
+  </div>
+</div>
