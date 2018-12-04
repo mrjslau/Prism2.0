@@ -1,0 +1,14 @@
+<div class="row">
+  <aside class="col-md-4">
+    <% @maps.each do |m| %>
+      <ul>
+        <li><%= m.city_name %></li>
+        <% m.neighborhoods.each do |n| %>
+        <ul>
+          <li><%= n.name %></li>
+        </ul>
+        <% end %>
+      </ul>  
+    <% end %>
+  </aside>
+</div>  

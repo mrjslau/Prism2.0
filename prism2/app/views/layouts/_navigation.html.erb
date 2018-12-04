@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #D42424">
   <div class="container">
-    <a class="navbar-brand" href="#">Prism2.0</a>
+    <a class="navbar-brand" href="/">Prism2.0</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapsedContent" aria-controls="navbarCollapsedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,11 +8,13 @@
     <div class="collapse navbar-collapse" id="navbarCollapsedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link text-light" href="#"> Main </a>
+          <a class="nav-link text-light" href="/"> Main </a>
         </li>
+        <% if logged_in? %>
         <li class="nav-item">
-          <a class="nav-link text-light" href="#"> Maps </a>
+          <a class="nav-link text-light" href="/maps"> Maps </a>
         </li>
+        <% end %>
       </ul>
       <% if !logged_in? %>
         <span class="mr-2"><%= link_to "Log in", login_path, class: "btn btn-light" %></span>
