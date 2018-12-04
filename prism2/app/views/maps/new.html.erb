@@ -1,0 +1,20 @@
+<h3>Create new city map</h3>
+
+<% if flash[:errors] %>
+  <% flash[:errors].each do |err| %>
+    <p><%= err %></p>
+  <% end %>
+<% end %>
+
+<form action="/maps" method="post" >
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token%>">
+  <p>
+    <label>City Name:</label>
+  </p>
+
+  <p>
+    <input type="text" name="map[city_name]">
+  </p>
+
+  <input type="submit" value="Create">
+</form>

@@ -1,0 +1,33 @@
+<h1>Here you can see available maps</h1>
+
+<table>
+  <thead>
+    <tr>
+      <td>City name</td>
+      <td>Population count</td>
+      <td>Neighborhood count</td>
+      <td>Vehicle count</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @maps.each do |map| %>
+      <tr>
+        <td>
+          <a href="/maps/<%= map.id  %>"><%= map.city_name %></a>
+        </td>
+        <td>
+          <%=Person.where(:map_id => map.id).count %>
+        </td>
+        <td>
+          <%=Neighborhood.where(:map_id => map.id).count %>
+        </td>
+        <td>
+          <%=Vehicle.where(:map_id => map.id).count %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<a href = "/maps/new"> New city map</a>
