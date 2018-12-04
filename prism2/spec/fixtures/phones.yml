@@ -3,9 +3,11 @@
 nokia:
   turned_on: false
   connected: false
+  on_call: false
   person_id: 1
 
 iphone:
   turned_on: false
   connected: false
+  on_call: true
   person_id: 2

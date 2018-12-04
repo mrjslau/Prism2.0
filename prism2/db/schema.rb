@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181201173952) do
+ActiveRecord::Schema.define(version: 20181204134339) do
 
   create_table "ambulances", force: :cascade do |t|
     t.integer "map_id"
@@ -32,6 +32,13 @@ ActiveRecord::Schema.define(version: 20181201173952) do
     t.integer "building_id_id"
     t.index ["building_id_id"], name: "index_buildings_on_building_id_id"
     t.index ["neighborhood_id"], name: "index_buildings_on_neighborhood_id"
+  end
+
+  create_table "carriers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "phone_id"
+    t.index ["phone_id"], name: "index_carriers_on_phone_id"
   end
 
   create_table "criminal_records", force: :cascade do |t|
@@ -152,6 +159,8 @@ ActiveRecord::Schema.define(version: 20181201173952) do
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "messages"
+    t.boolean "on_call"
     t.index ["person_id"], name: "index_phones_on_person_id"
   end
 
@@ -178,6 +187,16 @@ ActiveRecord::Schema.define(version: 20181201173952) do
     t.datetime "updated_at", null: false
     t.index ["building_id"], name: "index_residences_on_building_id"
     t.index ["identity_id"], name: "index_residences_on_identity_id"
+  end
+
+  create_table "text_messages", force: :cascade do |t|
+    t.text "message_text"
+    t.integer "author_id"
+    t.integer "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_text_messages_on_author_id"
+    t.index ["recipient_id"], name: "index_text_messages_on_recipient_id"
   end
 
   create_table "traffic_lights", force: :cascade do |t|

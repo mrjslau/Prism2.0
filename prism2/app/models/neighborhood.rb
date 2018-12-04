@@ -10,6 +10,7 @@ class Neighborhood < ApplicationRecord
   belongs_to :map
   validates :name, presence: true, uniqueness: { scope: :map }
   validates :map, presence: true
+  before_validation :init_active_objects_if_nil
 
   def change_temperature(temperature)
     self.temperature = temperature
@@ -32,5 +33,11 @@ class Neighborhood < ApplicationRecord
 
   def unit_exited(unit)
     active_objects.fetch(:units).delete(unit)
+  end
+
+  private
+
+  def init_active_objects_if_nil
+    self.active_objects = { units: [], people: [] } unless active_objects
   end
 end

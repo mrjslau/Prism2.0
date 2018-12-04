@@ -2,10 +2,13 @@ require 'rails_helper.rb'
 
 RSpec.describe Phone, type: :model do
   fixtures :phones, :locations
+
+  subject(:phone) { phones(:nokia) }
+
   let(:location1) { locations(:one)                 }
   let(:location2) { locations(:two)                 }
   let(:person)    { Person.new(location: location2) }
-  let(:phone)     { phones(:nokia)                  }
+  let(:carrier)   { instance_double('carrier')      }
 
   before do
     phone.person = person
@@ -112,8 +115,9 @@ RSpec.describe Phone, type: :model do
     end
 
     context 'when not connected' do
-      it 'is not able to listen to a call' do
-        expect(phone.listen_call).to be false
+      it 'it establishes connection and listens to a call' do
+        allow(carrier).to receive(:establish_connection).and_return(true)
+        expect(phone.listen_call).to be true
       end
     end
   end

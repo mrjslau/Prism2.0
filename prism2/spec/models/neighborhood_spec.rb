@@ -10,8 +10,8 @@ RSpec.describe Neighborhood, type: :model do
                         map: map)
   end
 
-  let(:map)       { maps(:one)              }
-  let(:ambulance) { ambulances(:ambulance2) }
+  let(:map)       { maps(:one)                                       }
+  let(:ambulance) { instance_double('ambulance', neighborhood_id: 1) }
 
   before do
     neighborhood.save
@@ -45,14 +45,14 @@ RSpec.describe Neighborhood, type: :model do
         neighborhood.change_temperature(45.0)
         expect(neighborhood.map.notifications.length).not_to eql(old_l)
       end
-      # it 'calls notify method' do
-      #   neighborhood.change_temperature(45.0)
-      #   message = nil
-      #   neighborhood.map.notifications.each do |n|
-      #     message = n.message if n.message == 'Temperature have reached:'\
-      #                                         ' 45.0 in Fabai neighborhood!'
-      #   end
-      #   expect(message).not_to be_nil
+      # it 'adds correct message' do
+      #  neighborhood.change_temperature(45.0)
+      #  message = nil
+      #  neighborhood.map.notifications.each do |n|
+      #    message = n.message if n.message == 'Temperature have reached:'\
+      #                                        ' 45.0 in Fabai neighborhood!'
+      #  end
+      #  expect(message).not_to be_nil
       # end
     end
   end

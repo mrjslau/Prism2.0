@@ -19,10 +19,6 @@ class Person < ApplicationRecord
     phones.clear
   end
 
-  # def status
-  #   identity.criminal_status
-  # end
-
   def phones?
     !phones.empty?
   end

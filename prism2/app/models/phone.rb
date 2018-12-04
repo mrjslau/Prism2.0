@@ -3,6 +3,9 @@
 class Phone < ApplicationRecord
   belongs_to :person
   has_one :location
+  has_one :carrier
+  has_many :text_messages
+  serialize :messages
 
   def turn_on
     self.turned_on = true
@@ -17,7 +20,7 @@ class Phone < ApplicationRecord
   end
 
   def listen_call
-    connected
+    connected && on_call || carrier.establish_connection
   end
 
   def read_messages
