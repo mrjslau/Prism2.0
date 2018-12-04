@@ -19,6 +19,7 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
+    @people = Person.where(map_id: @map.id).all
   end
 
   private

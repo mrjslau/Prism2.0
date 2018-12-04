@@ -19,6 +19,9 @@ class Person < ApplicationRecord
     phones.clear
   end
 
+  def age
+    ((Time.zone.now - identity.birthday.to_time) / 1.year.seconds).floor
+  end
   # def status
   #   identity.criminal_status
   # end

@@ -1,0 +1,16 @@
+<h1>Here you can see all of the people</h1>
+<table>
+<tbody>
+<% @people.each do |person| %>
+  <tr>
+    <td>
+      <a href="/person/<%= person.id  %>"><%= person.identity.full_name %></a>
+    </td>
+    <td>
+      <%= person.age %>
+    </td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
