@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Building, type: :model do
-  fixtures :neighborhoods, :maps, :buildings
+  fixtures :neighborhoods, :maps, :buildings, :identities
 
   subject(:building) do
     described_class.new(building_type: buildings(:b_two).building_type,
@@ -10,7 +10,9 @@ RSpec.describe Building, type: :model do
                         neighborhood: buildings(:b_two).neighborhood)
   end
 
+  let(:mock_building) { mock_model(Building) }
   let(:b3) { buildings(:b_three) }
+  let(:i2) { identities(:two)    }
 
   describe '#valid_living_places' do
     context 'when living places are added to the building' do
@@ -40,6 +42,11 @@ RSpec.describe Building, type: :model do
 
   describe '#livable_and_not_full?' do
     context 'when building is residential and available for new residents' do
+      it 's livable and not full is called in a new residence creation process' do
+        r = Residence.new(building: mock_building, identity: i2)
+        expect(mock_building).to receive(:livable_and_not_full?)
+        r.valid?
+      end
       it 'returns true' do
         expect(building.livable_and_not_full?).to be true
       end
@@ -127,15 +134,6 @@ RSpec.describe Building, type: :model do
       expect(b3.map_id).not_to eq(b3.neighborhood.id)
     end
   end
-
-  # describe '#last_as_id' do
-  #  context 'when id is being generated ' do
-  #    it 'fetch last id building of similar category' do
-  #      expect(b1.send(:last_as_id,
-  #                     7_001_001_000, 7_001_002_000)).to be 7_001_001_001
-  #    end
-  #  end
-  # end
 
   describe '#generate_building_id' do
     context 'when id is being generated' do
