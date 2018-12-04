@@ -1,0 +1,13 @@
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3">
+    <%= simple_form_for @user do |f| %>
+      <%= f.input :name, label: "Username" %>
+      <%= f.input :email, label: "Email address" %>
+      <%= f.input :password, label: "Password" %>
+      <%= f.input :password_confirmation, label: "Repeat Password" %>
+      <div class="d-flex justify-content-center">
+        <%= f.button :submit, "Sing up!"%>
+      </div>
+    <% end %>
+  </div>
+</div>

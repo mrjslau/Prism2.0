@@ -63,3 +63,9 @@ gem 'reek'
 gem 'rspec'
 gem 'rubocop-rspec'
 gem 'simplecov', require: false, group: :test
+
+gem 'bootstrap'
+gem 'jquery-rails'
+gem 'font-awesome-rails'
+gem 'bcrypt'
+gem 'simple_form'
