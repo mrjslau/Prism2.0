@@ -1,0 +1,23 @@
+<h3>Create identity for new person</h3>
+
+<% if flash[:errors] %>
+  <% flash[:errors].each do |err| %>
+    <p><%= err %></p>
+  <% end %>
+<% end %>
+
+<%= form_for @identity, url: {action: "create"} do |f| %>
+  <div class="field">
+    <%= f.label :full_name %>
+    <%= f.text_field :full_name %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %>
+    <%= f.select(:gender, [%w(Male male), %w(Female female)]) %>
+  </div>
+  <div class="field">
+    <%= f.label :birthday %>
+    <%= f.date_field :birthday, as: :date, value: f.object.try(:strftime,"%Y-%m-%d"), class: 'form-control' %>
+  </div>
+  <%= f.submit %>
+<% end %>

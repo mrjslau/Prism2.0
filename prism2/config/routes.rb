@@ -5,5 +5,8 @@ Rails.application.routes.draw do
   post 'maps' => 'maps#create'
   get 'maps/:id' => 'maps#show'
   get 'people' => 'people#index'
-  #get 'maps/new_person_in_:city_name' =>
+  get 'people/new' => 'people#new'
+  post 'people' => 'people#create'
+  get 'identities/new' => 'identities#new'
+  post 'identities' => 'identities#create'
 end

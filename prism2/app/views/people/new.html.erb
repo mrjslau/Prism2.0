@@ -1,0 +1,15 @@
+<h3>Create new person</h3>
+
+<% if flash[:errors] %>
+  <% flash[:errors].each do |err| %>
+    <p><%= err %></p>
+  <% end %>
+<% end %>
+
+<%= form_for @person, url: {action: "create"} do |f| %>
+  <div class="field">
+    <%= f.label :map_id %>
+    <%= f.collection_select(:map_id, Map.all, :id, :city_name) %>
+  </div>
+  <%= f.submit %>
+<% end %>
