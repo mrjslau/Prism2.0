@@ -12,7 +12,7 @@ class MapsController < ApplicationController
     if map.save
       redirect_to '/maps'
     else
-      flash[:errors] = map.errors.full_messages
+      flash[:errors] = @map.errors.full_messages
       redirect_to '/maps/new'
     end
   end

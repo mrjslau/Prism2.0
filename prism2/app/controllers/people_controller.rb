@@ -6,10 +6,9 @@ class PeopleController < ApplicationController
 
   def new
     @person = Person.new
- end
+  end
 
   def create
-
     @person = Person.new(person_params)
 
     if @person.save
@@ -18,11 +17,9 @@ class PeopleController < ApplicationController
       flash[:errors] = @person.errors.full_messages
       redirect_to '/people/new'
     end
-
   end
 
   def person_params
     params.require(:person).permit(:map_id)
   end
-
 end
