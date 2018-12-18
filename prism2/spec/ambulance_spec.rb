@@ -25,7 +25,7 @@ RSpec.describe Ambulance, type: :model do
         hood = mock_model(Neighborhood)
         allow(hood).to receive(:unit_entered) { ambulance }
         ambulance.travel_to(hood)
-        expect(ambulance.neighborhood).not_to receive(:unit_exited)
+        expect(ambulance.neighborhood).not_to have_received(:unit_exited)
       end
 
       it 'and changes the current active neighborhood' do
